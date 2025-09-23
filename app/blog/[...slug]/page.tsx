@@ -1,4 +1,5 @@
 import Breadcrumb from '@/components/Pages/Breadcrumb';
+import PostSidebar from '@/components/Pages/PostSidebar';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -21,7 +22,14 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
       <div className={'pb-4 border-b border-b-zinc-200 dark:border-b-zinc-900'}>
         <Breadcrumb />
       </div>
-      <div></div>
+      <div className={'grid grid-cols-[minmax(200px,_15dvw)_1fr]'}>
+        <div className={'relative h-auto'}>
+          <PostSidebar
+            className={'border-l border-l-zinc-200 dark:border-l-zinc-900'}
+          />
+        </div>
+        <div></div>
+      </div>
     </section>
   );
 };
