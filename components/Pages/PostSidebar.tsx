@@ -6,7 +6,11 @@ interface SidebarProps {
 }
 
 const PostSidebar = ({ className }: SidebarProps) => {
-  return <div className={cn('w-full sticky top-0', className)}></div>;
+  return (
+    <div className={cn('w-full sticky top-0 flex flex-col gap-y-2', className)}>
+      <div></div>
+    </div>
+  );
 };
 
 export default PostSidebar;
