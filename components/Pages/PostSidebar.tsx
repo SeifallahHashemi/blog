@@ -6,7 +6,7 @@ interface SidebarProps {
 }
 
 const PostSidebar = ({ className }: SidebarProps) => {
-  return <div className={cn('w-full', className)}></div>;
+  return <div className={cn('w-full sticky top-0', className)}></div>;
 };
 
 export default PostSidebar;
