@@ -2,14 +2,21 @@ import Badge from '@/components/Pages/Badge';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
-import { authorQuery } from '@/lib/sanity.query';
-import { AuthorProfileType } from '@/types';
+import { authorQuery, tagsQuery } from '@/lib/sanity.query';
+import { AuthorProfileType, OptionalType, TagType } from '@/types';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
 interface BlogPostProps {
   params: Promise<{ slug: string[] }>;
 }
+
+type TagsType = OptionalType<TagType, 'icon'> & {
+  icon: {
+    url: string;
+    alt: string;
+  };
+};
 
 const BlogPostPage = async ({ params }: BlogPostProps) => {
   const slug = (await params).slug;
@@ -21,6 +28,8 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
   // const postSlug = slug[0];
   // const postTitle = slug.slice(1).join('/');
   const author = await sanityFetch<AuthorProfileType>({ query: authorQuery, tags: ['author'] });
+
+  const tags = await sanityFetch<TagsType[]>({ query: tagsQuery, tags: ['tags'] });
 
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
