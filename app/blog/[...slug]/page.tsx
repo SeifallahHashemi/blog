@@ -1,3 +1,4 @@
+import Badge from '@/components/Pages/Badge';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
@@ -20,19 +21,19 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
   // const postSlug = slug[0];
   // const postTitle = slug.slice(1).join('/');
   const author = await sanityFetch<AuthorProfileType>({ query: authorQuery, tags: ['author'] });
-  console.log('author', author);
+
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
       <div className={'pb-4 border-b border-b-zinc-200 dark:border-b-zinc-900'}>
         <Breadcrumb />
       </div>
-      <div className={'grid grid-cols-[minmax(200px,_15dvw)_1fr]'}>
+      <div className={'grid grid-cols-[minmax(200px,_20dvw)_1fr] gap-x-2'}>
         <div className={'relative h-auto'}>
-          <PostSidebar
-            className={'border-l border-l-zinc-200 dark:border-l-zinc-900'}
-          />
+          <PostSidebar className={''} info={author} />
         </div>
-        <div></div>
+        <div className="border-r border-r-zinc-200 dark:border-r-zinc-900">
+          {/* <Badge></Badge> */}
+        </div>
       </div>
     </section>
   );
