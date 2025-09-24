@@ -27,9 +27,15 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
 
   // const postSlug = slug[0];
   // const postTitle = slug.slice(1).join('/');
-  const author = await sanityFetch<AuthorProfileType>({ query: authorQuery, tags: ['author'] });
+  const author = await sanityFetch<AuthorProfileType>({
+    query: authorQuery,
+    tags: ['author'],
+  });
 
-  const tags = await sanityFetch<TagsType[]>({ query: tagsQuery, tags: ['tags'] });
+  const tags = await sanityFetch<TagsType[]>({
+    query: tagsQuery,
+    tags: ['tags'],
+  });
 
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
@@ -39,10 +45,11 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
       <div className={'grid grid-cols-[minmax(200px,_20dvw)_1fr] gap-x-2'}>
         <div className={'relative h-auto'}>
           <PostSidebar className={''} info={author} />
+          {tags.map((tag, i) => (
+            <Badge key={i}>{tag.title}</Badge>
+          ))}
         </div>
-        <div className="border-r border-r-zinc-200 dark:border-r-zinc-900">
-          {/* <Badge></Badge> */}
-        </div>
+        <div className="border-r border-r-zinc-200 dark:border-r-zinc-900"></div>
       </div>
     </section>
   );
