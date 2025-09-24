@@ -1,5 +1,8 @@
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
+import { sanityFetch } from '@/lib/sanity.client';
+import { authorQuery } from '@/lib/sanity.query';
+import { AuthorProfileType } from '@/types';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -14,9 +17,10 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
     return notFound();
   }
 
-  const postSlug = slug[0];
-  const postTitle = slug.slice(1).join('/');
-
+  // const postSlug = slug[0];
+  // const postTitle = slug.slice(1).join('/');
+  const author = await sanityFetch<AuthorProfileType>({ query: authorQuery, tags: ['author'] });
+  console.log('author', author);
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
       <div className={'pb-4 border-b border-b-zinc-200 dark:border-b-zinc-900'}>
