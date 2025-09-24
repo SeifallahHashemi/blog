@@ -33,4 +33,4 @@ export const postField = groq`
 
 export const allPostsQuery = groq`*[_type == "post"]{ ${postField} } | order(date desc)`;
 
-export const authorQuery = groq`*[_type == "author"]{ name, 'image': {'url': avatar.asset->url, 'alt': name, 'lqip': avatar.asset->metadata.lqip }, xUrl }[0]`;
+export const authorQuery = groq`*[_type == "author"]{ name, 'image': {'url': avatar.asset->url, 'alt': name, 'lqip': avatar.asset->metadata.lqip }, xUrl, 'slug': slug.current }[0]`;
