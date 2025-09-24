@@ -37,5 +37,13 @@ export type PostsType = {
   title: string;
 };
 
+export type AuthorProfileType = AllString<'_id' | 'name' | 'slug' | 'xUrl'> & {
+  'image': {
+    url: string;
+    alt: string;
+    lqip: string;
+  };
+};
+
 export type OptionalType<T, K extends keyof T> = Omit<T, K> &
   Partial<Pick<T, K>>;
