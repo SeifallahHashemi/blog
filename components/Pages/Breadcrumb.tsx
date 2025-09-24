@@ -7,7 +7,7 @@ import React from 'react';
 const Breadcrumb = () => {
   const pathname = usePathname();
   const segments = pathname.split('/').filter((segment) => segment);
-  console.log(segments?.slice(0, -2));
+
   return (
     <ol
       className="flex items-center justify-start whitespace-nowrap font-sans tracking-tight capitalize"
