@@ -3,8 +3,8 @@ import Badge from '@/components/Pages/Badge';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
-import { authorQuery, tagsQuery } from '@/lib/sanity.query';
-import { AuthorProfileType, OptionalType, TagType } from '@/types';
+import { authorQuery, postQuery, tagsQuery } from '@/lib/sanity.query';
+import { AuthorProfileType, OptionalType, PostsType, TagType } from '@/types';
 import React from 'react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -20,6 +20,8 @@ type TagsType = OptionalType<TagType, 'icon'> & {
     alt: string;
   };
 };
+
+type PostType = OptionalType<PostsType, 'author' | 'featured' | 'isPublished' | 'tags' | 'coverImage' | '_updatedAt' | '_createdAt' | '_id' | 'date'>
 
 const BlogPostPage = async ({ params }: BlogPostProps) => {
   const slug = (await params).slug;
@@ -39,6 +41,12 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
     query: tagsQuery,
     tags: ['tags'],
   });
+
+  const post = await sanityFetch<PostType>({
+    query: postQuery,
+    tags: ['post'],
+    params: { slug: slug[0] },
+  })
 
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
@@ -78,7 +86,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
             </ul>
           </div>
           <div>
-            <SharePost title={'title'} url={'url'} text={'text'} Icon={BsTwitterX} />
+            <SharePost title={post.title} url={post.slug} text={post.description} Icon={BsTwitterX} />
           </div>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900"></div>
