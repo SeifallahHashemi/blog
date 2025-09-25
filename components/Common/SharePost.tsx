@@ -26,7 +26,7 @@ const socialMedia = [
         "پست جدید از وبلاگ"
       )}.%0A%0A${title}%0A%0A${fullUrl}` },
   { name: 'facebook', Icon: FaFacebookSquare, url: `https://www.facebook.com/sharer.php?u=${fullUrl}` },
-  { name: 'linkedin', Icon: FaLinkedin, url: `https://linkedin.com/sharing/share-offsite/?url=${fullUrl}}&title=${title}&summary=${text}` },
+  { name: 'linkedin', Icon: FaLinkedin, url: `https://www.linkedin.com/feed/?shareActive=true&shareUrl=${fullUrl}&title=${title}&summary=${text}` },
 ];
 
 const popupWindow = (url: string) => {
