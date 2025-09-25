@@ -1,6 +1,15 @@
 import { groq } from 'next-sanity';
 
 // Reusable Post Fields (GROQ queries for Sanity CMS)
+const commonPostField = groq`
+  _id,
+  _createdAt,
+  date,
+  title,
+  description,
+  "slug": slug.current,
+`;
+
 export const postField = groq`
   _id,
   _createdAt,
@@ -31,6 +40,7 @@ export const postField = groq`
  isPublished,
 `;
 
+export const postQuery = groq`*[_type == "post" && slug.current == $slug][0]{ ${commonPostField} }`;
 export const allPostsQuery = groq`*[_type == "post"]{ ${postField} } | order(date desc)`;
 
 export const authorQuery = groq`*[_type == "author"]{ name, 'image': {'url': avatar.asset->url, 'alt': name, 'lqip': avatar.asset->metadata.lqip }, xUrl, 'slug': slug.current }[0]`;
