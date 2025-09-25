@@ -8,7 +8,6 @@ import { AuthorProfileType, OptionalType, PostsType, TagType } from '@/types';
 import React from 'react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { BsTwitterX } from 'react-icons/bs';
 
 interface BlogPostProps {
   params: Promise<{ slug: string[] }>;
@@ -86,7 +85,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
             </ul>
           </div>
           <div>
-            <SharePost title={post.title} url={post.slug} text={post.description} Icon={BsTwitterX} />
+            <SharePost title={post.title} url={post.slug} text={post.description} />
           </div>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900"></div>
