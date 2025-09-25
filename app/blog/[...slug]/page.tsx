@@ -4,6 +4,7 @@ import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
 import { authorQuery, tagsQuery } from '@/lib/sanity.query';
 import { AuthorProfileType, OptionalType, TagType } from '@/types';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -45,9 +46,33 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
       <div className={'grid grid-cols-[minmax(200px,_20dvw)_1fr] gap-x-2'}>
         <div className={'relative h-auto'}>
           <PostSidebar className={''} info={author} />
-          {tags.map((tag, i) => (
-            <Badge key={i}>{tag.title}</Badge>
-          ))}
+          <div className='px-1 py-6 border-b dark:border-b-zinc-900 border-b-zinc-200'>
+            <p className='basic-font-styles dark:text-zinc-600 text-zinc-500'>تگ ها: </p>
+            <ul className='flex flex-row flex-wrap justify-end gap-x-2'>
+              {tags?.map((tag) => (
+                <li key={tag.slug}>
+                  <Badge
+                    className={`rounded-full w-fit h-auto py-1 px-2 border dark:border-zinc-800 border-zinc-200 overflow-clip flex flex-row gap-x-2 text-xs font-extralight leading-relaxed font-sans`}
+                    props={{
+                      style: {
+                        borderColor: tag.color,
+                        borderWidth: '1px',
+                      }
+                    }}
+                  >
+                    <Image
+                      src={tag.icon?.url || ''}
+                      alt={tag.alt || ''}
+                      width={15}
+                      height={15}
+                      className={'bg-transparent rounded-full'}
+                    />
+                    <span>{tag.title}</span>
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900"></div>
       </div>
