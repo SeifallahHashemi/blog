@@ -5,9 +5,10 @@ import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
 import { authorQuery, tagsQuery } from '@/lib/sanity.query';
 import { AuthorProfileType, OptionalType, TagType } from '@/types';
+import React from 'react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import React from 'react';
+import { BsTwitterX } from 'react-icons/bs';
 
 interface BlogPostProps {
   params: Promise<{ slug: string[] }>;
@@ -47,9 +48,11 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
       <div className={'grid grid-cols-[minmax(200px,_20dvw)_1fr] gap-x-2'}>
         <div className={'relative h-auto'}>
           <PostSidebar className={''} info={author} />
-          <div className='px-1 py-6 border-b dark:border-b-zinc-900 border-b-zinc-200'>
-            <p className='basic-font-styles dark:text-zinc-600 text-zinc-500'>تگ ها: </p>
-            <ul className='flex flex-row flex-wrap justify-end gap-x-2'>
+          <div className="px-1 py-6 border-b dark:border-b-zinc-900 border-b-zinc-200">
+            <p className="basic-font-styles dark:text-zinc-600 text-zinc-500">
+              تگ ها:{' '}
+            </p>
+            <ul className="flex flex-row flex-wrap justify-end gap-x-2">
               {tags?.map((tag) => (
                 <li key={tag.slug}>
                   <Badge
@@ -58,7 +61,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
                       style: {
                         borderColor: tag.color,
                         borderWidth: '1px',
-                      }
+                      },
                     }}
                   >
                     <Image
@@ -75,7 +78,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
             </ul>
           </div>
           <div>
-            {/* <SharePost title={'title'} url={'url'} text={'text'} /> */}
+            <SharePost title={'title'} url={'url'} text={'text'} Icon={BsTwitterX} />
           </div>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900"></div>
