@@ -1,15 +1,16 @@
 'use client';
 
 import React from 'react';
+import { IconType } from 'react-icons/lib';
 
 type SharePostProps = {
   title: string;
   url: string;
   text: string;
-  icon: React.ReactNode;
+  Icon: IconType;
 };
 
-const SharePost = ({ text, url, title, icon }: SharePostProps) => {
+const SharePost = ({ text, url, title, Icon }: SharePostProps) => {
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -23,7 +24,7 @@ const SharePost = ({ text, url, title, icon }: SharePostProps) => {
   };
   return (
     <button onClick={handleShare} className="">
-      {icon}
+      <Icon size={20} />
     </button>
   );
 };
