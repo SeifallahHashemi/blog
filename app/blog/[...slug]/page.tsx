@@ -1,3 +1,4 @@
+import SharePost from '@/components/Common/SharePost';
 import Badge from '@/components/Pages/Badge';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
@@ -72,6 +73,9 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
                 </li>
               ))}
             </ul>
+          </div>
+          <div>
+            {/* <SharePost title={'title'} url={'url'} text={'text'} /> */}
           </div>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900"></div>
