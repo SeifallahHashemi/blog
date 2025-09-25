@@ -43,6 +43,7 @@ next-env.d.ts
 # editor settings
 /.idea
 /.vscode
+/.qoder
 
 # prettier
 .prettierrc
