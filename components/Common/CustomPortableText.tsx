@@ -1,9 +1,7 @@
-import React from 'react'
+import { PortableTextComponents } from "next-sanity";
 
-const CustomPortableText = () => {
-  return (
-    <div>CustomPortableText</div>
-  )
+export const CustomPortableText: PortableTextComponents = {
+    types: {
+        
+    }
 }
-
-export default CustomPortableText
