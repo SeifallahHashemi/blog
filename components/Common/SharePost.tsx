@@ -30,7 +30,7 @@ const socialMedia = [
 ];
 
 const popupWindow = (url: string) => {
-  window.open(url, '', 'width=600,height=400,left=200,top=200');
+  window.open(url, 'لینک اشتراک شبکه های اجتماعی', 'width=600,height=400,left=200,top=200');
 };
 
   return (
