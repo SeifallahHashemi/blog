@@ -8,6 +8,7 @@ const commonPostField = groq`
   title,
   description,
   "slug": slug.current,
+  content,
 `;
 
 export const postField = groq`
