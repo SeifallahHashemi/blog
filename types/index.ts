@@ -1,4 +1,5 @@
 import { TableRow } from '@sanity/table';
+import { PortableTextBlock } from 'next-sanity';
 
 export interface Table {
   rows?: TableRow[];
@@ -35,6 +36,7 @@ export type PostsType = {
   slug: string;
   tags: TagType[];
   title: string;
+  content: PortableTextBlock[];
 };
 
 export type AuthorProfileType = AllString<'_id' | 'name' | 'slug' | 'xUrl'> & {
