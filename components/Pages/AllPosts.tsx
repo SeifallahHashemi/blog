@@ -23,7 +23,7 @@ register('fa', editedPerLang);
 
 type TAllPosts = {
   className?: string;
-} & OptionalType<PostsType, '_id' | '_updatedAt' | 'description' | 'featured'>;
+} & OptionalType<PostsType, '_id' | '_updatedAt' | 'description' | 'featured' | 'content'>;
 
 const fallbackCoverImage: string =
   'https://res.cloudinary.com/victoreke/image/upload/v1692608339/victoreke/blog.png';
