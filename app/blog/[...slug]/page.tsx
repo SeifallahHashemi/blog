@@ -91,7 +91,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
           </div>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900">
-          {/* <PortableText value={post.title} components={CustomPortableText} /> */}
+          <PortableText value={post.content} components={CustomPortableText} />
         </div>
       </div>
     </section>
