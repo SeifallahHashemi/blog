@@ -1,4 +1,5 @@
 import React from 'react'
+import Clipboard from './Clipboard';
 
 interface CodeBlockTypes {
     value: {
@@ -15,6 +16,7 @@ const CodeBlock = ({ value }: CodeBlockTypes) => {
     <section className=''>
         <div>
             {fileName && <p className='font-sans font-medium text-sm text-zinc-900 dark:text-zinc-200'>{fileName}</p>}
+            <Clipboard content={code} />
         </div>
     </section>
   )
