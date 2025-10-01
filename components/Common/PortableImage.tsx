@@ -1,8 +1,19 @@
 import React from 'react'
+import SanityImage from './SanityImage';
 
-const PortableImage = () => {
+type ImageProps = {
+  value: {
+    alt: string;
+    caption: string;
+  }
+}
+
+const PortableImage = ({ value }: ImageProps) => {
   return (
-    <div>PortableImage</div>
+    <figure>
+      <SanityImage src={value} alt={value.alt} />
+      {value.caption && <figcaption>{value.caption}</figcaption>}
+    </figure>
   )
 }
 
