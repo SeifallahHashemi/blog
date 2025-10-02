@@ -24,7 +24,7 @@ const Clipboard = ({ content }: ClipboardProps) => {
   return (
     <AnimatePresence mode="popLayout">
       {!status ? (
-        <AnimateSection>
+        <AnimateSection className='w-fit flex justify-center items-center'>
           <button onClick={onClickHandler}>
             <FiCopy />
           </button>
