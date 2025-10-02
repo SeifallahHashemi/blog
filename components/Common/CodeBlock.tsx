@@ -1,24 +1,25 @@
 import React from 'react';
 import { Highlight, themes } from 'prism-react-renderer';
 import Clipboard from './Clipboard';
+import { useTheme } from 'next-themes';
 
 interface CodeBlockTypes {
   value: {
     code: string;
     language: string;
-    fileName?: string | null;
+    filename?: string | null;
   };
 }
 
 const CodeBlock = ({ value }: CodeBlockTypes) => {
-  const { code, language, fileName = 'javascript' } = value;
+  const { code, language, filename = "Javascript" } = value;
 
   return (
     <section className="w-full my-4" dir='ltr'>
       <div className='flex justify-between items-center w-full bg-zinc-50 dark:bg-[#141414] border border-zinc-200 dark:border-zinc-800 rounded-t-lg px-3 py-4'>
-        {fileName && (
+        {filename && (
           <p className="font-sans font-medium text-sm text-zinc-900 dark:text-zinc-200">
-            {fileName}
+            {filename}
           </p>
         )}
         <Clipboard content={code} />
@@ -28,9 +29,9 @@ const CodeBlock = ({ value }: CodeBlockTypes) => {
           <pre style={style} className={`${className} tracking-normal border-x border-b dark:border-zinc-800 border-zinc-200 rounded-b-lg text-sm`}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
-                <span className='text-xs text-zinc-500 dark:text-zinc-400 mr-4 select-none opacity-50'>{i + 1}</span>
+                <span className='text-sm text-zinc-500 dark:text-zinc-400 min-w-6 mr-4 inline-flex justify-center items-center select-none opacity-50 font-iranYWR bg-gray-800 border-r border-r-zinc-900'>{i + 1}</span>
                 {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token })} className='text-xs text-zinc-500 dark:text-zinc-400 select-none opacity-50' />
+                  <span key={key} {...getTokenProps({ token })} className='text-sm text-zinc-500 dark:text-zinc-400 select-none opacity-50 font-mono' />
                 ))}
               </div>
             ))}
