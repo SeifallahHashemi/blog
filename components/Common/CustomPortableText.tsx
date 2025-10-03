@@ -8,6 +8,6 @@ export const CustomPortableText: PortableTextComponents = {
         code: CodeBlock,
     },
     block: {
-        normal: ({ children }) => <p className="basic-font-styles py-2">{children}</p>,
+        normal: ({ children }) => <p className="basic-font-styles py-2 text-pretty !leading-loose text-zinc-900 dark:text-zinc-300">{children}</p>,
     }
 }
