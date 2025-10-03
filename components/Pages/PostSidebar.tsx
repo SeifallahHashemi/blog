@@ -1,24 +1,19 @@
+import { PostType, TagsType } from '@/app/blog/[...slug]/page';
 import { cn } from '@/lib/utils';
-import { AuthorProfileType, OptionalType, TagType } from '@/types';
-import React from 'react';
+import { AuthorProfileType } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import SharePost from '../Common/SharePost';
 import Badge from './Badge';
-
-type TagsType = OptionalType<TagType, 'icon'> & {
-  icon: {
-    url: string;
-    alt: string;
-  };
-};
 
 type SidebarProps = {
   className?: string;
   info: AuthorProfileType;
   tags: TagsType[];
+  post: PostType;
 };
 
-const PostSidebar = ({ className, info, tags }: SidebarProps) => {
+const PostSidebar = ({ className, info, tags, post }: SidebarProps) => {
   const { _id, image, name, slug, xUrl } = info;
   return (
     <div
@@ -86,7 +81,12 @@ const PostSidebar = ({ className, info, tags }: SidebarProps) => {
         </ul>
       </div>
       {/* ShareButton */}
-      <div className='px-1 py-6'></div>
+      <div className="px-1 py-6 flex flex-col gap-y-4">
+        <div className="basic-font-styles dark:text-zinc-600 text-zinc-500 text-xs font-semibold">
+          اشتراک گذاری پست:
+        </div>
+        <SharePost title={post.title} url={post.slug} text={post.description} />
+      </div>
     </div>
   );
 };
