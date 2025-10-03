@@ -1,28 +1,24 @@
-import SharePost from '@/components/Common/SharePost';
-import Badge from '@/components/Pages/Badge';
+import { CustomPortableText } from '@/components/Common/CustomPortableText';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
 import { authorQuery, postQuery, tagsQuery } from '@/lib/sanity.query';
 import { AuthorProfileType, OptionalType, PostsType, TagType } from '@/types';
-import React from 'react';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
 import { PortableText } from 'next-sanity';
-import { CustomPortableText } from '@/components/Common/CustomPortableText';
+import { notFound } from 'next/navigation';
 
 interface BlogPostProps {
   params: Promise<{ slug: string[] }>;
 }
 
-type TagsType = OptionalType<TagType, 'icon'> & {
+export type TagsType = OptionalType<TagType, 'icon'> & {
   icon: {
     url: string;
     alt: string;
   };
 };
 
-type PostType = OptionalType<PostsType, 'author' | 'featured' | 'isPublished' | 'tags' | 'coverImage' | '_updatedAt' | '_createdAt' | '_id' | 'date'>
+export type PostType = OptionalType<PostsType, 'author' | 'featured' | 'isPublished' | 'tags' | 'coverImage' | '_updatedAt' | '_createdAt' | '_id' | 'date'>
 
 const BlogPostPage = async ({ params }: BlogPostProps) => {
   const slug = (await params).slug;
@@ -56,10 +52,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
       </div>
       <div className={'grid grid-cols-[minmax(200px,_20dvw)_1fr] gap-x-2'}>
         <div className={'relative h-auto'}>
-          <PostSidebar className={''} info={author} tags={tags}/>
-          <div>
-            <SharePost title={post.title} url={post.slug} text={post.description} />
-          </div>
+          <PostSidebar className={''} info={author} tags={tags} post={post}/>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900">
           <PortableText value={post.content} components={CustomPortableText} />
