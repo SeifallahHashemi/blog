@@ -1,7 +1,22 @@
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import darkTheme from 'react-syntax-highlighter/dist/esm/styles/prism/atom-dark';
 import lightTheme from 'react-syntax-highlighter/dist/esm/styles/prism/duotone-light';
+import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import ts from 'react-syntax-highlighter/dist/esm/languages/prism/typescript';
+import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
+import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
+import mdx from 'react-syntax-highlighter/dist/esm/languages/prism/markdown';
+import py from 'react-syntax-highlighter/dist/esm/languages/prism/python';
+import css from 'react-syntax-highlighter/dist/esm/languages/prism/css';
 import Clipboard from './Clipboard';
+
+SyntaxHighlighter.registerLanguage('javascript', js);
+SyntaxHighlighter.registerLanguage('typescript', ts);
+SyntaxHighlighter.registerLanguage('jsx', jsx);
+SyntaxHighlighter.registerLanguage('tsx', tsx);
+SyntaxHighlighter.registerLanguage('markdown', mdx);
+SyntaxHighlighter.registerLanguage('python', py);
+SyntaxHighlighter.registerLanguage('css', css);
 
 interface CodeBlockTypes {
   value: {
@@ -25,12 +40,12 @@ const CodeBlock = async ({ value }: CodeBlockTypes) => {
         <Clipboard content={code} />
       </div>
       <div className="hidden dark:inline-block w-full **:!m-0 [&_>_pre]:!rounded-t-none [&_>_pre]:!border-x [&_>_pre]:!border-b [&_>_pre]:!border-zinc-200 [&_>_pre]:dark:!border-zinc-900">
-        <SyntaxHighlighter language={language} style={darkTheme}>
+        <SyntaxHighlighter language={language} style={darkTheme} showLineNumbers wrapLongLines>
           {code}
         </SyntaxHighlighter>
       </div>
       <div className="inline-block dark:hidden w-full **:!m-0 [&_>_pre]:!rounded-t-none [&_>_pre]:!border-x [&_>_pre]:!border-b [&_>_pre]:!border-zinc-200 [&_>_pre]:dark:!border-zinc-900">
-        <SyntaxHighlighter language={language} style={lightTheme}>
+        <SyntaxHighlighter language={language} style={lightTheme} showLineNumbers wrapLongLines>
           {code}
         </SyntaxHighlighter>
       </div>
