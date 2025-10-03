@@ -34,7 +34,7 @@ const popupWindow = (url: string) => {
 };
 
   return (
-    <div className="w-full h-full py-6 px-1 flex flex-row gap-2 flex-wrap justify-center items-center">
+    <div className="w-full h-full flex flex-row gap-2 flex-wrap justify-center items-center">
       {socialMedia.map((media) => (
         <button
           onClick={popupWindow.bind(this, media.url)}
