@@ -54,7 +54,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
         <div className={'relative h-auto'}>
           <PostSidebar className={''} info={author} tags={tags} post={post}/>
         </div>
-        <div className="border-r border-r-zinc-200 dark:border-r-zinc-900 pr-6 pt-8">
+        <div className="border-r border-r-zinc-200 dark:border-r-zinc-900 pr-6 py-8">
           <h1 className='text-2xl text-zinc-900 dark:text-zinc-50 font-iranYWR font-bold leading-relaxed tracking-tight'>{post.title}</h1>
           <PortableText value={post.content} components={CustomPortableText} />
         </div>
