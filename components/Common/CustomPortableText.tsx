@@ -6,5 +6,8 @@ export const CustomPortableText: PortableTextComponents = {
     types: {
         image: PortableImage,
         code: CodeBlock,
+    },
+    block: {
+        normal: ({ children }) => <p className="basic-font-styles py-2">{children}</p>,
     }
 }
