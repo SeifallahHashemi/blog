@@ -1,8 +1,9 @@
 import { PortableTextComponents } from 'next-sanity';
+import Link from 'next/link';
+import { BiLinkExternal, BiSolidQuoteRight } from 'react-icons/bi';
 import CodeBlock from './CodeBlock';
 import HashScroll, { slugify } from './HashScroll';
 import PortableImage from './PortableImage';
-import { BiSolidQuoteRight } from "react-icons/bi";
 
 export const CustomPortableText: PortableTextComponents = {
   types: {
@@ -54,5 +55,42 @@ export const CustomPortableText: PortableTextComponents = {
         {children}
       </blockquote>
     ),
+  },
+  marks: {
+    em: ({ children }) => (
+      <em className="font-incognito font-medium italic">{children}</em>
+    ),
+    strong: ({ children }) => (
+      <strong className="font-bold dark:text-zinc-300 text-zinc-700">
+        {children}
+      </strong>
+    ),
+    link: ({ children, value }) => {
+      return (
+        <Link
+          href={value?.href}
+          className="dark:text-blue-400 text-blue-500 hover:underline"
+        >
+          {children} <BiLinkExternal className="inline" aria-hidden="true" />
+        </Link>
+      );
+    },
+    code: ({ children }) => (
+      <code className="font-incognito py-[0.15rem] px-1 rounded-sm font-medium dark:bg-primary-bg bg-secondary-bg dark:text-zinc-200 text-pink-500">
+        {children}
+      </code>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="list-[square] mt-5 ml-5">{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className="list-decimal mt-5 ml-5">{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="mb-4">{children}</li>,
+    number: ({ children }) => <li className="mb-4">{children}</li>,
   },
 };
