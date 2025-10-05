@@ -18,7 +18,18 @@ export type TagsType = OptionalType<TagType, 'icon'> & {
   };
 };
 
-export type PostType = OptionalType<PostsType, 'author' | 'featured' | 'isPublished' | 'tags' | 'coverImage' | '_updatedAt' | '_createdAt' | '_id' | 'date'>
+export type PostType = OptionalType<
+  PostsType,
+  | 'author'
+  | 'featured'
+  | 'isPublished'
+  | 'tags'
+  | 'coverImage'
+  | '_updatedAt'
+  | '_createdAt'
+  | '_id'
+  | 'date'
+>;
 
 const BlogPostPage = async ({ params }: BlogPostProps) => {
   const slug = (await params).slug;
@@ -41,19 +52,29 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
     query: postQuery,
     tags: ['post'],
     params: { slug: slug[0] },
-  })
+  });
 
-  const postDate = new Date(post.date || post._createdAt || '2025-10-05T06:43:12Z');
+  const postDate = new Date(
+    post.date || post._createdAt || '2025-10-05T06:43:12Z'
+  );
 
   const convertedDate = new Intl.DateTimeFormat('fa-IR', {
-  weekday: 'long',  // "چهارشنبه"
-  day: 'numeric',   // "۲۶"
-  month: 'long',    // "شهریور"
-  year: 'numeric',  // "۱۴۰۴"
-  hour: '2-digit',  // "۱۰"
-  minute: '2-digit',// "۰۶"
-  hour12: false,    // نمایش ۲۴ ساعته
-}).format(postDate);
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(postDate);
+
+  const parts: Record<string, string> = {};
+
+  for (const p of convertedDate) {
+    parts[p.type] = p.value;
+  }
+
+  const formattedDate = `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} ساعت ${parts.hour}:${parts.minute}`
 
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
@@ -62,12 +83,14 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
       </div>
       <div className={'grid grid-cols-[minmax(200px,_20dvw)_1fr] gap-x-2'}>
         <div className={'relative h-auto'}>
-          <PostSidebar className={''} info={author} tags={tags} post={post}/>
+          <PostSidebar className={''} info={author} tags={tags} post={post} />
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900 pr-6 py-8">
-          <div className='flex flex-row justify-between items-center'>
-            <h1 className='text-2xl text-zinc-900 dark:text-zinc-50 font-iranYWR font-bold leading-relaxed tracking-tight'>{post.title}</h1>
-            <span className='inline-block'>{convertedDate}</span>
+          <div className="flex flex-row justify-between items-center">
+            <h1 className="text-2xl text-zinc-900 dark:text-zinc-50 font-iranYWR font-bold leading-relaxed tracking-tight">
+              {post.title}
+            </h1>
+            <span className="inline-block font-iranYWL font-extralight tracking-tight leading-none text-xs">{formattedDate}</span>
           </div>
           <PortableText value={post.content} components={CustomPortableText} />
         </div>
