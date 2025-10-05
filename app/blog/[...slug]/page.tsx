@@ -27,8 +27,6 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
     return notFound();
   }
 
-  // const postSlug = slug[0];
-  // const postTitle = slug.slice(1).join('/');
   const author = await sanityFetch<AuthorProfileType>({
     query: authorQuery,
     tags: ['author'],
@@ -45,6 +43,18 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
     params: { slug: slug[0] },
   })
 
+  const postDate = new Date(post.date || post._createdAt || '2025-10-05T06:43:12Z');
+
+  const convertedDate = new Intl.DateTimeFormat('fa-IR', {
+  weekday: 'long',  // "چهارشنبه"
+  day: 'numeric',   // "۲۶"
+  month: 'long',    // "شهریور"
+  year: 'numeric',  // "۱۴۰۴"
+  hour: '2-digit',  // "۱۰"
+  minute: '2-digit',// "۰۶"
+  hour12: false,    // نمایش ۲۴ ساعته
+}).format(postDate);
+
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
       <div className={'pb-4 border-b border-b-zinc-200 dark:border-b-zinc-900'}>
@@ -55,7 +65,10 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
           <PostSidebar className={''} info={author} tags={tags} post={post}/>
         </div>
         <div className="border-r border-r-zinc-200 dark:border-r-zinc-900 pr-6 py-8">
-          <h1 className='text-2xl text-zinc-900 dark:text-zinc-50 font-iranYWR font-bold leading-relaxed tracking-tight'>{post.title}</h1>
+          <div className='flex flex-row justify-between items-center'>
+            <h1 className='text-2xl text-zinc-900 dark:text-zinc-50 font-iranYWR font-bold leading-relaxed tracking-tight'>{post.title}</h1>
+            <span className='inline-block'>{convertedDate}</span>
+          </div>
           <PortableText value={post.content} components={CustomPortableText} />
         </div>
       </div>
