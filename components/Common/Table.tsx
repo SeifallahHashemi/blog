@@ -17,9 +17,9 @@ const Table = ({ value }: { value: TableValueProps }) => {
   }
 
   return (
-    <table className="border dark:border-zinc-800 border-zinc-200 w-full text-base my-4">
+    <table className="border dark:border-zinc-900 border-zinc-200 w-full my-4 font-iranYWR font-medium text-sm leading-relaxed tracking-tight">
       {caption && (
-        <caption className="text-lg font-incognito font-medium my-1">
+        <caption className="my-4 font-iranSans text-center text-base font-semibold text-zinc-800 dark:text-zinc-50 leading-relaxed tracking-tight">
           {caption}
         </caption>
       )}
@@ -29,7 +29,7 @@ const Table = ({ value }: { value: TableValueProps }) => {
             <th
               key={heading}
               scope="col"
-              className="font-medium text-lg font-incognito px-3 py-2"
+              className="font-medium text-lg font-incognito px-3 py-2 text-center"
             >
               {heading}
             </th>
