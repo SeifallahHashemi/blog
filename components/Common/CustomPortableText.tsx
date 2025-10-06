@@ -1,14 +1,19 @@
+import { TableValueProps } from '@/types';
 import { PortableTextComponents } from 'next-sanity';
 import Link from 'next/link';
 import { BiLinkExternal, BiSolidQuoteRight } from 'react-icons/bi';
 import CodeBlock from './CodeBlock';
 import HashScroll, { slugify } from './HashScroll';
 import PortableImage from './PortableImage';
+import Table from './Table';
 
 export const CustomPortableText: PortableTextComponents = {
   types: {
     image: PortableImage,
     code: CodeBlock,
+    customTable: ({ value }: { value: TableValueProps }) => (
+      <Table value={value} />
+    ),
   },
   block: {
     normal: ({ children }) => (
