@@ -23,25 +23,25 @@ export const VerificationEmail = ({
     <Html>
       <Head />
       <Preview>
-        {isPasswordReset ? 'Reset your password' : 'Verify your email address'}
+        {isPasswordReset ? 'بازیابی رمز عبور' : 'تاییدیه ایمیل'}
       </Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>
             {isPasswordReset
-              ? 'Reset your password'
-              : 'Verify your email address'}
+              ? 'بازیابی رمز عبور'
+              : 'تاییدیه ایمیل'}
           </Heading>
           <Text style={text}>
             {isPasswordReset
-              ? 'You requested to reset your password. Please use the following code to verify your identity:'
-              : 'Thank you for signing up! Please use the following code to verify your account:'}
+              ? 'شما درخواست تنظیم مجدد رمز عبور خود را داده‌اید. لطفاً از کد زیر برای تأیید هویت خود استفاده کنید:'
+              : 'از ثبت نام شما متشکریم! لطفاً برای تأیید حساب خود از کد زیر استفاده کنید:'}
           </Text>
           <Section style={codeContainer}>
             <Text style={code}>{otp}</Text>
           </Section>
           <Text style={text}>
-            If you didn&apos;t request this email, you can safely ignore it.
+            اگر شما این ایمیل را درخواست نکرده‌اید، می‌توانید با خیال راحت آن را نادیده بگیرید.
           </Text>
         </Container>
       </Body>
