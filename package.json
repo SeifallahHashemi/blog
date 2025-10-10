@@ -12,6 +12,7 @@
     "@portabletext/react": "^4.0.3",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.3",
+    "@react-email/components": "^0.5.6",
     "@sanity/code-input": "^6.0.1",
     "@sanity/image-url": "^1.2.0",
     "@sanity/table": "^2.0.0",
