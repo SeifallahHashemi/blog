@@ -9,9 +9,9 @@ import MoviePop from '@/public/img/pop-2.png';
 import TeamPop from '@/public/img/pop.png';
 import SeriesPop from '@/public/img/series-pop.png';
 import YoutubeChanelPop from '@/public/img/yc-pop.png';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimate, useAnimation } from 'motion/react';
 import Image, { StaticImageData } from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
 
 interface TCard {
   src: string | StaticImageData;
@@ -50,7 +50,10 @@ const TwistCard = () => {
   const [activeCardInd, setActiveCardInd] = useState<number>(0);
   const whisperControls = useAnimation();
 
-  useEffect(() => {
+  const isMountedRef = useRef(true);
+  const rafIdRef = useRef<number | null>(null);
+
+  /* useEffect(() => {
     let isMounted = true;
 
     const runSequence = async () => {
@@ -86,8 +89,54 @@ const TwistCard = () => {
     return () => {
       isMounted = false;
     };
-  }, [animate, whisperControls]);
+  }, [animate, whisperControls]); */
 
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    const runSequence = async () => {
+      if (!isMountedRef.current) return;
+
+      await Promise.all([
+        whisperControls.start('animate'),
+        animate(
+          ':scope > div',
+          { rotateY: 0 },
+          { duration: 0.5, type: 'tween', ease: 'linear' }
+        ),
+      ]);
+
+      await sleep(2000);
+
+      if (!isMountedRef.current) return;
+      await Promise.all([
+        whisperControls.start('exit'),
+        animate(
+          ':scope > div',
+          { rotateY: 90 },
+          { duration: 0.5, type: 'tween', ease: 'linear' }
+        ),
+      ]);
+
+      if (isMountedRef.current) {
+        setActiveCardInd((prev) => (prev === cards.length - 1 ? 0 : prev + 1));
+      }
+
+      if (isMountedRef.current) {
+        rafIdRef.current = requestAnimationFrame(runSequence);
+      }
+    };
+
+    rafIdRef.current = requestAnimationFrame(runSequence);
+
+    return () => {
+      isMountedRef.current = false;
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
+  }, []);
+  
   return (
     <>
       <div ref={scope} className={'w-screen h-96 flex justify-center relative'}>
