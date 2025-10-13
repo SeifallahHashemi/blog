@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createAdminClient } from '@/utils/supabase/admin';
 import VerificationEmail from '@/components/Templates/VerificationEmail';
+import WelcomeEmail from '@/components/Templates/WelcomeEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -51,11 +52,28 @@ export default async function POST(request: NextRequest) {
           const dashboardUrl = origin
           ? `${origin}/dashboard`
           : `${new URL(request.url).origin}/dashboard`;
+
+          data = await resend.emails.send({
+            from: 'welcome@sepehrpersianblog.ir',
+            to: email,
+            subject: 'به وبلاگ ما خوش آمدید',
+            react: WelcomeEmail({
+              userEmail: email,
+              dashboardUrl
+            })
+          })
         break;
     
       default:
+        return NextResponse.json(
+          { error: 'اعتبار سنجی نامعتبر' },
+          { status: 400 }
+        );
         break;
     }
+
+    return NextResponse.json({ data });
+    
   } catch (error) {
     return NextResponse.json(
       {
