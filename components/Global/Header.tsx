@@ -5,6 +5,7 @@ import Logo from '@/public/img/logo.webp';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 import React from 'react';
+import ProfileButton from '../Profile/ProfileButton';
 
 interface Data {
   title: string;
@@ -61,6 +62,7 @@ const Header = () => {
         </nav>
         <div className={'flex items-center gap-x-4'}>
           <ThemeModeToggle />
+          <ProfileButton />
           <MobileMenu />
         </div>
       </div>
