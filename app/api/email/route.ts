@@ -1,0 +1,69 @@
+import * as React from 'react';
+import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import { createAdminClient } from '@/utils/supabase/admin';
+import VerificationEmail from '@/components/Templates/VerificationEmail';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export default async function POST(request: NextRequest) {
+  try {
+    const { email, password, type, isPasswordReset, origin } = await request.json();
+    
+    if (!email) {
+      return NextResponse.json(
+        {
+          error: 'وارد کردن ایمیل الزامی است',
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    let data;
+
+    switch (type) {
+      case 'verification':
+        const supabase = createAdminClient();
+        const res = await supabase.auth.admin.generateLink({
+          type: isPasswordReset ? 'recovery' : 'signup',
+          email,
+          password: isPasswordReset ? undefined : password,
+        })
+        
+        if (res.data.properties?.email_otp) {
+          data = await resend.emails.send({
+            from: 'auth@sepehrpersianblog.ir',
+            to: email,
+            subject: isPasswordReset ? 'بازیابی رمز عبور' : 'اعتبار سنجی ایمیل',
+            react: VerificationEmail({
+              otp: res.data.properties?.email_otp,
+              isPasswordReset: !!isPasswordReset,
+            }),
+          })
+        } else {
+          return NextResponse.json({ data: null, error: res.error });
+        }
+        break;
+
+        case 'welcome':
+          const dashboardUrl = origin
+          ? `${origin}/dashboard`
+          : `${new URL(request.url).origin}/dashboard`;
+        break;
+    
+      default:
+        break;
+    }
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: (error as Error).message,
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}
