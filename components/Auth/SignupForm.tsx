@@ -4,6 +4,9 @@ import React from 'react';
 import Form from 'next/form';
 import { useForm } from '@tanstack/react-form'
 import { signupSchema } from '@/utils/schema/zod-schema';
+import * as z from "zod";
+
+// type FormData = z.infer<typeof signupSchema>
 
 const SignupForm = () => {
   const {} = useForm({
