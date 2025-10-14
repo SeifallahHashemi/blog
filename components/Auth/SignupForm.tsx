@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
+import Form from 'next/form'
 
 const SignupForm = () => {
   return (
-    <div>SignupForm</div>
+    <Form action="/api/signup">SignupForm</Form>
   )
 }
 
