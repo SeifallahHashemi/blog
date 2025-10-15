@@ -12,6 +12,7 @@ const emailSchema = z.email({
 
 const passwordSchema = z
   .string()
+  .trim()
   .min(8, { error: 'حداقل ۸ کاراکتر لازم است' })
   .max(20, { error: 'حداکثر ۲۰ کاراکتر مجاز است' })
   .refine((val) => /[A-Z]/.test(val), {
