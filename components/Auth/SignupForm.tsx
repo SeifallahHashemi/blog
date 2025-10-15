@@ -149,11 +149,10 @@ const SignupForm = () => {
         <div className="w-full flex justify-end items-center">
           <Subscribe
             selector={(state) => [
-              state.isFormValid,
               state.canSubmit,
               state.isSubmitting,
             ]}
-            children={([isFormValid, canSubmit, isSubmitting]) => (
+            children={([canSubmit, isSubmitting]) => (
               <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
                 <Button
                   variant={'destructive'}
