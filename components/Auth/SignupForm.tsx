@@ -36,7 +36,6 @@ const SignupForm = () => {
     <AuthFormContainer
       title="ثبت نام"
       description="لطفا اطلاعات خود را به دقت وارد کنید"
-      footer={<div>footer</div>}
     >
       <form
         onSubmit={(e) => {
@@ -159,6 +158,7 @@ const SignupForm = () => {
                 <Button
                   variant={'destructive'}
                   type="reset"
+                  className='cursor-pointer'
                   onClick={(e) => {
                     e.preventDefault();
                     reset();
@@ -184,7 +184,6 @@ const SignupForm = () => {
 };
 
 function FieldInfo({ field }: { field: AnyFieldApi }) {
-  console.log(field.state.meta.errors);
   return (
     <div className="flex flex-row gap-2 flex-wrap my-1">
       {field.state.meta.isTouched && !field.state.meta.isValid
