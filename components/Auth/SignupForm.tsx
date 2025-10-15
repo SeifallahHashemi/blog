@@ -4,7 +4,6 @@ import { signupSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import Form from 'next/form';
 import * as z from 'zod';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -21,12 +20,12 @@ const defaultValues: FormData = {
 const SignupForm = () => {
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
 
-  const { Field } = useForm({
+  const { Field, handleSubmit } = useForm({
     defaultValues,
     validators: {
       onChange: signupSchema,
-      onBlur: signupSchema,
-      onSubmit: signupSchema,
+      // onBlur: signupSchema,
+      // onSubmit: signupSchema,
     },
     onSubmit: async (values) => {
       console.log(values);
@@ -38,7 +37,14 @@ const SignupForm = () => {
       description="لطفا اطلاعات خود را به دقت وارد کنید"
       footer={<div>footer</div>}
     >
-      <Form action="" className="space-y-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSubmit();
+        }}
+        className="space-y-4"
+      >
         <Field
           name="email"
           children={(field) => (
@@ -139,7 +145,7 @@ const SignupForm = () => {
             </div>
           )}
         />
-      </Form>
+      </form>
     </AuthFormContainer>
   );
 };
