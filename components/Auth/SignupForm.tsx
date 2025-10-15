@@ -9,6 +9,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import AuthFormContainer from './AuthFormContainer';
+import { useRouter } from 'next/navigation';
 
 type FormData = z.infer<typeof signupSchema>;
 
@@ -21,6 +22,8 @@ const defaultValues: FormData = {
 const SignupForm = () => {
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
 
+  const router = useRouter();
+
   const { Field, handleSubmit, Subscribe, reset } = useForm({
     defaultValues,
     validators: {
@@ -28,8 +31,22 @@ const SignupForm = () => {
       // onBlur: signupSchema,
       // onSubmit: signupSchema,
     },
-    onSubmit: async (values) => {
-      console.log(values);
+    onSubmit: async ({ value }) => {
+      sessionStorage.setItem('verificationEmail', value.email);
+
+      await fetch('/api/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'verification',
+          email: value.email,
+          password: value.password,
+        }),
+      });
+
+      router.push('/')
     },
   });
   return (
@@ -148,16 +165,13 @@ const SignupForm = () => {
 
         <div className="w-full flex justify-end items-center">
           <Subscribe
-            selector={(state) => [
-              state.canSubmit,
-              state.isSubmitting,
-            ]}
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
               <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
                 <Button
                   variant={'destructive'}
                   type="reset"
-                  className='cursor-pointer'
+                  className="cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     reset();
