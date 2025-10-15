@@ -1,6 +1,14 @@
 import * as z from 'zod';
 
-const emailSchema = z.email({ pattern: z.regexes.rfc5322Email });
+const emailSchema = z.email({
+  pattern: z.regexes.rfc5322Email,
+  error: (issue) => {
+    if (issue.code === 'invalid_format') {
+      return 'ایمیل وارد شده صحیح نیست';
+    }
+    return 'لطفا ایمیل معتبر وارد کنید';
+  },
+});
 
 const passwordSchema = z
   .string()
