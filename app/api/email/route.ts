@@ -7,7 +7,7 @@ import WelcomeEmail from '@/components/Templates/WelcomeEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const { email, password, type, isPasswordReset, origin } = await request.json();
     
