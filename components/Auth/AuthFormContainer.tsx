@@ -24,8 +24,8 @@ const AuthFormContainer = ({
   footer,
 }: AuthFormContainerProps) => {
   return (
-    <AnimateSection>
-      <Card className='w-full max-w-lg font-iranYWR font-semibold text-base tracking-tight leading-relaxed'>
+    <AnimateSection className='w-full max-w-lg mx-auto'>
+      <Card className='font-iranYWR font-semibold text-base tracking-tight leading-relaxed'>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
