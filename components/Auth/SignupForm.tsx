@@ -1,7 +1,7 @@
 'use client';
 
 import { signupSchema } from '@/utils/schema/zod-schema';
-import { useForm } from '@tanstack/react-form';
+import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import React from 'react';
 import Form from 'next/form';
 import AuthFormContainer from './AuthFormContainer';
@@ -32,5 +32,16 @@ const SignupForm = () => {
     </AuthFormContainer>
   );
 };
+
+function FieldInfo({ field }: { field: AnyFieldApi }) {
+  return (
+    <>
+      {field.state.meta.isTouched && !field.state.meta.isValid ? (
+        <em>{field.state.meta.errors.join(',')}</em>
+      ) : null}
+      {field.state.meta.isValidating ? 'Validating...' : null}
+    </>
+  );
+}
 
 export default SignupForm;
