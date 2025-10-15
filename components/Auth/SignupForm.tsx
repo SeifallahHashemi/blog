@@ -46,7 +46,7 @@ const SignupForm = () => {
         }),
       });
 
-      router.push('/')
+      // router.push('/')
     },
   });
   return (
