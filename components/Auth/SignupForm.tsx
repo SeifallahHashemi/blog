@@ -5,6 +5,7 @@ import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import * as z from 'zod';
+import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import AuthFormContainer from './AuthFormContainer';
@@ -20,7 +21,7 @@ const defaultValues: FormData = {
 const SignupForm = () => {
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
 
-  const { Field, handleSubmit } = useForm({
+  const { Field, handleSubmit, Subscribe, reset } = useForm({
     defaultValues,
     validators: {
       onChange: signupSchema,
@@ -145,6 +146,38 @@ const SignupForm = () => {
             </div>
           )}
         />
+
+        <div className="w-full flex justify-end items-center">
+          <Subscribe
+            selector={(state) => [
+              state.isFormValid,
+              state.canSubmit,
+              state.isSubmitting,
+            ]}
+            children={([isFormValid, canSubmit, isSubmitting]) => (
+              <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
+                <Button
+                  variant={'destructive'}
+                  type="reset"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    reset();
+                  }}
+                >
+                  ریست کردن
+                </Button>
+                <Button
+                  variant={'default'}
+                  type="submit"
+                  disabled={!canSubmit}
+                  className="cursor-pointer"
+                >
+                  {isSubmitting ? 'در حال ثبت نام ...' : 'ثبت نام'}
+                </Button>
+              </div>
+            )}
+          />
+        </div>
       </form>
     </AuthFormContainer>
   );
