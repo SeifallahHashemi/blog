@@ -17,22 +17,27 @@ interface AuthFormContainerProps {
   footer: React.ReactNode;
 }
 
-const AuthFormContainer = ({ title, description, children, footer }: AuthFormContainerProps) => {
-  return <AnimateSection>
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          {description}
-        </CardDescription>
-        <CardAction>
-          {/* <Button variant="link">Sign Up</Button> */}
-        </CardAction>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-      <CardFooter>{footer}</CardFooter>
-    </Card>
-  </AnimateSection>;
+const AuthFormContainer = ({
+  title,
+  description,
+  children,
+  footer,
+}: AuthFormContainerProps) => {
+  return (
+    <AnimateSection>
+      <Card className='w-full max-w-lg font-iranYWR font-semibold text-base tracking-tight leading-relaxed'>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+          <CardAction>
+            {/* <Button variant="link">Sign Up</Button> */}
+          </CardAction>
+        </CardHeader>
+        <CardContent>{children}</CardContent>
+        <CardFooter>{footer}</CardFooter>
+      </Card>
+    </AnimateSection>
+  );
 };
 
 export default AuthFormContainer;
