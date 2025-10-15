@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/Custom/UI/button';
 import { cn } from '@/lib/utils';
 import React, { MouseEventHandler } from 'react';
 

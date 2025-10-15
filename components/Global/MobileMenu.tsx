@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/Custom/UI/button';
 import Logo from '@/public/img/logo.webp';
 import { BookMarked, FlaskConical, Menu, User, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
