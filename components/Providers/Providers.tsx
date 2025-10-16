@@ -6,6 +6,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { FormDevtoolsPlugin } from '@tanstack/react-form-devtools';
 import React from 'react';
 import { ThemeProvider } from 'next-themes';
+import { Toaster } from 'sonner';
 
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -24,6 +25,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         config={{ hideUntilHover: true }}
         plugins={[FormDevtoolsPlugin()]}
       />
+      <Toaster />
     </>
   );
 };
