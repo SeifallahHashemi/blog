@@ -40,3 +40,11 @@ export const signupSchema = z
 export const otpSchema = z.object({
   otp: z.string().length(8, { message: 'کد تایید باید 8 رقم باشد' }),
 });
+
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: z
+    .string()
+    .trim()
+    .min(8, { error: 'رمز عبور باید حداقل 8 کاراکتر باشد' }),
+});
