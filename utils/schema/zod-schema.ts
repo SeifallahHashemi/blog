@@ -48,3 +48,14 @@ export const loginSchema = z.object({
     .trim()
     .min(8, { error: 'رمز عبور باید حداقل 8 کاراکتر باشد' }),
 });
+
+export const resetPasswordSchema = z.object({
+  email: z.email({
+    error: (issue) => {
+      if (issue.code === 'invalid_format') {
+        return 'ایمیل وارد شده صحیح نیست';
+      }
+      return 'لطفا ایمیل معتبر وارد کنید';
+    },
+  }),
+});
