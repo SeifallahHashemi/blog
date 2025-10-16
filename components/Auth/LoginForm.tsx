@@ -38,8 +38,15 @@ const LoginForm = () => {
       } catch (error) {
         if (error instanceof Error) {
           toast(error.name, {
-            className: 'my-classname',
+            className: '',
             description: error.message,
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500" size={16} />,
+          });
+        } else {
+          toast('خطا در برقراری ارتباط با سرور', {
+            className: '',
+            description: 'ورود به سیستم با خطا مواجه شد. لطفا مجددا تلاش کنید',
             duration: 5000,
             icon: <BiSolidError className="text-red-500" size={16} />,
           });
