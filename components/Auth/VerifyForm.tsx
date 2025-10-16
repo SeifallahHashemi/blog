@@ -1,10 +1,14 @@
 'use client';
 
 import { otpSchema } from '@/utils/schema/zod-schema';
-import { useForm } from '@tanstack/react-form';
+import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useEffect, useState } from 'react';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { notFound, useRouter } from 'next/navigation';
 import * as z from 'zod';
+import { Input } from '../ui/input';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
+import { Label } from '../ui/label';
 
 type formData = z.infer<typeof otpSchema>;
 
@@ -23,15 +27,18 @@ const VerifyForm = () => {
     validators: {
       onChange: otpSchema,
     },
+    onSubmit: async ({ value }) => {
+      console.log(value.otp);
+    },
   });
 
   useEffect(() => {
     const storedEmail = sessionStorage.getItem('verificationEmail');
 
-    if (!storedEmail) {
-      router.push('/auth/signup');
-      return;
-    }
+    // if (!storedEmail) {
+    //   router.push('/auth/signup');
+    //   return;
+    // }
 
     const passwordResetFlag = sessionStorage.getItem('passwordResetFlag');
 
@@ -39,14 +46,73 @@ const VerifyForm = () => {
     setEmail(storedEmail);
   }, [router]);
 
-  if (!email) {
-    return notFound();
-  }
+  //   if (!email) {
+  //     return notFound();
+  //   }
   return (
     <>
-      <form></form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSubmit();
+        }}
+      >
+        <Field
+          name="otp"
+          children={(field) => (
+            <>
+              <div
+                className="flex flex-col justify-center items-center my-1 space-y-3"
+                dir="ltr"
+              >
+                <Label htmlFor={field.name}>لطفا کد تایید را وارد کنید</Label>
+                <InputOTP
+                  maxLength={8}
+                  pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => {
+                    field.handleChange(e);
+
+                    if (e.length === 8) {
+                      handleSubmit();
+                    }
+                  }}
+                >
+                  <InputOTPGroup>
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <InputOTPSlot key={i} index={i} />
+                    ))}
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+              <FieldInfo field={field} />
+            </>
+          )}
+        />
+      </form>
     </>
   );
 };
+
+function FieldInfo({ field }: { field: AnyFieldApi }) {
+  return (
+    <div className="flex flex-row gap-2 flex-wrap my-1">
+      {field.state.meta.isTouched && !field.state.meta.isValid
+        ? field.state.meta.errors.map((err, ind) => (
+            <em
+              key={ind}
+              className="text-xs leading-relaxed tracking-tight text-red-400 font-normal"
+            >
+              {ind + 1}- {err.message}
+            </em>
+          ))
+        : null}
+      {field.state.meta.isValidating ? 'درحال اعتبارسنجی ...' : null}
+    </div>
+  );
+}
 
 export default VerifyForm;
