@@ -1,13 +1,29 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { otpSchema } from '@/utils/schema/zod-schema';
+import { useForm } from '@tanstack/react-form';
+import { useEffect, useState } from 'react';
 import { notFound, useRouter } from 'next/navigation';
+import * as z from 'zod';
+
+type formData = z.infer<typeof otpSchema>;
+
+const defaultValues: formData = {
+  otp: '',
+};
 
 const VerifyForm = () => {
   const [isPasswordReset, setIsPasswordReset] = useState<boolean>(false);
   const [email, setEmail] = useState<string | null>(null);
 
   const router = useRouter();
+
+  const { Field, handleSubmit, Subscribe, reset } = useForm({
+    defaultValues,
+    validators: {
+      onChange: otpSchema,
+    },
+  });
 
   useEffect(() => {
     const storedEmail = sessionStorage.getItem('verificationEmail');
@@ -26,7 +42,11 @@ const VerifyForm = () => {
   if (!email) {
     return notFound();
   }
-  return <div>VerifyForm</div>;
+  return (
+    <>
+      <form></form>
+    </>
+  );
 };
 
 export default VerifyForm;
