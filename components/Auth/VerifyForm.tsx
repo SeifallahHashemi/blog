@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { notFound, useRouter } from 'next/navigation';
 import * as z from 'zod';
+import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Label } from '../ui/label';
@@ -23,7 +24,7 @@ const VerifyForm = () => {
 
   const router = useRouter();
 
-  const { Field, handleSubmit, Subscribe, reset } = useForm({
+  const { Field, handleSubmit, Subscribe } = useForm({
     defaultValues,
     validators: {
       onChange: otpSchema,
@@ -133,6 +134,20 @@ const VerifyForm = () => {
             </>
           )}
         />
+
+        <div className="w-full flex justify-end items-center">
+          <Subscribe
+            selector={(state) => state.canSubmit}
+            children={(canSubmit) => (
+              <Button
+                type="button"
+                disabled={!canSubmit}
+                variant={'default'}
+                onClick={resendOtp}
+              ></Button>
+            )}
+          />
+        </div>
       </form>
     </>
   );
