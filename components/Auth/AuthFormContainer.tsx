@@ -34,7 +34,7 @@ const AuthFormContainer = ({
           </CardAction>
         </CardHeader>
         <CardContent>{children}</CardContent>
-        <CardFooter>{footer}</CardFooter>
+        {footer && <CardFooter>{footer}</CardFooter>}
       </Card>
     </AnimateSection>
   );
