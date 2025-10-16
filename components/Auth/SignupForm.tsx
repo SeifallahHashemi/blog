@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { IoFingerPrint } from 'react-icons/io5';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -57,11 +58,15 @@ const SignupForm = () => {
       footer={
         <div className="w-full inline-flex justify-center items-center gap-1.5 text-center text-xs font-normal">
           قبلا ثبت نام کرده اید؟{' '}
-          <Link href="/auth/login" className="text-blue-600 hover:underline text-xs font-normal">
+          <Link
+            href="/auth/login"
+            className="text-blue-600 hover:underline text-xs font-normal"
+          >
             وارد شوید
           </Link>
         </div>
       }
+      Icon={IoFingerPrint}
     >
       <form
         onSubmit={(e) => {
