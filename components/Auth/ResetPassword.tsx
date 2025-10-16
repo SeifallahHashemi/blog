@@ -99,7 +99,7 @@ const ResetPassword = () => {
         )}
       />
 
-      <div className="w-full">
+      <div className="w-full mt-4">
         <Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
