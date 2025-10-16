@@ -4,13 +4,13 @@ import { signupSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import AuthFormContainer from './AuthFormContainer';
-
 
 type FormData = z.infer<typeof signupSchema>;
 
@@ -25,7 +25,7 @@ const SignupForm = () => {
 
   const router = useRouter();
 
-  const { Field, handleSubmit, Subscribe, reset } = useForm({
+  const { Field, handleSubmit, Subscribe } = useForm({
     defaultValues,
     validators: {
       onChange: signupSchema,
@@ -47,13 +47,21 @@ const SignupForm = () => {
         }),
       });
 
-      router.push('/auth/verify')
+      router.push('/auth/verify');
     },
   });
   return (
     <AuthFormContainer
       title="ثبت نام"
       description="لطفا اطلاعات خود را به دقت وارد کنید"
+      footer={
+        <div className="text-center text-xs font-normal">
+          قبلا ثبت نام کرده اید؟{' '}
+          <Link href="/auth/login" className="text-blue-600 hover:underline text-xs font-normal">
+            وارد شوید
+          </Link>
+        </div>
+      }
     >
       <form
         onSubmit={(e) => {
@@ -168,8 +176,8 @@ const SignupForm = () => {
           <Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <div className="flex flex-row flex-wrap gap-2 justify-center items-center">
-                <Button
+              <div className="flex w-full gap-2 justify-center items-center">
+                {/* <Button
                   variant={'destructive'}
                   type="reset"
                   className="cursor-pointer"
@@ -179,12 +187,12 @@ const SignupForm = () => {
                   }}
                 >
                   ریست کردن
-                </Button>
+                </Button> */}
                 <Button
                   variant={'default'}
                   type="submit"
                   disabled={!canSubmit}
-                  className="cursor-pointer"
+                  className="cursor-pointer flex-1"
                 >
                   {isSubmitting ? 'در حال ثبت نام ...' : 'ثبت نام'}
                 </Button>
