@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
+import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
@@ -99,6 +100,24 @@ const LoginForm = () => {
           </>
         )}
       />
+
+      <div className="w-full">
+        <Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          children={([canSubmit, isSubmitting]) => (
+            <div className="w-full flex">
+              <Button
+                className="cursor-pointer flex-1"
+                disabled={!canSubmit}
+                variant={'default'}
+                type="submit"
+              >
+                {isSubmitting ? 'در حال وارد شدن ...' : 'ورود'}
+              </Button>
+            </div>
+          )}
+        />
+      </div>
     </form>
   );
 };
