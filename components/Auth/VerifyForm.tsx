@@ -71,6 +71,22 @@ const VerifyForm = () => {
     setEmail(storedEmail);
   }, [router]);
 
+  async function resendOtp() {
+    if (!email) return;
+
+    await fetch('/api/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'verification',
+        email,
+        isPasswordReset: isPasswordReset,
+      }),
+    });
+  }
+
   //   if (!email) {
   //     return notFound();
   //   }
