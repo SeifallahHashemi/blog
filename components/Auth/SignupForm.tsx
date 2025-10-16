@@ -55,7 +55,7 @@ const SignupForm = () => {
       title="ثبت نام"
       description="لطفا اطلاعات خود را به دقت وارد کنید"
       footer={
-        <div className="text-center text-xs font-normal">
+        <div className="w-full inline-flex justify-center items-center gap-1.5 text-center text-xs font-normal">
           قبلا ثبت نام کرده اید؟{' '}
           <Link href="/auth/login" className="text-blue-600 hover:underline text-xs font-normal">
             وارد شوید
@@ -172,11 +172,11 @@ const SignupForm = () => {
           )}
         />
 
-        <div className="w-full flex justify-end items-center">
+        <div className="w-full">
           <Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <div className="flex w-full gap-2 justify-center items-center">
+              <div className="flex w-full">
                 {/* <Button
                   variant={'destructive'}
                   type="reset"
