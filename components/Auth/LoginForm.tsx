@@ -4,6 +4,7 @@ import { loginSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { Button } from '../ui/button';
@@ -100,6 +101,15 @@ const LoginForm = () => {
           </>
         )}
       />
+
+      <div className="text-right">
+        <Link
+          href="/auth/reset-password"
+          className="text-xs font-normal text-blue-600 hover:underline"
+        >
+          رمز عبور خود را فراموش کرده اید؟
+        </Link>
+      </div>
 
       <div className="w-full">
         <Subscribe
