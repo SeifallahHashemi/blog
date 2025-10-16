@@ -1,16 +1,18 @@
 'use client';
 
+import { login } from '@/lib/auth';
 import { loginSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { BiSolidError } from 'react-icons/bi';
+import { toast } from 'sonner';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { login } from '@/lib/auth';
 
 type formDate = z.infer<typeof loginSchema>;
 
@@ -34,7 +36,14 @@ const LoginForm = () => {
         await login(value.email, value.password);
         router.push('/dashboard');
       } catch (error) {
-        console.log(error)
+        if (error instanceof Error) {
+          toast(error.name, {
+            className: 'my-classname',
+            description: error.message,
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500" size={16} />,
+          });
+        }
       }
     },
   });
