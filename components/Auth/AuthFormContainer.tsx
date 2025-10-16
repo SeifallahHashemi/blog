@@ -15,6 +15,7 @@ interface AuthFormContainerProps {
   description: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  Icon?: React.ElementType;
 }
 
 const AuthFormContainer = ({
@@ -22,16 +23,19 @@ const AuthFormContainer = ({
   description,
   children,
   footer,
+  Icon,
 }: AuthFormContainerProps) => {
   return (
-    <AnimateSection className='w-full max-w-md mx-auto'>
-      <Card className='font-iranYWR font-semibold text-base tracking-tight leading-relaxed'>
+    <AnimateSection className="w-full max-w-md mx-auto">
+      <Card className="font-iranYWR font-semibold text-base tracking-tight leading-relaxed">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
-          <CardAction>
-            {/* <Button variant="link">Sign Up</Button> */}
-          </CardAction>
+          {Icon && (
+            <CardAction>
+              <Icon className="size-6" />
+            </CardAction>
+          )}
         </CardHeader>
         <CardContent>{children}</CardContent>
         {footer && <CardFooter>{footer}</CardFooter>}
