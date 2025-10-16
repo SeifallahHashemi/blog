@@ -36,3 +36,7 @@ export const signupSchema = z
     message: 'رمز عبور و تکرار آن یکسان نیستند',
     path: ['confirmPassword'],
   });
+
+export const topSchema = z.object({
+  otp: z.string().length(8, { message: 'کد تایید باید 8 رقم باشد' }),
+});
