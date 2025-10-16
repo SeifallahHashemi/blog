@@ -37,6 +37,6 @@ export const signupSchema = z
     path: ['confirmPassword'],
   });
 
-export const topSchema = z.object({
+export const otpSchema = z.object({
   otp: z.string().length(8, { message: 'کد تایید باید 8 رقم باشد' }),
 });
