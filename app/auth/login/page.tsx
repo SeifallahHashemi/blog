@@ -1,6 +1,12 @@
 import AuthFormContainer from '@/components/Auth/AuthFormContainer';
 import LoginForm from '@/components/Auth/LoginForm';
+import { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'ورود به سایت',
+  description: 'صفحه ورود به سایت',
+};
 
 export default function LoginPage() {
   return (
