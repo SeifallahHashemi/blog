@@ -4,12 +4,13 @@ import { signupSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import AuthFormContainer from './AuthFormContainer';
-import { useRouter } from 'next/navigation';
+
 
 type FormData = z.infer<typeof signupSchema>;
 
