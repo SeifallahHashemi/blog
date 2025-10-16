@@ -1,6 +1,7 @@
 'use client';
 
 import { login } from '@/lib/auth';
+import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { loginSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import React, { useState } from 'react';
@@ -37,11 +38,12 @@ const LoginForm = () => {
         router.push('/dashboard');
       } catch (error) {
         if (error instanceof Error) {
-          toast(error.name, {
-            className: '',
-            description: error.message,
+          const message = translateSupabaseError(error);
+          toast('خطای اعتبارسنجی', {
+            className: 'flex flex-row-reverse text-right gap-x-4 space-x-4',
+            description: message,
             duration: 5000,
-            icon: <BiSolidError className="text-red-500" size={16} />,
+            icon: <BiSolidError className="text-red-500 ml-2" size={24} />,
           });
         } else {
           toast('خطا در برقراری ارتباط با سرور', {
