@@ -11,6 +11,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Label } from '../ui/label';
+import { cn } from '@/lib/utils';
 
 type formData = z.infer<typeof otpSchema>;
 
@@ -90,6 +91,9 @@ const VerifyForm = () => {
   }
 
   useEffect(() => {
+    if (timeLeft <= 0) {
+        return
+    }
     const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
     return () => clearTimeout(timer)
   }, [timeLeft])
@@ -141,18 +145,21 @@ const VerifyForm = () => {
           )}
         />
 
-        <div className="w-full flex justify-end items-center">
+        <div className="w-full flex justify-center items-center mt-6">
           <Subscribe
             selector={(state) => state.canSubmit}
             children={(canSubmit) => (
               <Button
                 type="button"
-                disabled={timeLeft !== 0 && !canSubmit}
+                disabled={timeLeft !== 0}
                 variant={'default'}
                 onClick={resendOtp}
-                className="cursor-pointer"
+                className={cn('', {
+                    '!cursor-not-allowed': timeLeft !== 0,
+                    '!cursor-pointer': timeLeft === 0,
+                })}
               >
-                ارسال مجدد کد
+                {timeLeft !== 0 ? `${timeLeft} ثانیه تا ارسال مجدد` : 'ارسال مجدد کد'}
               </Button>
             )}
           />
