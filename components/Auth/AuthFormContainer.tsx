@@ -33,7 +33,7 @@ const AuthFormContainer = ({
           <CardDescription>{description}</CardDescription>
           {Icon && (
             <CardAction>
-              <Icon className="size-6" />
+              <Icon className="size-6 text-zinc-600 dark:text-zinc-400" />
             </CardAction>
           )}
         </CardHeader>
