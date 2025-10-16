@@ -59,3 +59,13 @@ export const resetPasswordSchema = z.object({
     },
   }),
 });
+
+export const newPasswordSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'رمز عبور و تکرار آن یکسان نیستند',
+    path: ['confirmPassword'],
+  });
