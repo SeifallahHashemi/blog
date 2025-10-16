@@ -1,8 +1,12 @@
 'use client';
 
+import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { resetPasswordSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import React from 'react';
+import { useRouter } from 'next/navigation';
+import { BiSolidError } from 'react-icons/bi';
+import { toast } from 'sonner';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -15,13 +19,50 @@ const defaultValues: formData = {
 };
 
 const ResetPassword = () => {
+  const router = useRouter();
+
   const { Field, Subscribe, handleSubmit } = useForm({
     defaultValues,
     validators: {
       onChange: resetPasswordSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      try {
+        sessionStorage.setItem('verificationEmail', value.email);
+        sessionStorage.setItem('isPasswordReset', 'true');
+
+        await fetch('/api/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'verification',
+            email: value.email,
+            isPasswordReset: true,
+            origin: window.location.origin,
+          }),
+        });
+
+        router.push('/auth/verify');
+      } catch (error) {
+        if (error instanceof Error) {
+          const message = translateSupabaseError(error);
+          toast('خطای اعتبارسنجی', {
+            className: 'flex flex-row-reverse text-right gap-x-4 space-x-4',
+            description: message,
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500 ml-2" size={24} />,
+          });
+        } else {
+          toast('خطا در برقراری ارتباط با سرور', {
+            className: '',
+            description: 'ورود به سیستم با خطا مواجه شد. لطفا مجددا تلاش کنید',
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500" size={16} />,
+          });
+        }
+      }
     },
   });
 
