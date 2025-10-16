@@ -21,6 +21,7 @@ const defaultValues: formData = {
 const VerifyForm = () => {
   const [isPasswordReset, setIsPasswordReset] = useState<boolean>(false);
   const [email, setEmail] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState(60)
 
   const router = useRouter();
 
@@ -88,6 +89,11 @@ const VerifyForm = () => {
     });
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
+    return () => clearTimeout(timer)
+  }, [timeLeft])
+
   //   if (!email) {
   //     return notFound();
   //   }
@@ -141,10 +147,13 @@ const VerifyForm = () => {
             children={(canSubmit) => (
               <Button
                 type="button"
-                disabled={!canSubmit}
+                disabled={timeLeft !== 0 && !canSubmit}
                 variant={'default'}
                 onClick={resendOtp}
-              ></Button>
+                className="cursor-pointer"
+              >
+                ارسال مجدد کد
+              </Button>
             )}
           />
         </div>
