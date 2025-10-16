@@ -47,7 +47,7 @@ const SignupForm = () => {
         }),
       });
 
-      // router.push('/')
+      router.push('/auth/verify')
     },
   });
   return (
