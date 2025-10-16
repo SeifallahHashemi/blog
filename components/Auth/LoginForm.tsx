@@ -10,6 +10,7 @@ import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { login } from '@/lib/auth';
 
 type formDate = z.infer<typeof loginSchema>;
 
@@ -29,7 +30,12 @@ const LoginForm = () => {
       onChange: loginSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      try {
+        await login(value.email, value.password);
+        router.push('/dashboard');
+      } catch (error) {
+        console.log(error)
+      }
     },
   });
   return (
