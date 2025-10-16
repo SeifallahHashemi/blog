@@ -1,5 +1,6 @@
 'use client';
 
+import { verifyOtp } from '@/lib/auth';
 import { otpSchema } from '@/utils/schema/zod-schema';
 import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useEffect, useState } from 'react';
@@ -29,6 +30,30 @@ const VerifyForm = () => {
     },
     onSubmit: async ({ value }) => {
       console.log(value.otp);
+      if (!email) return;
+
+      await verifyOtp({ email, otp: value.otp });
+      sessionStorage.removeItem('verificationEmail');
+
+      if (isPasswordReset) {
+        router.push('/auth/reset-password');
+      } else {
+        sessionStorage.removeItem('isPasswordReset');
+
+        await fetch('/api/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'welcome',
+            email,
+            origin: window.location.origin,
+          }),
+        });
+
+        router.push('/dashboard');
+      }
     },
   });
 
