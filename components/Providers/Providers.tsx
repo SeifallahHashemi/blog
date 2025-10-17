@@ -6,8 +6,8 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { FormDevtoolsPlugin } from '@tanstack/react-form-devtools';
 import React from 'react';
 import { ThemeProvider } from 'next-themes';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Toaster } from 'sonner';
-
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -18,7 +18,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         defaultTheme={'system'}
       >
         <ThemeDataProvider>
-          <MotionLenis>{children}</MotionLenis>
+          <MotionLenis>
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </MotionLenis>
         </ThemeDataProvider>
       </ThemeProvider>
       <TanStackDevtools
