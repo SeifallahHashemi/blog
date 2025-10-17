@@ -77,9 +77,8 @@ const SignupForm = () => {
         }}
         className="space-y-4"
       >
-        <Field
-          name="email"
-          children={(field) => (
+        <Field name="email">
+          {(field) => (
             <div>
               <div className="flex flex-col space-y-3">
                 <Label htmlFor={field.name} className="">
@@ -100,11 +99,10 @@ const SignupForm = () => {
               <FieldInfo field={field} />
             </div>
           )}
-        />
+        </Field>
 
-        <Field
-          name="password"
-          children={(field) => (
+        <Field name="password">
+          {(field) => (
             <div>
               <div className="flex flex-col space-y-3">
                 <Label htmlFor={field.name} className="">
@@ -138,11 +136,10 @@ const SignupForm = () => {
               <FieldInfo field={field} />
             </div>
           )}
-        />
+        </Field>
 
-        <Field
-          name="confirmPassword"
-          children={(field) => (
+        <Field name="confirmPassword">
+          {(field) => (
             <div>
               <div className="flex flex-col space-y-3">
                 <Label htmlFor={field.name} className="">
@@ -176,12 +173,13 @@ const SignupForm = () => {
               <FieldInfo field={field} />
             </div>
           )}
-        />
+        </Field>
 
         <div className="w-full">
           <Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
-            children={([canSubmit, isSubmitting]) => (
+          >
+            {([canSubmit, isSubmitting]) => (
               <div className="flex w-full">
                 {/* <Button
                   variant={'destructive'}
@@ -204,7 +202,7 @@ const SignupForm = () => {
                 </Button>
               </div>
             )}
-          />
+          </Subscribe>
         </div>
       </form>
     </AuthFormContainer>
