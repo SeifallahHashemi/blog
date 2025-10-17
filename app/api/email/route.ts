@@ -2,7 +2,6 @@ import PasswordResetConfirmationEmail from '@/components/Templates/PasswordReset
 import VerificationEmail from '@/components/Templates/VerificationEmail';
 import WelcomeEmail from '@/components/Templates/WelcomeEmail';
 import { createAdminClient } from '@/utils/supabase/admin';
-import * as React from 'react';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
@@ -87,7 +86,6 @@ export async function POST(request: NextRequest) {
           { error: 'اعتبار سنجی نامعتبر' },
           { status: 400 }
         );
-        break;
     }
 
     return NextResponse.json({ data });
