@@ -66,9 +66,8 @@ const LoginForm = () => {
       }}
       className="space-y-4"
     >
-      <Field
-        name="email"
-        children={(field) => (
+      <Field name="email">
+        {(field) => (
           <>
             <div className="flex flex-col space-y-3">
               <Label htmlFor={field.name}>ایمیل</Label>
@@ -87,11 +86,10 @@ const LoginForm = () => {
             <FieldInfo field={field} />
           </>
         )}
-      />
+      </Field>
 
-      <Field
-        name="password"
-        children={(field) => (
+      <Field name="password">
+        {(field) => (
           <>
             <div className="flex flex-col space-y-3">
               <Label htmlFor={field.name} className="">
@@ -125,7 +123,7 @@ const LoginForm = () => {
             <FieldInfo field={field} />
           </>
         )}
-      />
+      </Field>
 
       <div className="text-right">
         <Link
@@ -137,9 +135,8 @@ const LoginForm = () => {
       </div>
 
       <div className="w-full">
-        <Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
+        <Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+          {([canSubmit, isSubmitting]) => (
             <div className="w-full flex">
               <Button
                 className="cursor-pointer flex-1"
@@ -151,7 +148,7 @@ const LoginForm = () => {
               </Button>
             </div>
           )}
-        />
+        </Subscribe>
       </div>
     </form>
   );
