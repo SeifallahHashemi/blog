@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 
 type SIProps = {
-  src: {};
+  src: object;
   alt: string;
   className?: string;
 };
@@ -18,8 +18,8 @@ const SanityImage = ({ src, alt, className }: SIProps) => {
       width={1920}
       height={1080}
       quality={100}
-      sizes='100dvw'
-      placeholder='blur'
+      sizes="100dvw"
+      placeholder="blur"
       blurDataURL={urlFor(src).blur(10).quality(10).url()}
     />
   );
