@@ -3,7 +3,7 @@
 import { login } from '@/lib/auth';
 import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { loginSchema } from '@/utils/schema/zod-schema';
-import { AnyFieldApi, useForm } from '@tanstack/react-form';
+import { useForm } from '@tanstack/react-form';
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -14,6 +14,7 @@ import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { FieldInfo } from './FieldInfo';
 
 type formDate = z.infer<typeof loginSchema>;
 
@@ -155,23 +156,5 @@ const LoginForm = () => {
     </form>
   );
 };
-
-function FieldInfo({ field }: { field: AnyFieldApi }) {
-  return (
-    <div className="flex flex-row gap-2 flex-wrap my-1">
-      {field.state.meta.isTouched && !field.state.meta.isValid
-        ? field.state.meta.errors.map((err, ind) => (
-            <em
-              key={ind}
-              className="text-xs leading-relaxed tracking-tight text-red-400 font-normal"
-            >
-              {ind + 1}- {err.message}
-            </em>
-          ))
-        : null}
-      {field.state.meta.isValidating ? 'درحال اعتبارسنجی ...' : null}
-    </div>
-  );
-}
 
 export default LoginForm;
