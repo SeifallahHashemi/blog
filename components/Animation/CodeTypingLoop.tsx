@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'motion/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { duotoneForest } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -27,7 +27,7 @@ const CodeTypingLoop = () => {
   const deletingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const animate = () => {
+  const animate = useCallback(() => {
     const index = indexRef.current;
     const isDeleting = deletingRef.current;
 
@@ -46,7 +46,7 @@ const CodeTypingLoop = () => {
       deletingRef.current = false;
       timeoutRef.current = setTimeout(animate, 2000); //  تأخیر قبل از شروع دوباره تایپ
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (!isInView) return;
