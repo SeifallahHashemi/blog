@@ -1,8 +1,9 @@
 'use client';
 
 import { verifyOtp } from '@/lib/auth';
+import { cn } from '@/lib/utils';
 import { otpSchema } from '@/utils/schema/zod-schema';
-import { AnyFieldApi, useForm } from '@tanstack/react-form';
+import { useForm } from '@tanstack/react-form';
 import { useEffect, useState } from 'react';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { notFound, useRouter } from 'next/navigation';
@@ -11,7 +12,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Label } from '../ui/label';
-import { cn } from '@/lib/utils';
+import { FieldInfo } from './FieldInfo';
 
 type formData = z.infer<typeof otpSchema>;
 
@@ -22,7 +23,7 @@ const defaultValues: formData = {
 const VerifyForm = () => {
   const [isPasswordReset, setIsPasswordReset] = useState<boolean>(false);
   const [email, setEmail] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState(60)
+  const [timeLeft, setTimeLeft] = useState(60);
 
   const router = useRouter();
 
@@ -92,11 +93,11 @@ const VerifyForm = () => {
 
   useEffect(() => {
     if (timeLeft <= 0) {
-        return
+      return;
     }
-    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
-    return () => clearTimeout(timer)
-  }, [timeLeft])
+    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
 
   //   if (!email) {
   //     return notFound();
@@ -155,11 +156,13 @@ const VerifyForm = () => {
                 variant={'default'}
                 onClick={resendOtp}
                 className={cn('', {
-                    '!cursor-not-allowed': timeLeft !== 0,
-                    '!cursor-pointer': timeLeft === 0,
+                  '!cursor-not-allowed': timeLeft !== 0,
+                  '!cursor-pointer': timeLeft === 0,
                 })}
               >
-                {timeLeft !== 0 ? `${timeLeft} ثانیه تا ارسال مجدد` : 'ارسال مجدد کد'}
+                {timeLeft !== 0
+                  ? `${timeLeft} ثانیه تا ارسال مجدد`
+                  : 'ارسال مجدد کد'}
               </Button>
             )}
           />
@@ -168,23 +171,5 @@ const VerifyForm = () => {
     </>
   );
 };
-
-function FieldInfo({ field }: { field: AnyFieldApi }) {
-  return (
-    <div className="flex flex-row gap-2 flex-wrap my-1">
-      {field.state.meta.isTouched && !field.state.meta.isValid
-        ? field.state.meta.errors.map((err, ind) => (
-            <em
-              key={ind}
-              className="text-xs leading-relaxed tracking-tight text-red-400 font-normal"
-            >
-              {ind + 1}- {err.message}
-            </em>
-          ))
-        : null}
-      {field.state.meta.isValidating ? 'درحال اعتبارسنجی ...' : null}
-    </div>
-  );
-}
 
 export default VerifyForm;
