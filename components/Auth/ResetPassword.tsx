@@ -75,9 +75,8 @@ const ResetPassword = () => {
         handleSubmit();
       }}
     >
-      <Field
-        name="email"
-        children={(field) => (
+      <Field name="email">
+        {(field) => (
           <>
             <div className="flex flex-col space-y-3">
               <Label htmlFor={field.name} className="">
@@ -98,12 +97,11 @@ const ResetPassword = () => {
             <FieldInfo field={field} />
           </>
         )}
-      />
+      </Field>
 
       <div className="w-full mt-4">
-        <Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
+        <Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+          {([canSubmit, isSubmitting]) => (
             <div className="flex w-full">
               <Button
                 variant={'default'}
@@ -115,7 +113,7 @@ const ResetPassword = () => {
               </Button>
             </div>
           )}
-        />
+        </Subscribe>
       </div>
     </form>
   );
