@@ -105,9 +105,8 @@ const NewPasswordForm = () => {
         handleSubmit();
       }}
     >
-      <Field
-        name="password"
-        children={(field) => (
+      <Field name="password">
+        {(field) => (
           <>
             <div className="flex flex-col space-y-3">
               <Label htmlFor={field.name} className="">
@@ -141,11 +140,10 @@ const NewPasswordForm = () => {
             <FieldInfo field={field} />
           </>
         )}
-      />
+      </Field>
 
-      <Field
-        name="confirmPassword"
-        children={(field) => (
+      <Field name="confirmPassword">
+        {(field) => (
           <>
             <div className="flex flex-col space-y-3">
               <Label htmlFor={field.name} className="">
@@ -179,12 +177,11 @@ const NewPasswordForm = () => {
             <FieldInfo field={field} />
           </>
         )}
-      />
+      </Field>
 
       <div className="w-full">
-        <Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
+        <Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+          {([canSubmit, isSubmitting]) => (
             <div className="flex w-full">
               <Button
                 variant={'default'}
@@ -196,7 +193,7 @@ const NewPasswordForm = () => {
               </Button>
             </div>
           )}
-        />
+        </Subscribe>
       </div>
     </form>
   );
