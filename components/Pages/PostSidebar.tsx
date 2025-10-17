@@ -14,7 +14,7 @@ type SidebarProps = {
 };
 
 const PostSidebar = ({ className, info, tags, post }: SidebarProps) => {
-  const { _id, image, name, slug, xUrl } = info;
+  const { image, name, slug, xUrl } = info;
   return (
     <div
       className={cn(
