@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
@@ -8,7 +9,6 @@ import {
   useScroll,
   useTransform,
 } from 'motion/react';
-import React, { useEffect, useRef, useState } from 'react';
 
 const ScrollPresenceAnimator = ({
   children,
@@ -55,7 +55,7 @@ const ScrollPresenceAnimator = ({
     if (!isPresent) {
       safeToRemove();
     }
-  }, [isPresent]);
+  }, [isPresent, safeToRemove]);
 
   return (
     <AnimatePresence>
