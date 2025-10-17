@@ -64,10 +64,10 @@ const VerifyForm = () => {
   useEffect(() => {
     const storedEmail = sessionStorage.getItem('verificationEmail');
 
-    // if (!storedEmail) {
-    //   router.push('/auth/signup');
-    //   return;
-    // }
+    if (!storedEmail) {
+      router.push('/auth/signup');
+      return;
+    }
 
     const passwordResetFlag = sessionStorage.getItem('passwordResetFlag');
 
@@ -99,9 +99,10 @@ const VerifyForm = () => {
     return () => clearTimeout(timer);
   }, [timeLeft]);
 
-  //   if (!email) {
-  //     return notFound();
-  //   }
+  if (!email) {
+    return notFound();
+  }
+
   return (
     <>
       <form
@@ -111,9 +112,8 @@ const VerifyForm = () => {
           handleSubmit();
         }}
       >
-        <Field
-          name="otp"
-          children={(field) => (
+        <Field name="otp">
+          {(field) => (
             <>
               <div
                 className="flex flex-col justify-center items-center my-1 space-y-3"
@@ -144,12 +144,11 @@ const VerifyForm = () => {
               <FieldInfo field={field} />
             </>
           )}
-        />
+        </Field>
 
         <div className="w-full flex justify-center items-center mt-6">
-          <Subscribe
-            selector={(state) => state.canSubmit}
-            children={(canSubmit) => (
+          <Subscribe selector={(state) => state.canSubmit}>
+            {() => (
               <Button
                 type="button"
                 disabled={timeLeft !== 0}
@@ -165,7 +164,7 @@ const VerifyForm = () => {
                   : 'ارسال مجدد کد'}
               </Button>
             )}
-          />
+          </Subscribe>
         </div>
       </form>
     </>
