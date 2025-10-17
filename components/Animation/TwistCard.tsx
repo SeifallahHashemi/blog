@@ -135,8 +135,8 @@ const TwistCard = () => {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, []);
-  
+  }, [animate, whisperControls]);
+
   return (
     <>
       <div ref={scope} className={'w-screen h-96 flex justify-center relative'}>
