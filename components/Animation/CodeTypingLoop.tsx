@@ -1,7 +1,7 @@
 'use client';
 
-import { useInView } from 'motion/react';
 import React, { useEffect, useRef, useState } from 'react';
+import { useInView } from 'motion/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { duotoneForest } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -55,7 +55,7 @@ const CodeTypingLoop = () => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [isInView]);
+  }, [isInView, animate]);
 
   return (
     <div
