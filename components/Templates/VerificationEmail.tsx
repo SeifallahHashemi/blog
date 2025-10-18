@@ -21,7 +21,7 @@ export const VerificationEmail = ({
   isPasswordReset = false,
 }: VerificationEmailProps) => {
   return (
-    <Html>
+    <Html lang={'fa'} dir={'rtl'}>
       <Head />
       <Body style={main}>
         {isPasswordReset ? 'بازیابی رمز عبور' : 'تاییدیه ایمیل'}
