@@ -3,8 +3,9 @@ import {
   Container,
   Head,
   Heading,
+  Hr,
   Html,
-  Preview,
+  Img,
   Section,
   Text,
 } from '@react-email/components';
@@ -22,26 +23,42 @@ export const VerificationEmail = ({
   return (
     <Html>
       <Head />
-      <Preview>
-        {isPasswordReset ? 'بازیابی رمز عبور' : 'تاییدیه ایمیل'}
-      </Preview>
       <Body style={main}>
+        {isPasswordReset ? 'بازیابی رمز عبور' : 'تاییدیه ایمیل'}
         <Container style={container}>
-          <Heading style={h1}>
-            {isPasswordReset
-              ? 'بازیابی رمز عبور'
-              : 'تاییدیه ایمیل'}
-          </Heading>
-          <Text style={text}>
-            {isPasswordReset
-              ? 'شما درخواست تنظیم مجدد رمز عبور خود را داده‌اید. لطفاً از کد زیر برای تأیید هویت خود استفاده کنید:'
-              : 'از ثبت نام شما متشکریم! لطفاً برای تأیید حساب خود از کد زیر استفاده کنید:'}
-          </Text>
-          <Section style={codeContainer}>
-            <Text style={code}>{otp}</Text>
+          <Section style={coverSection}>
+            <Section style={imageSection}>
+              <Img src={``} width="75" height="45" alt="AWS's Logo" />
+            </Section>
+            <Section style={upperSection}>
+              <Heading style={h1}>
+                {isPasswordReset ? 'بازیابی رمز عبور' : 'تاییدیه ایمیل'}
+              </Heading>
+              <Text style={mainText}>
+                {isPasswordReset
+                  ? 'شما درخواست تنظیم مجدد رمز عبور خود را داده‌اید. لطفاً از کد زیر برای تأیید هویت خود استفاده کنید:'
+                  : 'از ثبت نام شما متشکریم! لطفاً برای تأیید حساب خود از کد زیر استفاده کنید:'}
+              </Text>
+              <Section style={verificationSection}>
+                <Text style={verifyText}>کد هویت سنجی</Text>
+
+                <Text style={codeText}>{otp}</Text>
+                <Text style={validityText}>
+                  اگر شما این ایمیل را درخواست نکرده‌اید، می‌توانید با خیال راحت
+                  آن را نادیده بگیرید.
+                </Text>
+              </Section>
+            </Section>
+            <Hr />
+            <Section style={lowerSection}>
+              <Text style={cautionText}>
+                وب سرویس های ما هرگز از شما نمی‌خواهند رمز عبور، کارت اعتباری یا
+                شماره حساب بانکی خود را افشا یا تأیید کنید.
+              </Text>
+            </Section>
           </Section>
-          <Text style={text}>
-            اگر شما این ایمیل را درخواست نکرده‌اید، می‌توانید با خیال راحت آن را نادیده بگیرید.
+          <Text style={footerText}>
+            این پیام توسط وب سرویس سپهر پرشین بلاگ ایجاد و فرستاده شده است
           </Text>
         </Container>
       </Body>
@@ -50,46 +67,82 @@ export const VerificationEmail = ({
 };
 
 const main = {
-  backgroundColor: '#f6f9fc',
-  fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+  backgroundColor: '#fff',
+  color: '#212121',
 };
 
 const container = {
+  padding: '20px',
   margin: '0 auto',
-  padding: '20px 0 48px',
-  maxWidth: '580px',
+  backgroundColor: '#eee',
 };
 
 const h1 = {
   color: '#333',
-  fontSize: '24px',
-  fontWeight: '600',
-  lineHeight: '1.25',
-  marginBottom: '24px',
-  textAlign: 'center' as const,
+  fontFamily:
+    "IRANSansDN, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontSize: '20px',
+  fontWeight: 'bold',
+  marginBottom: '15px',
 };
 
 const text = {
-  color: '#555',
-  fontSize: '16px',
-  lineHeight: '1.5',
-  marginBottom: '24px',
+  color: '#333',
+  fontFamily:
+    "IRANSansDN, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontSize: '14px',
+  margin: '24px 0',
 };
 
-const codeContainer = {
-  background: '#f4f4f4',
-  borderRadius: '4px',
-  padding: '16px',
-  marginBottom: '24px',
+const imageSection = {
+  backgroundColor: '#252f3d',
+  display: 'flex',
+  padding: '20px 0',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const coverSection = { backgroundColor: '#fff' };
+
+const upperSection = { padding: '25px 35px' };
+
+const lowerSection = { padding: '25px 35px' };
+
+const footerText = {
+  ...text,
+  fontSize: '12px',
+  padding: '0 20px',
+};
+
+const verifyText = {
+  ...text,
+  margin: 0,
+  fontWeight: 'bold',
   textAlign: 'center' as const,
 };
 
-const code = {
-  color: '#333',
-  fontSize: '24px',
+const codeText = {
+  ...text,
   fontWeight: 'bold',
-  letterSpacing: '4px',
+  fontSize: '36px',
+  margin: '10px 0',
+  textAlign: 'center' as const,
 };
+
+const validityText = {
+  ...text,
+  margin: '0px',
+  textAlign: 'center' as const,
+};
+
+const verificationSection = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const mainText = { ...text, marginBottom: '14px' };
+
+const cautionText = { ...text, margin: '0px' };
 
 export default VerificationEmail;
