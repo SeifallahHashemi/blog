@@ -20,15 +20,23 @@ export const VerificationEmail = ({
   otp,
   isPasswordReset = false,
 }: VerificationEmailProps) => {
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : '/static';
   return (
     <Html lang={'fa'} dir={'rtl'}>
       <Head />
-      <Body style={main}>
+      <Body style={main} dir={'rtl'}>
         {isPasswordReset ? 'بازیابی رمز عبور' : 'تاییدیه ایمیل'}
         <Container style={container}>
           <Section style={coverSection}>
             <Section style={imageSection}>
-              <Img src={``} width="75" height="45" alt="AWS's Logo" />
+              <Img
+                src={`${baseUrl}/img/logo.webp`}
+                width="75"
+                height="45"
+                alt="Sepehr Persian Blog Logo"
+              />
             </Section>
             <Section style={upperSection}>
               <Heading style={h1}>
