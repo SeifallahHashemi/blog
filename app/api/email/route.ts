@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
         if (res.data.properties?.email_otp) {
           data = await resend.emails.send({
-            from: 'auth@sepehrpersianblog.ir',
+            from: 'سپهر پرشین بلاگ <auth@sepehrpersianblog.ir>',
             to: email,
             subject: isPasswordReset ? 'بازیابی رمز عبور' : 'اعتبار سنجی ایمیل',
             react: VerificationEmail({
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
           : `${new URL(request.url).origin}/dashboard`;
 
         data = await resend.emails.send({
-          from: 'welcome@sepehrpersianblog.ir',
+          from: 'خوش آمدید - سپهر پرشین بلاگ <welcome@sepehrpersianblog.ir>',
           to: email,
           subject: 'به وبلاگ ما خوش آمدید',
           react: WelcomeEmail({
@@ -71,9 +71,9 @@ export async function POST(request: NextRequest) {
           : `${new URL(request.url).origin}/auth/login`;
 
         data = await resend.emails.send({
-          from: 'auth@mrshadrack.com',
+          from: 'سپهر پرشین بلاگ <auth@sepehrpersianblog.ir>',
           to: email,
-          subject: 'Your password has been reset',
+          subject: 'بازیابی موفقیت آمیز رمز عبور',
           react: PasswordResetConfirmationEmail({
             userEmail: email,
             loginUrl,
