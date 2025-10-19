@@ -1,14 +1,13 @@
 'use client';
 
+import { ResendButton } from '@/components/Auth/ResendButton';
 import { verifyOtp } from '@/lib/auth';
-import { cn } from '@/lib/utils';
 import { otpSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
 import { useEffect, useState } from 'react';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
-import { notFound, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
-import { Button } from '../ui/button';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Label } from '../ui/label';
 import { FieldInfo } from './FieldInfo';
@@ -22,7 +21,6 @@ const defaultValues: formData = {
 const VerifyForm = () => {
   const [isPasswordReset, setIsPasswordReset] = useState<boolean>(false);
   const [email, setEmail] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState(60);
 
   const router = useRouter();
 
@@ -90,17 +88,7 @@ const VerifyForm = () => {
     });
   }
 
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      return;
-    }
-    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [timeLeft]);
-
-  if (!email) {
-    return notFound();
-  }
+  console.log(email);
 
   return (
     <>
@@ -147,22 +135,7 @@ const VerifyForm = () => {
 
         <div className="w-full flex justify-center items-center mt-6">
           <Subscribe selector={(state) => state.canSubmit}>
-            {() => (
-              <Button
-                type="button"
-                disabled={timeLeft !== 0}
-                variant={'default'}
-                onClick={resendOtp}
-                className={cn('', {
-                  '!cursor-not-allowed': timeLeft !== 0,
-                  '!cursor-pointer': timeLeft === 0,
-                })}
-              >
-                {timeLeft !== 0
-                  ? `${timeLeft} ثانیه تا ارسال مجدد`
-                  : 'ارسال مجدد کد'}
-              </Button>
-            )}
+            {() => <ResendButton onResend={resendOtp} />}
           </Subscribe>
         </div>
       </form>
