@@ -2,12 +2,16 @@
 
 import { ResendButton } from '@/components/Auth/ResendButton';
 import { verifyOtp } from '@/lib/auth';
+import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { otpSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
 import { useEffect, useState } from 'react';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { useRouter } from 'next/navigation';
+import { BiSolidError } from 'react-icons/bi';
+import { toast } from 'sonner';
 import * as z from 'zod';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Label } from '../ui/label';
 import { FieldInfo } from './FieldInfo';
@@ -21,6 +25,7 @@ const defaultValues: formData = {
 const VerifyForm = () => {
   const [isPasswordReset, setIsPasswordReset] = useState<boolean>(false);
   const [email, setEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -30,30 +35,50 @@ const VerifyForm = () => {
       onChange: otpSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value.otp);
       if (!email) return;
 
-      await verifyOtp({ email, otp: value.otp });
-      sessionStorage.removeItem('verificationEmail');
+      try {
+        setIsLoading(true);
+        await verifyOtp({ email, otp: value.otp });
+        sessionStorage.removeItem('verificationEmail');
 
-      if (isPasswordReset) {
-        router.push('/auth/reset-password');
-      } else {
-        sessionStorage.removeItem('isPasswordReset');
+        if (isPasswordReset) {
+          router.push('/auth/reset-password');
+        } else {
+          sessionStorage.removeItem('isPasswordReset');
 
-        await fetch('/api/email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 'welcome',
-            email,
-            origin: window.location.origin,
-          }),
-        });
+          await fetch('/api/email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              type: 'welcome',
+              email,
+              origin: window.location.origin,
+            }),
+          });
 
-        router.push('/dashboard');
+          router.push('/dashboard');
+        }
+      } catch (error) {
+        setIsLoading(false);
+        if (error instanceof Error) {
+          const message = translateSupabaseError(error);
+          toast('خطای اعتبارسنجی', {
+            className: 'flex flex-row-reverse text-right gap-x-4 space-x-4',
+            description: message,
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500 ml-2" size={24} />,
+          });
+        } else {
+          toast('خطا در برقراری ارتباط با سرور', {
+            className: '',
+            description: 'ورود به سیستم با خطا مواجه شد. لطفا مجددا تلاش کنید',
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500" size={16} />,
+          });
+        }
       }
     },
   });
@@ -139,6 +164,7 @@ const VerifyForm = () => {
           </Subscribe>
         </div>
       </form>
+      {isLoading && <LoadingSpinner />}
     </>
   );
 };
