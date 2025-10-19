@@ -10,17 +10,23 @@ interface ResendButtonProps {
 }
 
 export const ResendButton = React.memo(({ onResend }: ResendButtonProps) => {
-  const timeLeft = useCountdown(60);
+  const { timeLeft, reset } = useCountdown(60);
+
+  const handleResend = () => {
+    onResend();
+    reset();
+  };
 
   return (
     <Button
       type="button"
-      disabled={timeLeft !== 0}
-      onClick={onResend}
-      className={cn('', {
-        '!cursor-not-allowed': timeLeft !== 0,
-        '!cursor-pointer': timeLeft === 0,
-      })}
+      aria-disabled={timeLeft !== 0}
+      onClick={timeLeft === 0 ? handleResend : undefined}
+      className={cn(
+        timeLeft === 0
+          ? 'cursor-pointer'
+          : 'cursor-not-allowed opacity-60 pointer-events-none'
+      )}
     >
       {timeLeft !== 0 ? `${timeLeft} ثانیه تا ارسال مجدد` : 'ارسال مجدد کد'}
     </Button>
