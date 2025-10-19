@@ -1,12 +1,16 @@
 'use client';
 
+import LoadingSpinner from '@/components/Common/LoadingSpinner';
+import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { signupSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { BiSolidError } from 'react-icons/bi';
 import { IoFingerPrint } from 'react-icons/io5';
+import { toast } from 'sonner';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -24,6 +28,7 @@ const defaultValues: FormData = {
 
 const SignupForm = () => {
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -35,21 +40,42 @@ const SignupForm = () => {
       // onSubmit: signupSchema,
     },
     onSubmit: async ({ value }) => {
-      sessionStorage.setItem('verificationEmail', value.email);
+      try {
+        setIsLoading(true);
+        sessionStorage.setItem('verificationEmail', value.email);
 
-      await fetch('/api/email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'verification',
-          email: value.email,
-          password: value.password,
-        }),
-      });
+        await fetch('/api/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'verification',
+            email: value.email,
+            password: value.password,
+          }),
+        });
 
-      router.push('/auth/verify');
+        router.push('/auth/verify');
+      } catch (error) {
+        setIsLoading(false);
+        if (error instanceof Error) {
+          const message = translateSupabaseError(error);
+          toast('خطای اعتبارسنجی', {
+            className: 'flex flex-row-reverse text-right gap-x-4 space-x-4',
+            description: message,
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500 ml-2" size={24} />,
+          });
+        } else {
+          toast('خطا در برقراری ارتباط با سرور', {
+            className: '',
+            description: 'ورود به سیستم با خطا مواجه شد. لطفا مجددا تلاش کنید',
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500" size={16} />,
+          });
+        }
+      }
     },
   });
   return (
@@ -205,6 +231,7 @@ const SignupForm = () => {
           </Subscribe>
         </div>
       </form>
+      {isLoading && <LoadingSpinner />}
     </AuthFormContainer>
   );
 };
