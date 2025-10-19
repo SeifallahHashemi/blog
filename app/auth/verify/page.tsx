@@ -10,12 +10,14 @@ export const metadata: Metadata = {
 
 const VerifyPage = () => {
   return (
-    <AuthFormContainer
-      title="تاییدیه ایمیل"
-      description="لطفا کد تاییدیه که به ایمیل شما فرستادیم را وارد کنید"
-    >
-      <VerifyForm />
-    </AuthFormContainer>
+    <section>
+      <AuthFormContainer
+        title="تاییدیه ایمیل"
+        description="لطفا کد تاییدیه که به ایمیل شما فرستادیم را وارد کنید"
+      >
+        <VerifyForm />
+      </AuthFormContainer>
+    </section>
   );
 };
 
