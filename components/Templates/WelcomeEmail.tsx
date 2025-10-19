@@ -1,5 +1,17 @@
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Hr,
+  Html,
+  Img,
+  Link,
+  Preview,
+  Section,
+  Text,
+} from '@react-email/components';
 import React from 'react';
-import { Body, Container, Head, Heading, Html, Link, Preview, Section, Text } from '@react-email/components';
 
 interface Props {
   userEmail: string;
@@ -10,65 +22,110 @@ const WelcomeEmail = ({
   userEmail,
   dashboardUrl = 'http://localhost:3000/dashboard',
 }: Props) => {
-
-  return <Html lang='fa'>
-    <Head />
-    <Preview>به وب سایت ما خوش آمدید</Preview>
-    <Body style={main}>
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.VERCEL_URL ||
+    'https://sepehrpersianblog.ir';
+  return (
+    <Html>
+      <Head />
+      <Body style={main}>
+        <Preview>
+          حالا ما آماده ایم از نظرات ارزشمند شما در وبلاگمان استفاده بکنیم
+        </Preview>
         <Container style={container}>
-            <Heading style={h1}>به وب سایت ما خوش آمدید ❤️</Heading>
-            <Text style={text}>از ثبت نام شما کاربر {userEmail} در وب سایت ما ممنونیم و امیدواریم بتوانیم در افزایش سطح برنامه نویسی شما بتوانیم نقشی هر چند جزئی ایفا کنیم.</Text>
-            <Text style={text}>حالا شما به تمامی بخش ها و امکانات سایت مثل کامنت، لایک، ذخیره پست و ... دسترسی کامل دارید.</Text>
-            <Section style={buttonContainer}>
-                <Link href={dashboardUrl} style={button}>ورود به پنل کاربری</Link>
-            </Section>
+          <Section style={box}>
+            <Img
+              src={`${baseUrl}/img/pop-1.png`}
+              width="49"
+              height="21"
+              alt="Stripe"
+            />
+            <Hr style={hr} />
+            <Text style={paragraph}>
+              از اینکه اطلاعات حسابتون رو تکمیل کردید، ممنونیم.الان می توانید
+              نظرات ارزشمندتون رو با ما و دیگر کاربران و بازدیدکنندگان سایت به
+              اشتراک بگذارید
+            </Text>
+            <Text style={paragraph}>
+              برای مدیریت حسابتون و هم چنین تکمیل اطلاعات خودتون لطفا از طریق
+              لینک زیر وارد داشبورد حساب کاربری خودتون شوید
+            </Text>
+            <Button style={button} href={dashboardUrl}>
+              مشاهده داشبورد بلاگ
+            </Button>
+            <Hr style={hr} />
+            <Text style={paragraph}>
+              لطفا به لیست پست های{' '}
+              <Link style={anchor} href={baseUrl + '/blog/posts'}>
+                وبلاگ ما
+              </Link>{' '}
+              نگاهی بیاندازید.
+            </Text>
+            <Text style={paragraph}>
+              از طرف مدیر: سپهر هاشمی به کاربر {userEmail} ❤️
+            </Text>
+            <Hr style={hr} />
+            <Text style={footer}>
+              ایران، آذربایجان شرقی www.sepehrpersianblog.ir
+            </Text>
+          </Section>
         </Container>
-    </Body>
-  </Html>;
+      </Body>
+    </Html>
+  );
 };
+
+export default WelcomeEmail;
 
 const main = {
   backgroundColor: '#f6f9fc',
   fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 };
 
 const container = {
+  backgroundColor: '#ffffff',
   margin: '0 auto',
   padding: '20px 0 48px',
-  maxWidth: '580px',
+  marginBottom: '64px',
 };
 
-const h1 = {
-  color: '#333',
-  fontSize: '24px',
-  fontWeight: '600',
-  lineHeight: '1.25',
-  marginBottom: '24px',
-  textAlign: 'center' as const,
+const box = {
+  padding: '0 48px',
 };
 
-const text = {
-  color: '#555',
+const hr = {
+  borderColor: '#e6ebf1',
+  margin: '20px 0',
+};
+
+const paragraph = {
+  color: '#525f7f',
+
   fontSize: '16px',
-  lineHeight: '1.5',
-  marginBottom: '24px',
+  lineHeight: '24px',
+  textAlign: 'left' as const,
 };
 
-const buttonContainer = {
-  textAlign: 'center' as const,
-  marginTop: '32px',
+const anchor = {
+  color: '#556cd6',
 };
 
 const button = {
-  backgroundColor: '#3b82f6',
-  borderRadius: '4px',
+  backgroundColor: '#656ee8',
+  borderRadius: '5px',
   color: '#fff',
-  display: 'inline-block',
   fontSize: '16px',
-  fontWeight: '600',
-  padding: '12px 24px',
+  fontWeight: 'bold',
   textDecoration: 'none',
+  textAlign: 'center' as const,
+  display: 'block',
+  padding: '10px',
 };
 
-export default WelcomeEmail;
+const footer = {
+  color: '#8898aa',
+  fontSize: '12px',
+  lineHeight: '16px',
+};
