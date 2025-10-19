@@ -15,6 +15,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { FieldInfo } from './FieldInfo';
+import LoadingSpinner from '../Common/LoadingSpinner';
 
 type formDate = z.infer<typeof loginSchema>;
 
@@ -25,6 +26,7 @@ const defaultValues: formDate = {
 
 const LoginForm = () => {
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -35,9 +37,11 @@ const LoginForm = () => {
     },
     onSubmit: async ({ value }) => {
       try {
+        setIsLoading(true);
         await login(value.email, value.password);
         router.push('/dashboard');
       } catch (error) {
+        setIsLoading(false);
         if (error instanceof Error) {
           const message = translateSupabaseError(error);
           toast('خطای اعتبارسنجی', {
@@ -150,6 +154,7 @@ const LoginForm = () => {
           )}
         </Subscribe>
       </div>
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 };
