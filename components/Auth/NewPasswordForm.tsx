@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { BiSolidError } from 'react-icons/bi';
 import { toast } from 'sonner';
 import * as z from 'zod';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -26,6 +27,7 @@ const defaultValues: formDate = {
 const NewPasswordForm = () => {
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -55,6 +57,7 @@ const NewPasswordForm = () => {
     },
     onSubmit: async ({ value }) => {
       try {
+        setIsLoading(true);
         await updatePassword(value.password);
 
         if (userEmail) {
@@ -77,6 +80,7 @@ const NewPasswordForm = () => {
         sessionStorage.removeItem('isPasswordReset');
         router.push('/auth/login');
       } catch (error) {
+        setIsLoading(false);
         if (error instanceof Error) {
           const message = translateSupabaseError(error);
           toast('خطای اعتبارسنجی', {
@@ -195,6 +199,7 @@ const NewPasswordForm = () => {
           )}
         </Subscribe>
       </div>
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 };
