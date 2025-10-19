@@ -20,9 +20,11 @@ export const VerificationEmail = ({
   otp,
   isPasswordReset = false,
 }: VerificationEmailProps) => {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : '/static';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.VERCEL_URL ||
+    'https://sepehrpersianblog.ir';
+
   return (
     <Html lang={'fa'} dir={'rtl'}>
       <Head />
@@ -32,9 +34,9 @@ export const VerificationEmail = ({
           <Section style={coverSection}>
             <Section style={imageSection}>
               <Img
-                src={`${baseUrl}/img/logo.webp`}
-                width="75"
-                height="45"
+                src={`${baseUrl}/img/pop-1.png`}
+                width="100"
+                height="100"
                 alt="Sepehr Persian Blog Logo"
               />
             </Section>
@@ -103,11 +105,11 @@ const text = {
 };
 
 const imageSection = {
-  backgroundColor: '#252f3d',
   display: 'flex',
+  alignItems: 'center' as const,
+  justifyContent: 'center' as const,
+  backgroundColor: '#252f3d',
   padding: '20px 0',
-  alignItems: 'center',
-  justifyContent: 'center',
 };
 
 const coverSection = { backgroundColor: '#fff' };
