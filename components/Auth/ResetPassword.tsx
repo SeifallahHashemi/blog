@@ -3,11 +3,12 @@
 import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { resetPasswordSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { BiSolidError } from 'react-icons/bi';
 import { toast } from 'sonner';
 import * as z from 'zod';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -20,6 +21,8 @@ const defaultValues: formData = {
 };
 
 const ResetPassword = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
   const { Field, Subscribe, handleSubmit } = useForm({
@@ -29,6 +32,7 @@ const ResetPassword = () => {
     },
     onSubmit: async ({ value }) => {
       try {
+        setIsLoading(true);
         sessionStorage.setItem('verificationEmail', value.email);
         sessionStorage.setItem('isPasswordReset', 'true');
 
@@ -47,6 +51,7 @@ const ResetPassword = () => {
 
         router.push('/auth/verify');
       } catch (error) {
+        setIsLoading(false);
         if (error instanceof Error) {
           const message = translateSupabaseError(error);
           toast('خطای اعتبارسنجی', {
@@ -115,6 +120,7 @@ const ResetPassword = () => {
           )}
         </Subscribe>
       </div>
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 };
