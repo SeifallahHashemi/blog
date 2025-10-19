@@ -55,7 +55,9 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} ${iranSans.variable} ${iranYekanWebLight.variable} ${iranYekanWebRegular.variable} antialiased !bg-background max-w-screen overflow-x-clip`}
         >
           <main
-            className={'min-h-screen w-screen max-w-[100dvw] overflow-x-clip'}
+            className={
+              'min-h-screen w-screen max-w-[100dvw] overflow-x-clip grid grid-rows-[auto_1fr_auto]'
+            }
             // dir={'rtl'}
             style={{
               direction: 'rtl',
