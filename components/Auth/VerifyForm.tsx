@@ -23,8 +23,12 @@ const defaultValues: formData = {
 };
 
 const VerifyForm = () => {
-  const [isPasswordReset, setIsPasswordReset] = useState<boolean>(false);
-  const [email, setEmail] = useState<string | null>(null);
+  const [isPasswordReset] = useState<boolean>(
+    () => sessionStorage.getItem('isPasswordReset') === 'true'
+  );
+  const [email] = useState<string | null>(() =>
+    sessionStorage.getItem('verificationEmail')
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
@@ -88,13 +92,7 @@ const VerifyForm = () => {
 
     if (!storedEmail) {
       router.push('/auth/signup');
-      return;
     }
-
-    const passwordResetFlag = sessionStorage.getItem('passwordResetFlag');
-
-    setIsPasswordReset(passwordResetFlag === 'true');
-    setEmail(storedEmail);
   }, [router]);
 
   async function resendOtp() {
