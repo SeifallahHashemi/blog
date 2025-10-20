@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { Link } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 
@@ -34,7 +33,7 @@ const Breadcrumb = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path d="m9 18 6-6-6-6"></path>
+            <path d="m9 18 6-6-6-6" />
           </svg>
         </li>
       ))}
