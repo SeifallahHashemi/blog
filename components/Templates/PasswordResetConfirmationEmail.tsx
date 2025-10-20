@@ -9,14 +9,13 @@ import {
   Section,
   Text,
 } from '@react-email/components';
-import * as React from 'react';
 
 interface PasswordResetConfirmationEmailProps {
   userEmail: string;
   loginUrl?: string;
 }
 
-export const PasswordResetConfirmationEmail = ({
+const PasswordResetConfirmationEmail = ({
   userEmail,
   loginUrl = 'http://localhost:3000/auth/login',
 }: PasswordResetConfirmationEmailProps) => {
