@@ -2,9 +2,9 @@
 
 import { github } from '@/components/Data/contribution-graph-theme';
 import FilteredYearButton from '@/components/Shared/FilteredYearButton';
+import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
 
 const GitHubCalendar = dynamic(() => import('react-github-calendar'), {
   ssr: false,
@@ -60,7 +60,7 @@ const ContributionGraph = () => {
           username={username}
           blockSize={13}
           year={calendarYear ?? thisYear}
-          hideTotalCount={true}
+          hideTotalCount
         />
       </div>
       <div
