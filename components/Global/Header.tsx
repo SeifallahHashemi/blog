@@ -4,7 +4,6 @@ import { ThemeModeToggle } from '@/components/Theme/ThemeModeToggle';
 import Logo from '@/public/img/logo.webp';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
-import React from 'react';
 import ProfileButton from '../Profile/ProfileButton';
 
 interface Data {
@@ -43,7 +42,7 @@ const Header = () => {
           <Image
             src={Logo}
             alt={'Logo'}
-            priority={true}
+            priority
             placeholder={'blur'}
             width={75}
             height={75}
