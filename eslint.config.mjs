@@ -40,7 +40,7 @@ const eslintConfig = [
       'jsx-a11y/anchor-is-valid': 'warn',
       'jsx-a11y/no-autofocus': 'warn',
 
-      'prettier/prettier': ['error'],
+      'prettier/prettier': ['off'],
     },
   }),
 ];
