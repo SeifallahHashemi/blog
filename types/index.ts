@@ -1,5 +1,5 @@
-import { TableRow } from '@sanity/table';
-import { PortableTextBlock } from 'next-sanity';
+import { type TableRow } from '@sanity/table';
+import { type PortableTextBlock } from 'next-sanity';
 
 export interface Table {
   rows?: TableRow[];
@@ -40,7 +40,7 @@ export type PostsType = {
 };
 
 export type AuthorProfileType = AllString<'_id' | 'name' | 'slug' | 'xUrl'> & {
-  'image': {
+  image: {
     url: string;
     alt: string;
     lqip: string;
