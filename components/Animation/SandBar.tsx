@@ -1,7 +1,3 @@
-'use client';
-
-import React from 'react';
-
 const SandBar = () => {
   return (
     <div
@@ -19,7 +15,7 @@ const SandBar = () => {
         className={
           'absolute left-0 w-full h-full bg-zinc-200 dark:bg-zinc-900 rounded-4xl'
         }
-      ></div>
+      />
     </div>
   );
 };
