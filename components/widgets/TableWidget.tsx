@@ -1,6 +1,6 @@
 import { TableValueProps } from '@/types';
 import { TablePreview } from '@sanity/table';
-import { PreviewProps } from 'sanity';
+import { type PreviewProps } from 'sanity';
 
 export function TableWidget(props: TableValueProps & PreviewProps) {
   const { table, caption, title, ...rest } = props;
