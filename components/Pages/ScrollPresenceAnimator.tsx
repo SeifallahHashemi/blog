@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
-  useMotionValueEvent,
   usePresence,
   useScroll,
   useTransform,
@@ -24,32 +23,28 @@ const ScrollPresenceAnimator = ({
     offset: ['start start', 'end end'],
   });
 
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      const pos =
-        ref.current != null
-          ? (() => {
-              const rect = ref.current.getBoundingClientRect();
-              return rect.top + 300;
-            })()
-          : 0;
+  // useLayoutEffect برای خواندن DOM و ست کردن state قبل از paint
+  useLayoutEffect(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const pos = rect.top + 300;
       setScrollYPosition(pos);
     }
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    // اگر لازم باشه می‌تونی dependency اضافه کنی، ولی این برای mount اولیه کافیه
+  }, []); // اجرا در mount
 
   const opacity = useTransform(scrollY, [0, scrollYPosition], [1, 0]);
 
-  useMotionValueEvent(opacity, 'change', (latest) => {
-    if (latest === 0) {
-      setToggleList(false);
-    } else if (latest > 0) {
-      setToggleList(true);
-    }
-  });
+  useEffect(() => {
+    const unsubscribe = opacity.on('change', (latest) => {
+      if (latest === 0) {
+        setToggleList(false);
+      } else if (latest > 0) {
+        setToggleList(true);
+      }
+    });
+    return unsubscribe;
+  }, [opacity]);
 
   useEffect(() => {
     if (!isPresent) {
