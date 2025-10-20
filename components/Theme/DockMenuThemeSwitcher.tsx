@@ -3,7 +3,6 @@
 import { Button } from '@/components/Custom/UI/button';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import React from 'react';
 
 const DockMenuThemeSwitcher = () => {
   const { setTheme, theme } = useTheme();
