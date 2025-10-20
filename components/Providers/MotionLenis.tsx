@@ -1,8 +1,8 @@
 'use client';
 
-import ReactLenis, { LenisRef } from 'lenis/react';
-import { cancelFrame, frame } from 'motion/react';
 import React, { useEffect, useRef } from 'react';
+import { LenisRef, ReactLenis } from 'lenis/react';
+import { cancelFrame, frame } from 'motion/react';
 
 const MotionLenis = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<LenisRef>(null);
