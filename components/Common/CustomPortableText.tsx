@@ -1,5 +1,5 @@
 import { TableValueProps } from '@/types';
-import { PortableTextComponents } from 'next-sanity';
+import { type PortableTextComponents } from 'next-sanity';
 import Link from 'next/link';
 import { BiLinkExternal, BiSolidQuoteRight } from 'react-icons/bi';
 import CodeBlock from './CodeBlock';
