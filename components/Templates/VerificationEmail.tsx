@@ -9,14 +9,13 @@ import {
   Section,
   Text,
 } from '@react-email/components';
-import * as React from 'react';
 
 interface VerificationEmailProps {
   otp: string;
   isPasswordReset?: boolean;
 }
 
-export const VerificationEmail = ({
+const VerificationEmail = ({
   otp,
   isPasswordReset = false,
 }: VerificationEmailProps) => {
