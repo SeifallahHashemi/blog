@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'motion/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { duotoneForest } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -26,6 +26,7 @@ const CodeTypingLoop = () => {
   const indexRef = useRef(0);
   const deletingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animateRef = useRef<() => void | null>(null);
 
   const animate = useCallback(() => {
     const index = indexRef.current;
@@ -34,19 +35,23 @@ const CodeTypingLoop = () => {
     if (!isDeleting && index < fullCode.length) {
       setCode((prev) => prev + fullCode[index]);
       indexRef.current += 1;
-      timeoutRef.current = setTimeout(animate, 60); //  سرعت تایپ
+      timeoutRef.current = setTimeout(() => animateRef.current?.(), 60);
     } else if (!isDeleting && index === fullCode.length) {
       deletingRef.current = true;
-      timeoutRef.current = setTimeout(animate, 5000); //  تأخیر 2 ثانیه‌ای قبل از حذف
+      timeoutRef.current = setTimeout(() => animateRef.current?.(), 5000);
     } else if (isDeleting && index > 0) {
       setCode((prev) => prev.slice(0, -1));
       indexRef.current -= 1;
-      timeoutRef.current = setTimeout(animate, 40); //  سرعت حذف
+      timeoutRef.current = setTimeout(() => animateRef.current?.(), 40);
     } else if (isDeleting && index === 0) {
       deletingRef.current = false;
-      timeoutRef.current = setTimeout(animate, 2000); //  تأخیر قبل از شروع دوباره تایپ
+      timeoutRef.current = setTimeout(() => animateRef.current?.(), 2000);
     }
   }, []);
+
+  useEffect(() => {
+    animateRef.current = animate;
+  }, [animate]);
 
   useEffect(() => {
     if (!isInView) return;
@@ -72,8 +77,8 @@ const CodeTypingLoop = () => {
           },
         }}
         wrapLines
-        showLineNumbers={true}
-        wrapLongLines={true}
+        showLineNumbers
+        wrapLongLines
       >
         {code || ' '}
       </SyntaxHighlighter>
