@@ -12,11 +12,7 @@ import { Toaster } from 'sonner';
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <ThemeProvider
-        enableSystem={true}
-        attribute={'class'}
-        defaultTheme={'system'}
-      >
+      <ThemeProvider enableSystem attribute={'class'} defaultTheme={'system'}>
         <ThemeDataProvider>
           <MotionLenis>
             <NuqsAdapter>{children}</NuqsAdapter>
