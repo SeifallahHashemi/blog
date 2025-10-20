@@ -23,15 +23,13 @@ const ScrollPresenceAnimator = ({
     offset: ['start start', 'end end'],
   });
 
-  // useLayoutEffect برای خواندن DOM و ست کردن state قبل از paint
   useLayoutEffect(() => {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();
       const pos = rect.top + 300;
       setScrollYPosition(pos);
     }
-    // اگر لازم باشه می‌تونی dependency اضافه کنی، ولی این برای mount اولیه کافیه
-  }, []); // اجرا در mount
+  }, []);
 
   const opacity = useTransform(scrollY, [0, scrollYPosition], [1, 0]);
 
