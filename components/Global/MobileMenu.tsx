@@ -2,11 +2,11 @@
 
 import { Button } from '@/components/Custom/UI/button';
 import Logo from '@/public/img/logo.webp';
+import { useState } from 'react';
 import { BookMarked, FlaskConical, Menu, User, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
-import React, { useState } from 'react';
 
 const data = [
   {
@@ -71,13 +71,7 @@ const MobileMenu = () => {
         >
           <div className={'mt-6 px-8 flex justify-between items-center'}>
             <Link href={'/'}>
-              <Image
-                src={Logo}
-                alt={'Logo'}
-                priority={true}
-                width={50}
-                height={50}
-              />
+              <Image src={Logo} alt={'Logo'} priority width={50} height={50} />
             </Link>
             <Button
               variant={'outline'}
@@ -99,7 +93,7 @@ const MobileMenu = () => {
                 onClick={onToggleMobileNav}
               >
                 <Icon
-                  aria-hidden={true}
+                  aria-hidden
                   className={
                     'text-zinc-500 group-hover:dark:text-white group-hover:text-zinc-800 duration-300'
                   }
