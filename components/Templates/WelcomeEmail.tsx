@@ -11,7 +11,6 @@ import {
   Section,
   Text,
 } from '@react-email/components';
-import React from 'react';
 
 interface Props {
   userEmail: string;
@@ -27,7 +26,7 @@ const WelcomeEmail = ({
     process.env.VERCEL_URL ||
     'https://sepehrpersianblog.ir';
   return (
-    <Html>
+    <Html lang={'fa'} dir={'rtl'}>
       <Head />
       <Body style={main}>
         <Preview>
