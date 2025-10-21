@@ -23,7 +23,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         config={{ hideUntilHover: true }}
         plugins={[FormDevtoolsPlugin()]}
       />
-      <Toaster />
+      <Toaster closeButton richColors theme="system" />
     </>
   );
 };
