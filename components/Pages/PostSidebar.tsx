@@ -1,4 +1,4 @@
-import { PostType, TagsType } from '@/app/blog/[...slug]/page';
+import { PostType, TagsType } from '@/app/(main)/blog/[...slug]/page';
 import { cn } from '@/lib/utils';
 import { AuthorProfileType } from '@/types';
 import Image from 'next/image';
