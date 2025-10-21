@@ -111,8 +111,6 @@ const VerifyForm = () => {
     });
   }
 
-  console.log(email);
-
   return (
     <>
       <form
