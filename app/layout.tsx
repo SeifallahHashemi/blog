@@ -1,16 +1,13 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
 import {
   iranSans,
   iranYekanWebLight,
   iranYekanWebRegular,
 } from '@/app/_fonts/font';
-import DockAnimation from '@/components/Animation/DockAnimation';
-import Footer from '@/components/Global/Footer';
-import Header from '@/components/Global/Header';
 import Providers from '@/components/Providers/Providers';
+import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,10 +34,10 @@ export const metadata: Metadata = {
     'منابع باز',
     'آموزش برنامه نویسی',
   ],
-  authors: [{ name: 'سپهر هاشمی', url: 'https://sepehr.dev' }],
+  authors: [{ name: 'سپهر هاشمی', url: 'https://www.sepehrpersianblog.ir' }],
   creator: 'سپهر هاشمی',
   publisher: 'سپهر هاشمی',
-  metadataBase: new URL('https://sepehr.dev'),
+  metadataBase: new URL('https://www.sepehrpersianblog.ir'),
 };
 
 export default function RootLayout({
@@ -63,12 +60,7 @@ export default function RootLayout({
               direction: 'rtl',
             }}
           >
-            <Providers>
-              <Header />
-              <DockAnimation />
-              {children}
-              <Footer />
-            </Providers>
+            <Providers>{children}</Providers>
           </main>
         </body>
       </html>
