@@ -13,8 +13,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { getUser, getUserProfile } from '@/utils/supabase/queries';
 
-export default function Page() {
+export default async function DashboardPage() {
+  const data = await getUser();
+  const userProfile = await getUserProfile();
+
+  console.log(data);
+  console.log(userProfile);
+
   return (
     <SidebarProvider>
       <AppSidebar side="right" />
