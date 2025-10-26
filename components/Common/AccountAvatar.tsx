@@ -25,7 +25,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { User } from 'lucide-react';
 
-export default function AccountAvatar() {
+interface Props {
+  fullName?: string;
+  userName?: string;
+  avatarUrl?: string;
+}
+
+export default function AccountAvatar({
+  fullName,
+  userName,
+  avatarUrl,
+}: Props) {
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [showShareDialog, setShowShareDialog] = useState(false);
 
@@ -43,7 +53,12 @@ export default function AccountAvatar() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40" align="end">
-          <DropdownMenuLabel>File Actions</DropdownMenuLabel>
+          <DropdownMenuLabel className="grid grid-cols-[auto_1fr]">
+            <div>sdf</div>
+            <div>
+              {fullName}-{userName}-{avatarUrl}
+            </div>
+          </DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem onSelect={() => setShowNewDialog(true)}>
               New File...
