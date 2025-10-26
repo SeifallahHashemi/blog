@@ -20,6 +20,7 @@ const eslintConfig = [
       'plugin:import/errors',
       'plugin:import/warnings',
       'plugin:prettier/recommended',
+      'plugin:@tanstack/query/recommended',
     ],
     rules: {
       'react/no-children-prop': 'error',
