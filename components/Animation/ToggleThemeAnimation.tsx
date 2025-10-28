@@ -43,7 +43,7 @@ const ToggleThemeAnimation = () => {
       }}
       loop={false}
       autoplay={false}
-      className={'cursor-pointer size-20'}
+      className={'cursor-pointer w-16 h-auto'}
     />
   );
 };
