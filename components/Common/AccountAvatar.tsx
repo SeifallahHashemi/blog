@@ -1,5 +1,7 @@
 'use client';
 
+import ToggleThemeAnimation from '@/components/Animation/ToggleThemeAnimation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,28 +18,38 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { userOptions, userProfileOptions } from '@/utils/supabase/user';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { User } from 'lucide-react';
 
-interface Props {
-  fullName?: string;
-  userName?: string;
-  avatarUrl?: string;
-}
-
-export default function AccountAvatar({
-  fullName,
-  userName,
-  avatarUrl,
-}: Props) {
+export default function AccountAvatar() {
+  const { data } = useSuspenseQuery(userOptions);
+  const { data: userData } = useSuspenseQuery(userProfileOptions(data.id));
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [showShareDialog, setShowShareDialog] = useState(false);
+
+  console.log(data);
+  console.log(userData);
+
+  const defaultAvatar =
+    process.env.NODE_ENV === 'production'
+      ? `${process.env.NEXT_PUBLIC_BASE_URL}/img/pop-1.png`
+      : 'http://localhost:3000/img/pop-1.png';
+
+  const avatarUrl =
+    userData['avatar_url'] === 'https://example.com/default-avatar.png'
+      ? defaultAvatar
+      : userData['avatar_url'];
+
+  console.log(avatarUrl);
 
   return (
     <>
@@ -52,13 +64,23 @@ export default function AccountAvatar({
             <User size={32} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40" align="end">
+        <DropdownMenuContent className="w-80" align="end">
           <DropdownMenuLabel className="grid grid-cols-[auto_1fr]">
-            <div>sdf</div>
+            <Avatar>
+              <AvatarImage
+                src={avatarUrl}
+                alt={'@sepehr'}
+                className={'rounded-full'}
+              />
+              <AvatarFallback>لوگو</AvatarFallback>
+            </Avatar>
             <div>
-              {fullName}-{userName}-{avatarUrl}
+              <p>{userData['full_name']}</p>
+              <p>{userData.username}</p>
             </div>
+            <ToggleThemeAnimation />
           </DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem onSelect={() => setShowNewDialog(true)}>
               New File...
