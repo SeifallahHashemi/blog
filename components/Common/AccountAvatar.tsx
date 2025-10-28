@@ -1,6 +1,7 @@
 'use client';
 
 import ToggleThemeAnimation from '@/components/Animation/ToggleThemeAnimation';
+import TruncateTooltip from '@/components/Custom/UI/TruncateTooltip';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -39,17 +40,9 @@ export default function AccountAvatar() {
   console.log(data);
   console.log(userData);
 
-  const defaultAvatar =
-    process.env.NODE_ENV === 'production'
-      ? `${process.env.NEXT_PUBLIC_BASE_URL}/img/pop-1.png`
-      : 'http://localhost:3000/img/pop-1.png';
-
-  const avatarUrl =
-    userData['avatar_url'] === 'https://example.com/default-avatar.png'
-      ? defaultAvatar
-      : userData['avatar_url'];
-
-  console.log(avatarUrl);
+  const isDefaultAvatar =
+    userData['avatar_url'] === 'https://example.com/default-avatar.png';
+  const avatarUrl = isDefaultAvatar ? undefined : userData['avatar_url'];
 
   return (
     <>
@@ -65,20 +58,39 @@ export default function AccountAvatar() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-80" align="end">
-          <DropdownMenuLabel className="grid grid-cols-[auto_1fr]">
-            <Avatar>
+          <DropdownMenuLabel className="grid grid-cols-[50px_1fr_50px] gap-x-1">
+            <ToggleThemeAnimation />
+            <div dir={'rtl'}>
+              <p
+                className={
+                  'font-iranYWR font-medium tracking-tighter leading-relaxed'
+                }
+              >
+                {userData['full_name']}
+              </p>
+              <div
+                dir={'ltr'}
+                className={'font-sans overflow-clip relative group'}
+                style={{ width: '12ch' }}
+              >
+                <TruncateTooltip text={userData.username} />
+                <p className={'truncate w-full'}>{userData.username}</p>
+              </div>
+            </div>
+            <Avatar
+              className={
+                'inline-flex justify-center items-center self-center size-10 mx-auto'
+              }
+            >
               <AvatarImage
                 src={avatarUrl}
                 alt={'@sepehr'}
                 className={'rounded-full'}
               />
-              <AvatarFallback>لوگو</AvatarFallback>
+              <AvatarFallback className={'font-sans'}>
+                {String(userData.username).slice(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
-            <div>
-              <p>{userData['full_name']}</p>
-              <p>{userData.username}</p>
-            </div>
-            <ToggleThemeAnimation />
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
