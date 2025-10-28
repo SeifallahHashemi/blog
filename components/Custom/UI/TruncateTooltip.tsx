@@ -30,7 +30,7 @@ const TruncateTooltip = ({ text }: Props) => {
   return (
     <p
       className={
-        'inline-flex opacity-0 group-hover:opacity-100 transition duration-75 absolute top-0 right-0 left-0 h-full w-full text-nowrap font-normal text-xs font-sans leading-relaxed tracking-tight dark:bg-black dark:text-white bg-white text-black z-10'
+        'inline-flex opacity-0 group-hover:opacity-100 transition duration-75 cursor-context-menu absolute top-0 right-0 left-0 h-full w-full text-nowrap font-normal text-xs font-sans leading-relaxed tracking-tight dark:bg-black dark:text-white bg-white text-black z-10'
       }
       onMouseEnter={() => setHover(true)}
     >
@@ -48,6 +48,7 @@ const TruncateTooltip = ({ text }: Props) => {
           duration: 10,
           repeatType: 'reverse',
         }}
+        className={'select-none'}
       >
         {text}
       </motion.span>
