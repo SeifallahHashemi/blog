@@ -5,15 +5,6 @@ import TruncateTooltip from '@/components/Custom/UI/TruncateTooltip';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -22,13 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { userOptions, userProfileOptions } from '@/utils/supabase/user';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
@@ -37,8 +23,6 @@ import { RiQuillPenAiLine } from 'react-icons/ri';
 export default function AccountAvatar() {
   const { data } = useSuspenseQuery(userOptions);
   const { data: userData } = useSuspenseQuery(userProfileOptions(data.id));
-  const [showNewDialog, setShowNewDialog] = useState(false);
-  const [showShareDialog, setShowShareDialog] = useState(false);
   const router = useRouter();
 
   console.log(data);
@@ -53,87 +37,83 @@ export default function AccountAvatar() {
   };
 
   return (
-    <>
-      <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            aria-label="Open menu"
-            size="icon-lg"
-            className="cursor-pointer"
-          >
-            <User size={32} />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-80" align="end">
-          <DropdownMenuLabel className="grid grid-cols-[50px_1fr_50px] gap-x-1">
-            <ToggleThemeAnimation />
-            <div dir={'rtl'}>
-              <p
-                className={
-                  'font-iranYWR font-medium tracking-tighter leading-relaxed'
-                }
-              >
-                {userData['full_name']}
-              </p>
-              <div
-                dir={'ltr'}
-                className={'font-sans overflow-clip relative group'}
-                style={{ width: '12ch' }}
-              >
-                <TruncateTooltip text={userData.username} />
-                <p className={'truncate w-full'}>{userData.username}</p>
-              </div>
-            </div>
-            <Avatar
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          aria-label="Open menu"
+          size="icon-lg"
+          className="cursor-pointer"
+        >
+          <User size={32} />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-80" align="end">
+        <DropdownMenuLabel className="grid grid-cols-[50px_1fr_50px] gap-x-1">
+          <ToggleThemeAnimation />
+          <div dir={'rtl'}>
+            <p
               className={
-                'inline-flex justify-center items-center self-center size-10 mx-auto'
+                'font-iranYWR font-medium tracking-tighter leading-relaxed'
               }
             >
-              <AvatarImage
-                src={avatarUrl}
-                alt={'@sepehr'}
-                className={'rounded-full'}
-              />
-              <AvatarFallback className={'font-sans'}>
-                {String(userData.username).slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup dir={'rtl'}>
-            <DropdownMenuItem
-              onSelect={() => linkHandler('/profile')}
-              className={'cursor-pointer'}
+              {userData['full_name']}
+            </p>
+            <div
+              dir={'ltr'}
+              className={'font-sans overflow-clip relative group'}
+              style={{ width: '12ch' }}
             >
-              <HiOutlineHomeModern
-                className={'text-zinc-800 dark:text-zinc-200'}
-              />
-              <span
-                className={
-                  'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
-                }
-              >
-                صفحه اصلی
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onSelect={linkHandler.bind(null, '/blog')}>
-              <RiQuillPenAiLine
-                className={'text-zinc-800 dark:text-zinc-200'}
-              />
-              <span
-                className={
-                  'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
-                }
-              >
-                وبلاگ
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>Download</DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+              <TruncateTooltip text={userData.username} />
+              <p className={'truncate w-full'}>{userData.username}</p>
+            </div>
+          </div>
+          <Avatar
+            className={
+              'inline-flex justify-center items-center self-center size-10 mx-auto'
+            }
+          >
+            <AvatarImage
+              src={avatarUrl}
+              alt={'@sepehr'}
+              className={'rounded-full'}
+            />
+            <AvatarFallback className={'font-sans'}>
+              {String(userData.username).slice(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup dir={'rtl'}>
+          <DropdownMenuItem
+            onSelect={() => linkHandler('/profile')}
+            className={'cursor-pointer'}
+          >
+            <HiOutlineHomeModern
+              className={'text-zinc-800 dark:text-zinc-200'}
+            />
+            <span
+              className={
+                'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
+              }
+            >
+              صفحه اصلی
+            </span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={linkHandler.bind(null, '/blog')}>
+            <RiQuillPenAiLine className={'text-zinc-800 dark:text-zinc-200'} />
+            <span
+              className={
+                'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
+              }
+            >
+              وبلاگ
+            </span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem disabled>Download</DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
