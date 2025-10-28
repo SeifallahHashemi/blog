@@ -30,12 +30,16 @@ import { userOptions, userProfileOptions } from '@/utils/supabase/user';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { HiOutlineHomeModern } from 'react-icons/hi2';
+import { RiQuillPenAiLine } from 'react-icons/ri';
 
 export default function AccountAvatar() {
   const { data } = useSuspenseQuery(userOptions);
   const { data: userData } = useSuspenseQuery(userProfileOptions(data.id));
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [showShareDialog, setShowShareDialog] = useState(false);
+  const router = useRouter();
 
   console.log(data);
   console.log(userData);
@@ -43,6 +47,10 @@ export default function AccountAvatar() {
   const isDefaultAvatar =
     userData['avatar_url'] === 'https://example.com/default-avatar.png';
   const avatarUrl = isDefaultAvatar ? undefined : userData['avatar_url'];
+
+  const linkHandler = (path: string) => {
+    router.push(path);
+  };
 
   return (
     <>
@@ -93,76 +101,39 @@ export default function AccountAvatar() {
             </Avatar>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem onSelect={() => setShowNewDialog(true)}>
-              New File...
+          <DropdownMenuGroup dir={'rtl'}>
+            <DropdownMenuItem
+              onSelect={() => linkHandler('/profile')}
+              className={'cursor-pointer'}
+            >
+              <HiOutlineHomeModern
+                className={'text-zinc-800 dark:text-zinc-200'}
+              />
+              <span
+                className={
+                  'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
+                }
+              >
+                صفحه اصلی
+              </span>
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setShowShareDialog(true)}>
-              Share...
+            <DropdownMenuItem onSelect={linkHandler.bind(null, '/blog')}>
+              <RiQuillPenAiLine
+                className={'text-zinc-800 dark:text-zinc-200'}
+              />
+              <span
+                className={
+                  'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
+                }
+              >
+                وبلاگ
+              </span>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem disabled>Download</DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create New File</DialogTitle>
-            <DialogDescription>
-              Provide a name for your new file. Click create when you&apos;re
-              done.
-            </DialogDescription>
-          </DialogHeader>
-          <FieldGroup className="pb-3">
-            <Field>
-              <FieldLabel htmlFor="filename">File Name</FieldLabel>
-              <Input id="filename" name="filename" placeholder="document.txt" />
-            </Field>
-          </FieldGroup>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit">Create</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Share File</DialogTitle>
-            <DialogDescription>
-              Anyone with the link will be able to view this file.
-            </DialogDescription>
-          </DialogHeader>
-          <FieldGroup className="py-3">
-            <Field>
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="shadcn@vercel.com"
-                autoComplete="off"
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="message">Message (Optional)</FieldLabel>
-              <Textarea
-                id="message"
-                name="message"
-                placeholder="Check out this file"
-              />
-            </Field>
-          </FieldGroup>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit">Send Invite</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
