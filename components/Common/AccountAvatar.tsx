@@ -13,11 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { logout } from '@/lib/auth';
 import { userOptions, userProfileOptions } from '@/utils/supabase/user';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { HiOutlineHomeModern } from 'react-icons/hi2';
+import { HiOutlineLogout } from 'react-icons/hi';
 import { RiQuillPenAiLine } from 'react-icons/ri';
 
 export default function AccountAvatar() {
@@ -34,6 +36,11 @@ export default function AccountAvatar() {
 
   const linkHandler = (path: string) => {
     router.push(path);
+  };
+
+  const logoutHandler = async () => {
+    await logout();
+    router.push('/auth/login');
   };
 
   return (
@@ -100,7 +107,10 @@ export default function AccountAvatar() {
               صفحه اصلی
             </span>
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={linkHandler.bind(null, '/blog')}>
+          <DropdownMenuItem
+            onSelect={linkHandler.bind(null, '/blog')}
+            className={'cursor-pointer'}
+          >
             <RiQuillPenAiLine className={'text-zinc-800 dark:text-zinc-200'} />
             <span
               className={
@@ -111,7 +121,19 @@ export default function AccountAvatar() {
             </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>Download</DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={logoutHandler}
+            className={'cursor-pointer'}
+          >
+            <HiOutlineLogout className={'text-zinc-800 dark:text-zinc-200'} />
+            <span
+              className={
+                'font-iranYWL text-base font-normal leading-relaxed tracking-tight'
+              }
+            >
+              خروج
+            </span>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
