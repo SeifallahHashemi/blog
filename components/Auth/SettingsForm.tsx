@@ -1,6 +1,7 @@
 'use client';
 
 import { FieldInfo } from '@/components/Auth/FieldInfo';
+import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import { FileUpload } from '@/components/Custom/UI/file-upload';
 import { Button } from '@/components/ui/button';
 import { FieldLabel, Field as ShadField } from '@/components/ui/field';
@@ -10,7 +11,10 @@ import { settingsSchema } from '@/utils/schema/zod-schema';
 import { userProfileUpdateOptions } from '@/utils/supabase/user';
 import { useForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { BiSolidError } from 'react-icons/bi';
+import { toast } from 'sonner';
 import type * as z from 'zod';
 
 type formData = z.infer<typeof settingsSchema>;
@@ -23,23 +27,47 @@ const defaultValues: formData = {
 };
 
 const SettingsForm = ({ userId }: { userId: string }) => {
+  // React State Management
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+  // TanStack Query
   const queryClient = getClientQuery();
   const updateMutation = useMutation(
     userProfileUpdateOptions(queryClient, ['profile', userId])
   );
 
+  // TanStack Form
   const { Field, handleSubmit, Subscribe } = useForm({
     defaultValues,
     validators: {
       onChange: settingsSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      updateMutation.mutate({
-        fullName: value.fullName,
-        userName: value.userName,
-        mobile: value.phoneNumber,
-      });
+      try {
+        setIsLoading(true);
+        updateMutation.mutate({
+          fullName: value.fullName,
+          userName: value.userName,
+          mobile: value.phoneNumber,
+        });
+      } catch (error) {
+        setIsLoading(false);
+        if (error instanceof Error) {
+          toast('خطا', {
+            className: 'flex flex-row-reverse text-right gap-x-4 space-x-4',
+            description: 'خطای ارتباط با سرور',
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500 ml-2" size={24} />,
+          });
+        } else {
+          toast('خطا در برقراری ارتباط با سرور', {
+            className: '',
+            description: 'ورود به سیستم با خطا مواجه شد. لطفا مجددا تلاش کنید',
+            duration: 5000,
+            icon: <BiSolidError className="text-red-500" size={16} />,
+          });
+        }
+      }
     },
     onSubmitInvalid({ formApi }) {
       const errorMap = formApi.state.errorMap.onChange;
@@ -177,6 +205,7 @@ const SettingsForm = ({ userId }: { userId: string }) => {
           )}
         </Subscribe>
       </div>
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 };
