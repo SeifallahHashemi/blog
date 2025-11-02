@@ -199,7 +199,7 @@
 
 @layer utilities {
     .basic-font-styles {
-        @apply font-iranSans text-base leading-relaxed tracking-tighter font-normal;
+        @apply font-iranSans text-base font-normal text-zinc-800 dark:text-zinc-200 leading-relaxed tracking-tight;
     }
 
     /* Loading Spinner Styles */
