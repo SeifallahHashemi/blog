@@ -96,10 +96,10 @@ const SignupForm = () => {
       Icon={IoFingerPrint}
     >
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           e.stopPropagation();
-          handleSubmit();
+          await handleSubmit();
         }}
         className="space-y-4"
       >
