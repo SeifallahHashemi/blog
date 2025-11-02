@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { FieldLabel, Field as ShadField } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { settingsSchema } from '@/utils/schema/zod-schema';
+import { updateUserProfile } from '@/utils/supabase/queries';
 import { useForm } from '@tanstack/react-form';
+import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import type * as z from 'zod';
 
@@ -20,6 +22,20 @@ const defaultValues: formData = {
 };
 
 const SettingsForm = () => {
+  const updateMutation = useMutation({
+    mutationFn: async ({
+      fullName,
+      userName,
+      mobile,
+    }: {
+      fullName: string;
+      userName: string;
+      mobile: string;
+    }) => {
+      return await updateUserProfile({ fullName, userName, mobile });
+    },
+  });
+
   const { Field, handleSubmit, Subscribe } = useForm({
     defaultValues,
     validators: {
@@ -27,6 +43,11 @@ const SettingsForm = () => {
     },
     onSubmit: async ({ value }) => {
       console.log(value);
+      updateMutation.mutate({
+        fullName: value.fullName,
+        userName: value.userName,
+        mobile: value.phoneNumber,
+      });
     },
     onSubmitInvalid({ formApi }) {
       const errorMap = formApi.state.errorMap.onChange;
@@ -39,6 +60,7 @@ const SettingsForm = () => {
       }
     },
   });
+
   return (
     <form
       onSubmit={async (e) => {
