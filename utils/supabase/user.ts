@@ -3,7 +3,11 @@ import {
   getUserProfile,
   updateUserProfile,
 } from '@/utils/supabase/queries';
-import { mutationOptions, queryOptions } from '@tanstack/react-query';
+import {
+  mutationOptions,
+  queryOptions,
+  type QueryClient,
+} from '@tanstack/react-query';
 
 export const userOptions = queryOptions({
   queryKey: ['user'],
@@ -22,7 +26,10 @@ export const userProfileOptions = (userId: string) => {
   });
 };
 
-export const userProfileUpdate = () => {
+export const userProfileUpdateOptions = (
+  queryClient: QueryClient,
+  queryKey: string[]
+) => {
   return mutationOptions({
     mutationFn: async ({
       fullName,
@@ -35,5 +42,6 @@ export const userProfileUpdate = () => {
     }) => {
       return await updateUserProfile({ fullName, userName, mobile });
     },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKey }),
   });
 };
