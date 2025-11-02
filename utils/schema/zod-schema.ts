@@ -69,3 +69,66 @@ export const newPasswordSchema = z
     message: 'رمز عبور و تکرار آن یکسان نیستند',
     path: ['confirmPassword'],
   });
+
+const fileMetadataSchema = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  size: z.number(),
+  type: z.string().optional(),
+  url: z.string().url().optional(),
+});
+
+const browserFileSchema = z.instanceof(File);
+
+export const settingsSchema = z.object({
+  fullName: z
+    .string({ error: 'این فیلد اجباری است' })
+    .trim()
+    .min(8, { error: 'نام و نام خانوادگی باید حداقل 8 کاراکتر باشد' }),
+  userName: z
+    .string({ error: 'این فیلد اجباری است' })
+    .regex(/^[a-z0-9]{5,32}$/, {
+      error:
+        'نام کاربری باید بین 5 تا 32 کاراکتر باشد و فقط شامل حروف کوچک انگلیسی و اعداد باشد',
+    }),
+  phoneNumber: z.string().superRefine((val, ctx) => {
+    const strVal = val.toString();
+    if (!/^(0?9|\+?989)\d{9}$/.test(strVal)) {
+      ctx.addIssue({
+        code: 'custom',
+        message:
+          'شماره تلفن همراه باید با 09 یا +989 شروع شود و 11 رقم داشته باشد',
+      });
+    }
+  }),
+  fileUpload: z
+    .union([
+      z
+        .file()
+        .mime([
+          'image/png',
+          'image/svg+xml',
+          'image/jpeg',
+          'image/webp',
+          'image/avif',
+        ])
+        .max(5000000),
+      z
+        .array(
+          z
+            .file()
+            .mime([
+              'image/png',
+              'image/svg+xml',
+              'image/jpeg',
+              'image/webp',
+              'image/avif',
+            ])
+            .max(5000000)
+        )
+        .nonempty({ message: 'Please select a file' }),
+      z.string().min(1, 'Please select a file'),
+      z.array(z.union([fileMetadataSchema, browserFileSchema])),
+    ])
+    .optional(),
+});
