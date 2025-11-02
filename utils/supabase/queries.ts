@@ -29,3 +29,37 @@ export const getUserProfile = async () => {
 
   return data;
 };
+
+export const updateUserProfile = async ({
+  fullName,
+  userName,
+  mobile,
+}: {
+  fullName?: string;
+  userName?: string;
+  mobile?: string;
+}) => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('کاربر یافت نشد!');
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({
+      full_name: fullName,
+      username: userName,
+      mobile: mobile,
+    })
+    .eq('user_id', user.id);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
