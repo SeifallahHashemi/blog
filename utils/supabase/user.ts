@@ -1,5 +1,9 @@
-import { getUser, getUserProfile } from '@/utils/supabase/queries';
-import { queryOptions } from '@tanstack/react-query';
+import {
+  getUser,
+  getUserProfile,
+  updateUserProfile,
+} from '@/utils/supabase/queries';
+import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
 export const userOptions = queryOptions({
   queryKey: ['user'],
@@ -15,5 +19,21 @@ export const userProfileOptions = (userId: string) => {
       return await getUserProfile();
     },
     enabled: !!userId,
+  });
+};
+
+export const userProfileUpdate = () => {
+  return mutationOptions({
+    mutationFn: async ({
+      fullName,
+      userName,
+      mobile,
+    }: {
+      fullName: string;
+      userName: string;
+      mobile: string;
+    }) => {
+      return await updateUserProfile({ fullName, userName, mobile });
+    },
   });
 };
