@@ -50,6 +50,7 @@ const SettingsForm = ({ userId }: { userId: string }) => {
           userName: value.userName,
           mobile: value.phoneNumber,
         });
+        router.push('/dashboard');
       } catch (error) {
         setIsLoading(false);
         if (error instanceof Error) {
