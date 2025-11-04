@@ -27,6 +27,10 @@ const TruncateTooltip = ({ text }: Props) => {
     setWidth(tWidth);
   }, []);
 
+  if (text.length <= 16) {
+    return null;
+  }
+
   return (
     <p
       className={
@@ -45,7 +49,7 @@ const TruncateTooltip = ({ text }: Props) => {
           type: 'tween',
           ease: 'linear',
           repeat: Infinity,
-          duration: 10,
+          duration: 6,
           repeatType: 'reverse',
         }}
         className={'select-none'}
