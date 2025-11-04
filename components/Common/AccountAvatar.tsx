@@ -68,11 +68,15 @@ export default function AccountAvatar() {
             </p>
             <div
               dir={'ltr'}
-              className={'font-sans overflow-clip relative group'}
-              style={{ width: '12ch' }}
+              className={'font-sans overflow-clip relative group w-full'}
+              style={{
+                maxWidth: '15ch',
+              }}
             >
               <TruncateTooltip text={userData.username} />
-              <p className={'truncate w-full'}>{userData.username}</p>
+              <p className={'truncate w-full text-right'}>
+                {userData.username}
+              </p>
             </div>
           </div>
           <Avatar
