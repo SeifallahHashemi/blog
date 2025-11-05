@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import sanitizeHtml from 'sanitize-html';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,3 +16,12 @@ export const sleepWithCancel = (ms: number, signal?: AbortSignal) =>
       reject(new DOMException('Aborted', 'AbortError'));
     });
   });
+
+const cleanCode = (code: string) => {
+  return sanitizeHtml(code, {
+    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
+    allowedAttributes: {
+      a: ['href'],
+    },
+  });
+};
