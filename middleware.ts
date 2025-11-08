@@ -1,10 +1,14 @@
-import { type NextRequest } from 'next/server';
-import { updateSession } from './utils/supabase/middleware';
+import { composeMiddleware } from '@/lib/middleware-composer';
+import { rateLimitMiddleware } from '@/lib/middleware/rate-limit';
+import { sessionMiddleware } from '@/lib/middleware/session';
 
-export async function middleware(request: NextRequest) {
+export const middleware = composeMiddleware(
+  rateLimitMiddleware,
+  sessionMiddleware
+);
+/*export async function middleware(request: NextRequest) {
   return await updateSession(request);
-}
-
+}*/
 export const config = {
   matcher: [
     /*
