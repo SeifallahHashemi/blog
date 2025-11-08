@@ -1,3 +1,4 @@
+import { redisRateLimit } from '@/lib/redis';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
@@ -5,11 +6,23 @@ export async function POST(
   request: Request,
   { params }: { params: { commentId: string } }
 ) {
+  const ip =
+    request.headers.get('x-forwarded-for') ??
+    request.headers.get('x-real-ip') ??
+    'unknown';
+  const key = `rl:${ip}:comments`;
+  const { ok } = await redisRateLimit(key, 10, 60);
+  if (!ok)
+    return NextResponse.json(
+      { error: 'محدودیت درخواست فعال شده.' },
+      { status: 429 }
+    );
   const commentId = params.commentId;
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
   const user = userData?.user ?? null;
-  if (!user) NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!user)
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { reaction } = await request.json();
 
@@ -20,13 +33,23 @@ export async function POST(
     );
   }
 
+  const { data, error } = await supabase.rpc('toggle_comment_reaction', {
+    p_comment_id: commentId,
+    p_reaction: reaction,
+  });
+
+  if (error) return NextResponse.json({ error }, { status: 500 });
+
+  return NextResponse.json({ action: data?.[0]?.action || null });
   // check existing reaction
-  const { data: existingReaction, error: existingError } = await supabase
+  /*const { data: existingReaction, error: existingError } = await supabase
     .from('comment_reactions')
     .select('*')
     .eq('comment_id', commentId)
     .eq('user_id', user!.id)
     .single();
+
+  if (existingError) return NextResponse.json({ error: existingError });
 
   if (!existingReaction) {
     const { data, error } = await supabase
@@ -60,5 +83,5 @@ export async function POST(
       if (error) return NextResponse.json({ error }, { status: 500 });
       return NextResponse.json({ data }, { status: 200 });
     }
-  }
+  }*/
 }
