@@ -1,6 +1,14 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
+interface Reaction {
+    reaction: 'like' | 'dislike';
+}
+
+interface Row {
+    reactions?: Reaction[];
+}
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const postId = url.searchParams.get('postId');
@@ -33,12 +41,12 @@ export async function GET(request: Request) {
 
   if (error) return NextResponse.json({ error }, { status: 500 });
 
-  const rows = (data || []).map((r: any) => {
+  const rows = (data || []).map((r: Row) => {
     const like_count = (r.reactions || []).filter(
-      (x: any) => x.reaction === 'like'
+      (x: Reaction) => x.reaction === 'like'
     ).length;
     const dislike_count = (r.reactions || []).filter(
-      (x: any) => x.reaction === 'dislike'
+      (x: Reaction) => x.reaction === 'dislike'
     ).length;
     return { ...r, like_count, dislike_count, reactions: undefined };
   });
