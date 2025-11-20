@@ -48,7 +48,6 @@ export const userProfileUpdateOptions = (
 };
 
 export const commentsInfiniteQueryOptions = (
-  queryClient: QueryClient,
   limit: number | string = 10,
   postId: string
 ) => {
@@ -60,7 +59,7 @@ export const commentsInfiniteQueryOptions = (
       url.searchParams.set('postId', postId);
       url.searchParams.set('limit', limit.toString());
       if (pageParam) {
-        url.searchParams.set('offset', pageParam.toString());
+        url.searchParams.set('cursor', pageParam.toString());
       }
       const res = await fetch(url.toString());
       if (!res.ok)
