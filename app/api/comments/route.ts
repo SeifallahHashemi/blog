@@ -1,4 +1,5 @@
 import { redisRateLimit } from '@/lib/redis';
+import { cleanCode } from '@/lib/utils';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
@@ -8,6 +9,8 @@ interface Reaction {
 
 interface Row {
   reactions?: Reaction[];
+  created_at: string;
+  [key: string]: unknown;
 }
 
 export async function GET(request: Request) {
@@ -22,34 +25,44 @@ export async function GET(request: Request) {
       { error: 'محدودیت درخواست فعال شده.' },
       { status: 429 }
     );
+
   const url = new URL(request.url);
   const postId = url.searchParams.get('postId');
+  const limit = Number(url.searchParams.get('limit') ?? 20);
+  const cursor = url.searchParams.get('cursor');
 
   if (!postId)
     return NextResponse.json({ error: 'postId is required' }, { status: 400 });
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('comments')
     .select(
       `
-  id,
-  post_id,
-  parent_id,
-  user_id,
-  content,
-  is_deleted,
-  created_at,
-  updated_at,
-  profiles:profiles (id, username, avatar_url),
-  reactions:comment_reactions (
-    reaction
-      )
-  `
+      id,
+      post_id,
+      parent_id,
+      user_id,
+      content,
+      is_deleted,
+      created_at,
+      updated_at,
+      like_count,
+      dislike_count,
+      profiles:profiles (id, username, avatar_url),
+      reactions:comment_reactions (reaction)
+      `
     )
-    .eq('post_id', postId)
-    .order('created_at', { ascending: false });
+    .eq('post_id', postId);
+
+  if (cursor) {
+    query = query.filter('created_at', 'lt', cursor);
+  }
+
+  const { data, error } = await query
+    .order('created_at', { ascending: false })
+    .limit(limit);
 
   if (error) return NextResponse.json({ error }, { status: 500 });
 
@@ -63,7 +76,9 @@ export async function GET(request: Request) {
     return { ...r, like_count, dislike_count, reactions: undefined };
   });
 
-  return NextResponse.json({ data: rows });
+  const nextCursor = rows.length > 0 ? rows[rows.length - 1].created_at : null;
+
+  return NextResponse.json({ data: rows, nextCursor });
 }
 
 export async function POST(request: Request) {
@@ -85,7 +100,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { postId, parentId, content } = await request.json();
+  const { postId, parentId, content, token } = await request.json();
 
   if (!postId || !content)
     return NextResponse.json(
@@ -108,11 +123,33 @@ export async function POST(request: Request) {
       );
   }
 
+  const secret = process.env.TURNSTILE_SECRET_KEY!;
+  const responseCaptcha = await fetch(
+    'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+    {
+      method: 'POST',
+      body: new URLSearchParams({
+        secret,
+        response: token,
+      }),
+    }
+  );
+  const { success } = await responseCaptcha.json();
+
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Captcha verification failed' },
+      { status: 400 }
+    );
+  }
+
+  const cleanContent = cleanCode(content);
+
   const insertPayload = {
     post_id: postId,
     parent_id: parentId || null,
     user_id: userData.user.id,
-    content,
+    content: cleanContent,
   };
 
   const { data, error } = await supabase
