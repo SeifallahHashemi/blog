@@ -1,15 +1,27 @@
+import { redisRateLimit } from '@/lib/redis';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
 interface Reaction {
-    reaction: 'like' | 'dislike';
+  reaction: 'like' | 'dislike';
 }
 
 interface Row {
-    reactions?: Reaction[];
+  reactions?: Reaction[];
 }
 
 export async function GET(request: Request) {
+  const ip =
+    request.headers.get('x-forwarded-for') ??
+    request.headers.get('x-real-ip') ??
+    'unknown';
+  const key = `rl:${ip}:comments`;
+  const { ok } = await redisRateLimit(key, 10, 60);
+  if (!ok)
+    return NextResponse.json(
+      { error: 'محدودیت درخواست فعال شده.' },
+      { status: 429 }
+    );
   const url = new URL(request.url);
   const postId = url.searchParams.get('postId');
 
@@ -55,6 +67,17 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const ip =
+    request.headers.get('x-forwarded-for') ??
+    request.headers.get('x-real-ip') ??
+    'unknown';
+  const key = `rl:${ip}:comments`;
+  const { ok } = await redisRateLimit(key, 10, 60);
+  if (!ok)
+    return NextResponse.json(
+      { error: 'محدودیت درخواست فعال شده.' },
+      { status: 429 }
+    );
   const supabase = await createClient();
   const { data: userData, error: userError } = await supabase.auth.getUser();
 
