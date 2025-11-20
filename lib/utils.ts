@@ -17,7 +17,7 @@ export const sleepWithCancel = (ms: number, signal?: AbortSignal) =>
     });
   });
 
-const cleanCode = (code: string) => {
+export const cleanCode = (code: string) => {
   return sanitizeHtml(code, {
     allowedTags: ['b', 'i', 'em', 'strong', 'a'],
     allowedAttributes: {
