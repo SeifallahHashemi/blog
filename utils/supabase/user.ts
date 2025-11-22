@@ -7,8 +7,8 @@ import {
   infiniteQueryOptions,
   mutationOptions,
   queryOptions,
-  type QueryClient,
   type InfiniteData,
+  type QueryClient,
 } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -85,7 +85,8 @@ export const commentsInfiniteQueryOptions = (
         throw new Error(
           'مشکلی در ارتباط با سرور پیش آمده، لطفا دسترسی خود به اینترنت را چگ کنید'
         );
-      return res.json() as Promise<CommentPage>;
+
+      return await res.json();
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     staleTime: 1000 * 60,
@@ -173,6 +174,16 @@ export const addNewCommentMutationOptions = (
       if (context?.previousData) {
         queryClient.setQueryData(['comments', postId], context.previousData);
       }
+      // یا می‌تونی دقیق‌تر فقط کامنت جعلی رو حذف کنی:
+      // qc.setQueryData(['comments', postId], (old: any) => {
+      //   if (!old?.pages?.length) return old;
+      //   const newPages = old.pages.map((page: any, index: number) =>
+      //     index === 0
+      //       ? { ...page, data: page.data.filter((c: any) => c.id !== context.optimisticId) }
+      //       : page
+      //   );
+      //   return { ...old, pages: newPages };
+      // });
     },
     // مرحله ۳: وقتی درخواست موفق بود، کامنت جعلی رو با کامنت واقعی جایگزین کن
     onSuccess: (
