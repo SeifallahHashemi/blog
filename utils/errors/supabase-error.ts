@@ -10,6 +10,8 @@ export function translateSupabaseError(error: AuthApiError | Error) {
     'Password should be at least 6 characters':
       'رمز عبور باید حداقل ۶ کاراکتر باشد.',
     'Email not found': 'ایمیل وارد شده یافت نشد.',
+    'این ایمیل قبلا ثبت شده است':
+      'این ایمیل قبلا ثبت شده است، لطفا از طریق لینک به صفحه ورود بروید',
   };
 
   if (map[error.message]) return map[error.message];
@@ -22,6 +24,8 @@ export function translateSupabaseError(error: AuthApiError | Error) {
         return 'مجوز ورود معتبر نیست.';
       case 404:
         return 'کاربر یافت نشد.';
+      case 409:
+        return 'اطلاعات وارد شده با داده‌های موجود تداخل دارد.';
       case 422:
         return 'داده‌های وارد شده معتبر نیستند.';
       case 500:
