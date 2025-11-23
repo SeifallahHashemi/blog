@@ -3,6 +3,7 @@
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import { translateSupabaseError } from '@/utils/errors/supabase-error';
 import { signupSchema } from '@/utils/schema/zod-schema';
+import { AuthApiError } from '@supabase/supabase-js';
 import { useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
@@ -44,7 +45,7 @@ const SignupForm = () => {
         setIsLoading(true);
         sessionStorage.setItem('verificationEmail', value.email);
 
-        await fetch('/api/email', {
+        const response = await fetch('/api/email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -55,6 +56,11 @@ const SignupForm = () => {
             password: value.password,
           }),
         });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'خطا در ثبت نام');
+        }
 
         router.push('/auth/verify');
       } catch (error) {
