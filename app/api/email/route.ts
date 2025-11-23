@@ -23,11 +23,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const supabase = createAdminClient();
     let data;
+
+    if (type === 'verification' && !isPasswordReset) {
+      const { data: emailExists } = await supabase.rpc('check_email_exists', {
+        email_arg: email,
+      });
+
+      if (emailExists) {
+        return NextResponse.json(
+          { error: 'این ایمیل قبلا ثبت شده است' },
+          { status: 409 }
+        );
+      }
+    }
 
     switch (type) {
       case 'verification':
-        const supabase = createAdminClient();
         const res = await supabase.auth.admin.generateLink({
           type: isPasswordReset ? 'recovery' : 'signup',
           email,
