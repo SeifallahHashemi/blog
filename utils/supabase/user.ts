@@ -227,36 +227,112 @@ export const addNewCommentMutationOptions = (
   });
 };
 
+export type ReactionType = 'like' | 'dislike';
+
+interface ToggleReactionVars {
+  commentId: string;
+  reaction: ReactionType;
+}
+
+interface CommentReaction {
+  id: string;
+  content: string;
+  created_at: string;
+
+  like_count: number;
+  dislike_count: number;
+
+  user_reaction: ReactionType | null;
+
+  [key: string]: unknown;
+}
+
+interface CommentsQueryResponse {
+  data: CommentReaction[];
+  nextCursor: string | null;
+}
+
 export const addReactionMutationOptions = (
   qc: QueryClient,
   commentId: string,
   postId: string
 ) => {
   return mutationOptions({
-    mutationFn: async ({
-      commentId,
-      reaction,
-    }: {
-      commentId: string;
-      reaction: 'like' | 'dislike';
-    }) => {
+    mutationFn: async ({ commentId, reaction }: ToggleReactionVars) => {
       const res = await fetch(`/api/comments/${commentId}/reaction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reaction }),
       });
-      if (!res.ok) throw new Error('خطا در ارتباط با شبکه');
-      return await res.json();
+
+      if (!res.ok) {
+        throw new Error('Network error');
+      }
+
+      return (await res.json()) as { action: string | null };
     },
     onMutate: async ({ commentId, reaction }) => {
-      await qc.cancelQueries({
-        queryKey: ['comments', postId],
-      });
-      const previousData = qc.getQueryData(['comments', postId]);
+      await qc.cancelQueries({ queryKey: ['comments', postId] });
 
-      qc.setQueryData(['comments', postId], (oldData: unknown) => {
-        if (!oldData) return;
-      });
+      const previousData = qc.getQueryData<CommentsQueryResponse>([
+        'comments',
+        postId,
+      ]);
+
+      if (!previousData) return { previousData: null };
+
+      const newData: CommentsQueryResponse = {
+        ...previousData,
+        data: previousData.data.map((comment) => {
+          if (comment.id !== commentId) return comment;
+
+          let like = comment.like_count;
+          let dislike = comment.dislike_count;
+
+          const prev = comment.user_reaction;
+
+          // حالت 1: کاربر همان واکنش قبلی را زده → حذف واکنش
+          if (prev === reaction) {
+            if (reaction === 'like') like--;
+            else dislike--;
+
+            return {
+              ...comment,
+              like_count: like,
+              dislike_count: dislike,
+              user_reaction: null,
+            };
+          }
+
+          // حالت 2: واکنش جدید و متفاوت
+          if (prev === 'like') like--;
+          if (prev === 'dislike') dislike--;
+
+          if (reaction === 'like') like++;
+          if (reaction === 'dislike') dislike++;
+
+          return {
+            ...comment,
+            like_count: like,
+            dislike_count: dislike,
+            user_reaction: reaction,
+          };
+        }),
+      };
+
+      qc.setQueryData(['comments', postId], newData);
+
+      return { previousData };
+    },
+
+    onError: (_err, _vars, context) => {
+      if (context?.previousData) {
+        qc.setQueryData(['comments', postId], context.previousData);
+      }
+    },
+
+    onSettled: async () => {
+      await qc.invalidateQueries({ queryKey: ['comments', postId] });
     },
   });
 };
