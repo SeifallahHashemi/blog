@@ -226,3 +226,37 @@ export const addNewCommentMutationOptions = (
     },
   });
 };
+
+export const addReactionMutationOptions = (
+  qc: QueryClient,
+  commentId: string,
+  postId: string
+) => {
+  return mutationOptions({
+    mutationFn: async ({
+      commentId,
+      reaction,
+    }: {
+      commentId: string;
+      reaction: 'like' | 'dislike';
+    }) => {
+      const res = await fetch(`/api/comments/${commentId}/reaction`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reaction }),
+      });
+      if (!res.ok) throw new Error('خطا در ارتباط با شبکه');
+      return await res.json();
+    },
+    onMutate: async ({ commentId, reaction }) => {
+      await qc.cancelQueries({
+        queryKey: ['comments', postId],
+      });
+      const previousData = qc.getQueryData(['comments', postId]);
+
+      qc.setQueryData(['comments', postId], (oldData: unknown) => {
+        if (!oldData) return;
+      });
+    },
+  });
+};
