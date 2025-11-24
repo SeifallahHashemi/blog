@@ -7,8 +7,8 @@ interface PageParams {
   parentId: string | null;
 }
 
-const CommentForm = ({ postId, parentId }: PageParams) => {
+const CommentsWrapper = ({ postId, parentId }: PageParams) => {
   return <div>hello world</div>;
 };
 
-export default CommentForm;
+export default CommentsWrapper;
