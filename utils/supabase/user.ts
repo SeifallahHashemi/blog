@@ -274,10 +274,9 @@ export const addReactionMutationOptions = (
     onMutate: async ({ commentId, reaction }) => {
       await qc.cancelQueries({ queryKey: ['comments', postId] });
 
-      const previousData = qc.getQueryData<CommentsQueryResponse>([
-        'comments',
-        postId,
-      ]);
+      const previousData = qc.getQueriesData({
+        queryKey: ['comments', postId],
+      });
       console.log(previousData);
 
       if (!previousData) return { previousData: null };
@@ -287,7 +286,7 @@ export const addReactionMutationOptions = (
         console.log(old);
       };
 
-      qc.setQueryData(['comments', postId], newData);
+      qc.setQueryData(['comments', postId], newData); // convert to setQueriesData ********
 
       return { previousData };
     },
