@@ -41,7 +41,7 @@ export async function POST(
   if (error) return NextResponse.json({ error }, { status: 500 });
 
   return NextResponse.json({ action: data?.[0]?.action || null });
-  // check existing reaction
+  // check existing reaction : بررسی واکنش قبلی کاربر به روش select که کمی پیچیده تر و هم چنین از روش بالا کارایی کم تری دارد.
   /*const { data: existingReaction, error: existingError } = await supabase
     .from('comment_reactions')
     .select('*')
