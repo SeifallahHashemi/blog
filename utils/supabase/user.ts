@@ -278,46 +278,13 @@ export const addReactionMutationOptions = (
         'comments',
         postId,
       ]);
+      console.log(previousData);
 
       if (!previousData) return { previousData: null };
 
-      const newData: CommentsQueryResponse = {
-        ...previousData,
-        data: previousData.data.map((comment) => {
-          if (comment.id !== commentId) return comment;
-
-          let like = comment.like_count;
-          let dislike = comment.dislike_count;
-
-          const prev = comment.user_reaction;
-
-          // حالت 1: کاربر همان واکنش قبلی را زده → حذف واکنش
-          if (prev === reaction) {
-            if (reaction === 'like') like--;
-            else dislike--;
-
-            return {
-              ...comment,
-              like_count: like,
-              dislike_count: dislike,
-              user_reaction: null,
-            };
-          }
-
-          // حالت 2: واکنش جدید و متفاوت
-          if (prev === 'like') like--;
-          if (prev === 'dislike') dislike--;
-
-          if (reaction === 'like') like++;
-          if (reaction === 'dislike') dislike++;
-
-          return {
-            ...comment,
-            like_count: like,
-            dislike_count: dislike,
-            user_reaction: reaction,
-          };
-        }),
+      const newData = (old: unknown) => {
+        if (!old) console.log('No old data found for comments query');
+        console.log(old);
       };
 
       qc.setQueryData(['comments', postId], newData);
@@ -325,11 +292,11 @@ export const addReactionMutationOptions = (
       return { previousData };
     },
 
-    onError: (_err, _vars, context) => {
-      if (context?.previousData) {
-        qc.setQueryData(['comments', postId], context.previousData);
-      }
-    },
+    // onError: (_err, _vars, context) => {
+    //   if (context?.previousData) {
+    //     qc.setQueryData(['comments', postId], context.previousData);
+    //   }
+    // },
 
     onSettled: async () => {
       await qc.invalidateQueries({ queryKey: ['comments', postId] });
