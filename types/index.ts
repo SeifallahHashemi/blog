@@ -49,3 +49,35 @@ export type AuthorProfileType = AllString<'_id' | 'name' | 'slug' | 'xUrl'> & {
 
 export type OptionalType<T, K extends keyof T> = Omit<T, K> &
   Partial<Pick<T, K>>;
+
+export interface Comment {
+  id: string | number;
+  post_id: string;
+  parent_id: string | null;
+  user_id: string;
+  content: string;
+  is_deleted: boolean;
+  created_at: string;
+  updated_at: string;
+  like_count: number;
+  dislike_count: number;
+  [key: string]: unknown;
+  // profiles: {
+  //   id: string;
+  //   username: string;
+  //   avatar_url: string;
+  // };
+  // reactions?: {
+  //   reaction: 'like' | 'dislike';
+  // }[];
+}
+
+export interface CommentPage {
+  data: Comment[];
+  nextCursor: string | null;
+}
+
+export interface CommentsInfiniteData {
+  pages: CommentPage[];
+  pageParams: (string | null)[];
+}
