@@ -1,3 +1,4 @@
+import CommentsWrapper from '@/components/Comments/CommentsWrapper';
 import { CustomPortableText } from '@/components/Common/CustomPortableText';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
@@ -74,7 +75,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
     parts[p.type] = p.value;
   }
 
-  const formattedDate = `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} ساعت ${parts.hour}:${parts.minute}`
+  const formattedDate = `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} ساعت ${parts.hour}:${parts.minute}`;
 
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
@@ -90,10 +91,19 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
             <h1 className="text-2xl text-zinc-900 dark:text-zinc-50 font-iranYWR font-bold leading-relaxed tracking-tight">
               {post.title}
             </h1>
-            <span className="inline-block font-iranYWL font-extralight tracking-tight leading-none text-xs">{formattedDate}</span>
+            <span className="inline-block font-iranYWL font-extralight tracking-tight leading-none text-xs">
+              {formattedDate}
+            </span>
           </div>
           <PortableText value={post.content} components={CustomPortableText} />
         </div>
+      </div>
+      <div
+        className={
+          'lg:border-t dark:border-zinc-900 border-zinc-200 w-full lg:pt-16'
+        }
+      >
+        <CommentsWrapper postId={''} parentId={''} />
       </div>
     </section>
   );
