@@ -136,6 +136,10 @@ export const settingsSchema = z.object({
 export const commentSchema = z.object({
   comment: z
     .string({ error: 'برای ارسال فرم نظرات، حتما باید نظری ثبت کرده باشید' })
-    .min(10, { error: 'نظر شما باید حداقل 10 کاراکتر باشد' })
-    .max(1000, { error: 'نظر شما نباید بیشتر از 1000 کاراکتر باشد' }),
+    .refine((value) => value.replace(/\s/g, '').length >= 10, {
+      error: 'نظر شما باید حداقل 10 کاراکتر باشد',
+    })
+    .refine((value) => value.trim().length <= 1000, {
+      error: 'نظر شما نباید بیشتر از 1000 کاراکتر باشد',
+    }),
 });
