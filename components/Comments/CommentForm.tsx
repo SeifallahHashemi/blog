@@ -4,6 +4,7 @@ import { FieldInfo } from '@/components/Auth/FieldInfo';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import useCreateComment from '@/hooks/useCreateComment';
 import { commentSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
 import React, { FormEvent } from 'react';
@@ -21,14 +22,13 @@ const defaultValues: formData = {
 };
 
 const CommentForm = ({ postId, parentId }: PageParams) => {
+  const { mutate } = useCreateComment(postId);
   const { handleSubmit, Field, Subscribe } = useForm({
     defaultValues,
     validators: {
       onChange: commentSchema,
     },
-    onSubmit: async ({ value }) => {
-      console.log(value);
-    },
+    onSubmit: async ({ value }) => {},
   });
   return (
     <form
@@ -69,7 +69,7 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
               type="submit"
               disabled={!canSubmit}
             >
-              {isSubmitting ? 'ارسال نظر' : 'در حال ارسال ...'}
+              {isSubmitting ? 'در حال ارسال ...' : 'ارسال نظر'}
             </Button>
           )}
         </Subscribe>
