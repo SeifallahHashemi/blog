@@ -14,9 +14,9 @@ interface PageParams {
   parentId: string | null;
 }
 
-type formdData = z.infer<typeof commentSchema>;
+type formData = z.infer<typeof commentSchema>;
 
-const defaultValues: formdData = {
+const defaultValues: formData = {
   comment: '',
 };
 
