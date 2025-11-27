@@ -1,4 +1,4 @@
-import CommentsWrapper from '@/components/Comments/CommentsWrapper';
+import CommentForm from '@/components/Comments/CommentForm';
 import { CustomPortableText } from '@/components/Common/CustomPortableText';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
@@ -28,7 +28,6 @@ export type PostType = OptionalType<
   | 'coverImage'
   | '_updatedAt'
   | '_createdAt'
-  | '_id'
   | 'date'
 >;
 
@@ -103,7 +102,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
           'lg:border-t dark:border-zinc-900 border-zinc-200 w-full lg:pt-16'
         }
       >
-        <CommentsWrapper postId={''} parentId={''} />
+        <CommentForm postId={post._id} parentId={null} />
       </div>
     </section>
   );
