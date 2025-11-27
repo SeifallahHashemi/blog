@@ -2,8 +2,8 @@
 
 import { FieldInfo } from '@/components/Auth/FieldInfo';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { commentSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
 import React, { FormEvent } from 'react';
@@ -32,7 +32,7 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
   });
   return (
     <form
-      className={'w-full'}
+      className={'w-full lg:max-w-2xl mx-auto basic-font-styles'}
       onSubmit={async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         e.stopPropagation();
@@ -46,26 +46,25 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
               <Label htmlFor={field.name}>
                 لطفا نظر خود را در فیلد زیر وارد کنید
               </Label>
-              <Input
+              <Textarea
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                type={'text'}
                 placeholder={'نظر شما ...'}
-                className={'w-full'}
+                className={'max-w-full max-h-44'}
               />
             </div>
             <FieldInfo field={field} />
           </>
         )}
       </Field>
-      <div className={'w-full'}>
+      <div className={'w-full flex justify-end items-center mt-4'}>
         <Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
             <Button
-              className={'flex-1 cursor-pointer'}
+              className={'cursor-pointer'}
               variant={'default'}
               type="submit"
               disabled={!canSubmit}
