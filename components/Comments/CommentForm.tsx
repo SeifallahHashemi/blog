@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import useCreateComment from '@/hooks/useCreateComment';
+import { useUserStore } from '@/store/userStore';
 import { commentSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
 import React, { FormEvent } from 'react';
@@ -22,13 +23,21 @@ const defaultValues: formData = {
 };
 
 const CommentForm = ({ postId, parentId }: PageParams) => {
+  const userStored = useUserStore((state) => state.user);
+  console.log(userStored);
+
   const { mutate } = useCreateComment(postId);
   const { handleSubmit, Field, Subscribe } = useForm({
     defaultValues,
     validators: {
       onChange: commentSchema,
     },
-    onSubmit: async ({ value }) => {},
+    onSubmit: async ({ value }) => {
+      mutate({
+        content: value.comment,
+        parentId: parentId,
+      });
+    },
   });
   return (
     <form
