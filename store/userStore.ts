@@ -4,10 +4,12 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 type UserUpdateValue = {
   id: string;
   name: string;
+  fullName: string;
 };
 type UserState = {
   userId: string;
   userName: string;
+  userFullName: string;
 };
 
 type UserStore = {
@@ -22,6 +24,7 @@ export const useUserStore = create<UserStore>()(
         user: {
           userId: '',
           userName: '',
+          userFullName: '',
         },
         updateUserInformation: (value: UserUpdateValue) => {
           set(
@@ -29,6 +32,7 @@ export const useUserStore = create<UserStore>()(
               user: {
                 userId: value.id,
                 userName: value.name,
+                userFullName: value.fullName,
               },
             },
             false,
