@@ -1,7 +1,6 @@
 import DockAnimation from '@/components/Animation/DockAnimation';
 import Footer from '@/components/Global/Footer';
 import Header from '@/components/Global/Header';
-import UserProvider from '@/components/Providers/UserProvider';
 import { getClientQuery } from '@/lib/get-client-query';
 import { getUser } from '@/utils/supabase/queries';
 import { userOptions, userProfileOptions } from '@/utils/supabase/user';
@@ -21,7 +20,6 @@ const DashboardLayout = async ({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {/*<UserProvider />*/}
       <Header />
       <DockAnimation />
       {children}
