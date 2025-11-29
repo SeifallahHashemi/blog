@@ -1,4 +1,5 @@
 import CommentForm from '@/components/Comments/CommentForm';
+import CommentsList from '@/components/Comments/CommentsList';
 import { CustomPortableText } from '@/components/Common/CustomPortableText';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
@@ -103,6 +104,7 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
         }
       >
         <CommentForm postId={post._id} parentId={null} />
+        <CommentsList postId={post._id} />
       </div>
     </section>
   );
