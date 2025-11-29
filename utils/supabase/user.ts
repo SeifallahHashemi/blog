@@ -101,14 +101,16 @@ export const addNewCommentMutationOptions = (
     mutationFn: async ({
       parentId = null,
       content,
+      token,
     }: {
       parentId?: string | null;
       content: string;
+      token: string;
     }) => {
       const res = await fetch('/api/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId, parentId, content }),
+        body: JSON.stringify({ postId, parentId, content, token }),
       });
       if (!res.ok) throw new Error('خطا در ارسال کامنت');
       return res.json();
