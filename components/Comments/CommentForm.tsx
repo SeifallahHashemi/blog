@@ -1,6 +1,7 @@
 'use client';
 
 import { FieldInfo } from '@/components/Auth/FieldInfo';
+import TurnstileWidget from '@/components/Shared/TurnstileWidget';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,7 +9,7 @@ import useCreateComment from '@/hooks/useCreateComment';
 import { useUserStore } from '@/store/userStore';
 import { commentSchema } from '@/utils/schema/zod-schema';
 import { useForm } from '@tanstack/react-form';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import * as z from 'zod';
 
 interface PageParams {
@@ -23,20 +24,29 @@ const defaultValues: formData = {
 };
 
 const CommentForm = ({ postId, parentId }: PageParams) => {
+  const [token, setToken] = useState<string>('');
   const userStored = useUserStore((state) => state.user);
   console.log(userStored);
 
   const { mutate } = useCreateComment(postId);
-  const { handleSubmit, Field, Subscribe } = useForm({
+  const { handleSubmit, Field, Subscribe, reset } = useForm({
     defaultValues,
     validators: {
       onChange: commentSchema,
     },
     onSubmit: async ({ value }) => {
-      mutate({
-        content: value.comment,
-        parentId: parentId,
-      });
+      mutate(
+        {
+          content: value.comment,
+          parentId: parentId,
+          token,
+        },
+        {
+          onSuccess: () => {
+            reset();
+          },
+        }
+      );
     },
   });
   return (
@@ -69,6 +79,7 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
           </>
         )}
       </Field>
+      <TurnstileWidget onVerify={setToken} />
       <div className={'w-full flex justify-end items-center mt-4'}>
         <Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
