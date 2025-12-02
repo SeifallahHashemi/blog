@@ -66,6 +66,11 @@ interface CommentPage {
   nextCursor?: number;
 }
 
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') return location.origin;
+  return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+};
+
 export const commentsInfiniteQueryOptions = (
   limit: number | string = 10,
   postId: string
@@ -74,7 +79,7 @@ export const commentsInfiniteQueryOptions = (
     queryKey: ['comments', postId],
     initialPageParam: 0,
     queryFn: async ({ pageParam }: { pageParam?: number }) => {
-      const url = new URL('/api/comments', location.origin);
+      const url = new URL('/api/comments', getBaseUrl());
       url.searchParams.set('postId', postId);
       url.searchParams.set('limit', limit.toString());
       if (pageParam) {
