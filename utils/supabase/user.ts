@@ -82,7 +82,7 @@ export const commentsInfiniteQueryOptions = (
       const url = new URL('/api/comments', getBaseUrl());
       url.searchParams.set('postId', postId);
       url.searchParams.set('limit', limit.toString());
-      if (pageParam) {
+      if (pageParam !== undefined && pageParam !== null) {
         url.searchParams.set('cursor', pageParam.toString());
       }
       const res = await fetch(url.toString());
