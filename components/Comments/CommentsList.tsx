@@ -9,8 +9,9 @@ interface Props {
 
 const CommentsList = ({ postId }: Props) => {
   const { data } = useInfiniteComments(postId);
-  console.log(data);
-  return <div />;
+  const allComments = data?.pages.flatMap((page) => page.data) || [];
+  console.log(allComments);
+  return <ul />;
 };
 
 export default CommentsList;
