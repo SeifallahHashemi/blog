@@ -6,6 +6,7 @@ import PostSidebar from '@/components/Pages/PostSidebar';
 import { sanityFetch } from '@/lib/sanity.client';
 import { authorQuery, postQuery, tagsQuery } from '@/lib/sanity.query';
 import { AuthorProfileType, OptionalType, PostsType, TagType } from '@/types';
+import { Suspense } from 'react';
 import { PortableText } from 'next-sanity';
 import { notFound } from 'next/navigation';
 
@@ -104,7 +105,9 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
         }
       >
         <CommentForm postId={post._id} parentId={null} />
-        <CommentsList postId={post._id} />
+        <Suspense fallback={<p>در حال دریافت اطلاعات</p>}>
+          <CommentsList postId={post._id} />
+        </Suspense>
       </div>
     </section>
   );
