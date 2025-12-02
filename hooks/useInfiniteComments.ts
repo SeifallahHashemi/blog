@@ -1,10 +1,10 @@
 'use client';
 
 import { commentsInfiniteQueryOptions } from '@/utils/supabase/user';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 const useInfiniteComments = (postId: string) => {
-  return useInfiniteQuery(commentsInfiniteQueryOptions(20, postId));
+  return useSuspenseInfiniteQuery(commentsInfiniteQueryOptions(20, postId));
 };
 
 export default useInfiniteComments;
