@@ -3,9 +3,11 @@ import CommentsList from '@/components/Comments/CommentsList';
 import { CustomPortableText } from '@/components/Common/CustomPortableText';
 import Breadcrumb from '@/components/Pages/Breadcrumb';
 import PostSidebar from '@/components/Pages/PostSidebar';
+import { getClientQuery } from '@/lib/get-client-query';
 import { sanityFetch } from '@/lib/sanity.client';
 import { authorQuery, postQuery, tagsQuery } from '@/lib/sanity.query';
 import { AuthorProfileType, OptionalType, PostsType, TagType } from '@/types';
+import { commentsInfiniteQueryOptions } from '@/utils/supabase/user';
 import { Suspense } from 'react';
 import { PortableText } from 'next-sanity';
 import { notFound } from 'next/navigation';
@@ -77,6 +79,12 @@ const BlogPostPage = async ({ params }: BlogPostProps) => {
   }
 
   const formattedDate = `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} ساعت ${parts.hour}:${parts.minute}`;
+
+  const queryClient = getClientQuery();
+
+  await queryClient.prefetchInfiniteQuery(
+    commentsInfiniteQueryOptions(20, post._id)
+  );
 
   return (
     <section className={'w-full max-w-6xl mx-auto'}>
