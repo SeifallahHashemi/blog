@@ -81,13 +81,13 @@ export const commentsInfiniteQueryOptions = (
 ) => {
   return infiniteQueryOptions({
     queryKey: ['comments', postId],
-    initialPageParam: 0,
-    queryFn: async ({ pageParam }: { pageParam?: number }) => {
+    initialPageParam: null,
+    queryFn: async ({ pageParam }: { pageParam: number | null }) => {
       console.log('baseUrl', getBaseUrl());
       const url = new URL('/api/comments', getBaseUrl());
       url.searchParams.set('postId', postId);
       url.searchParams.set('limit', limit.toString());
-      if (pageParam !== undefined && pageParam !== null) {
+      if (pageParam !== null) {
         url.searchParams.set('cursor', pageParam.toString());
       }
       const res = await fetch(url.toString());
