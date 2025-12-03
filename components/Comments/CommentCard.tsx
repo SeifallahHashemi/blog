@@ -5,20 +5,20 @@ import Image from 'next/image';
 
 interface CommentCardProps {
   author: {
-    fullName: string;
-    userName: string;
+    full_name: string;
+    username: string;
     alt?: string;
-    avatarUrl: string;
+    avatar_url: string;
   };
-  createdAt: string;
+  created_at: string;
   content: string;
   like_count: number;
   dislike_count: number;
 }
 
 const CommentCard = (props: CommentCardProps) => {
-  const { author, createdAt, dislike_count, like_count, content } = props;
-  const { fullName, userName, avatarUrl, alt } = author;
+  const { author, created_at, dislike_count, like_count, content } = props;
+  const { full_name, username, avatar_url, alt } = author;
 
   return (
     <article
@@ -35,8 +35,8 @@ const CommentCard = (props: CommentCardProps) => {
         >
           <figure className="flex items-center gap-2">
             <Image
-              src={avatarUrl}
-              alt={alt || `${fullName}'s avatar`}
+              src={avatar_url}
+              alt={alt || `${full_name}'s avatar`}
               width={48}
               height={48}
               className="rounded-full"
@@ -44,18 +44,18 @@ const CommentCard = (props: CommentCardProps) => {
             />
             <figcaption className="flex flex-col">
               <span className="font-semibold" itemProp="name">
-                {fullName}
+                {full_name}
               </span>
-              <span className="text-sm text-gray-500">@{userName}</span>
+              <span className="text-sm text-gray-500">@{username}</span>
             </figcaption>
           </figure>
         </div>
         <time
           itemProp="datePublished"
-          dateTime={createdAt}
+          dateTime={created_at}
           className="text-xs text-gray-400"
         >
-          {new Date(createdAt).toLocaleString()}
+          {new Date(created_at).toLocaleString()}
         </time>
       </header>
 
