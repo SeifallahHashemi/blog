@@ -46,7 +46,7 @@ const CommentCard = (props: CommentCardProps) => {
     <article
       itemScope
       itemType="https://schema.org/Comment"
-      className="border rounded-md p-4 shadow-sm bg-white"
+      className="flex flex-col gap-y-1.5 rounded-lg shadow-sm bg-primary-bg border border-zinc-200 dark:border-zinc-800 p-2"
     >
       <header className="flex justify-between items-start mb-2">
         <div
@@ -78,7 +78,7 @@ const CommentCard = (props: CommentCardProps) => {
                 {full_name}
               </span>
               <span
-                className="text-sm text-zinc-900 font-sans font-semibold tracking-tighter leading-relaxed text-right"
+                className="text-sm text-zinc-800 dark:text-zinc-200 font-sans font-semibold tracking-tighter leading-relaxed text-right"
                 dir={'ltr'}
               >
                 @{username}
@@ -89,21 +89,19 @@ const CommentCard = (props: CommentCardProps) => {
         <time
           itemProp="datePublished"
           dateTime={created_at}
-          className="text-xs font-iranSans font-medium text-zinc-900 leading-relaxed tracking-tight"
+          className="text-xs font-iranSans font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed tracking-tight"
         >
           {formattedDate}
         </time>
       </header>
-
       <section className="mb-3">
         <p
           itemProp="text"
-          className="text-zinc-900 font-iranYWL font-medium text-sm tracking-tight leading-relaxed"
+          className="text-zinc-800 dark:text-zinc-200 font-iranYWL font-medium text-sm tracking-tight leading-relaxed"
         >
           {content}
         </p>
       </section>
-
       <footer
         className="flex gap-4 text-sm text-gray-600 font-iranYWR"
         aria-label="Comment actions"
