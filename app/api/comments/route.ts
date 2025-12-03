@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const postId = url.searchParams.get('postId');
   const limit = Number(url.searchParams.get('limit') ?? 20);
-  const cursor = url.searchParams.get('cursor');
+  // const cursor = url.searchParams.get('cursor');
 
   if (!postId)
     return NextResponse.json({ error: 'postId is required' }, { status: 400 });
@@ -56,8 +56,11 @@ export async function GET(request: Request) {
     )
     .eq('post_id', postId);
 
+  const cursorRaw = url.searchParams.get('cursor');
+  const cursor = cursorRaw && cursorRaw !== '0' ? cursorRaw : null;
+
   if (cursor) {
-    query = query.filter('created_at', 'lt', cursor);
+    query = query.lt('created_at', cursor);
   }
 
   const { data, error } = await query
