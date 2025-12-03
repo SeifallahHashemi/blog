@@ -12,8 +12,13 @@ const CommentsList = ({ postId }: Props) => {
   const { data } = useInfiniteComments(postId);
   const allComments = data?.pages.flatMap((page) => page.data) || [];
   console.log(allComments);
+  // repeat(auto-fit, minmax(100px,500px))
   return (
-    <ul>
+    <ul
+      className={
+        'grid grid-cols-[repeat(auto-fit,minmax(100px,500px))] justify-between'
+      }
+    >
       {allComments.map((comment) => (
         <li key={comment.id}>
           <CommentCard
