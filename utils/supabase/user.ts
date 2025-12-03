@@ -83,7 +83,6 @@ export const commentsInfiniteQueryOptions = (
     queryKey: ['comments', postId],
     initialPageParam: null,
     queryFn: async ({ pageParam }: { pageParam: number | null }) => {
-      console.log('baseUrl', getBaseUrl());
       const url = new URL('/api/comments', getBaseUrl());
       url.searchParams.set('postId', postId);
       url.searchParams.set('limit', limit.toString());
