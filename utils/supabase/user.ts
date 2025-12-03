@@ -67,8 +67,12 @@ interface CommentPage {
 }
 
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') return window.location.origin;
-  return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const env = process.env.NODE_ENV;
+  if (typeof window !== 'undefined' && env === 'development')
+    return window.location.origin;
+  return process.env.NEXT_PUBLIC_SITE_URL || env === 'development'
+    ? 'http://localhost:3000'
+    : 'https://www.sepehrpersianblog.ir';
 };
 
 export const commentsInfiniteQueryOptions = (
@@ -79,6 +83,7 @@ export const commentsInfiniteQueryOptions = (
     queryKey: ['comments', postId],
     initialPageParam: 0,
     queryFn: async ({ pageParam }: { pageParam?: number }) => {
+      console.log('baseUrl', getBaseUrl());
       const url = new URL('/api/comments', getBaseUrl());
       url.searchParams.set('postId', postId);
       url.searchParams.set('limit', limit.toString());
