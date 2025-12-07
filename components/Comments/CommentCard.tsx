@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 interface CommentCardProps {
   author: {
@@ -16,45 +16,43 @@ interface CommentCardProps {
   dislike_count: number;
 }
 
-const CommentCard = (props: CommentCardProps) => {
-  const { author, created_at, dislike_count, like_count, content } = props;
+const CommentCard = ({
+  author,
+  created_at,
+  dislike_count,
+  like_count,
+  content,
+}: CommentCardProps) => {
+  const formattedDate = useMemo(() => {
+    if (!created_at) return '';
+    const date = new Intl.DateTimeFormat('fa-IR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).formatToParts(new Date(created_at));
+
+    const parts: Record<string, string> = {};
+    for (const part of date) parts[part.type] = part.value;
+
+    return `${parts.weekday} ${parts.day} ${parts.month} ${parts.year} ساعت ${parts.hour}:${parts.minute}`;
+  }, [created_at]);
+
+  if (!author) return null;
+
   const { full_name, username, avatar_url, alt } = author;
 
   const isDefaultAvatar =
     avatar_url === 'https://example.com/default-avatar.png';
   const avatarUrl = isDefaultAvatar ? undefined : avatar_url;
 
-  const date = new Intl.DateTimeFormat('fa-IR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  }).formatToParts(new Date(created_at));
-
-  const partsDate: Record<string, string> = {};
-
-  for (const part of date) {
-    partsDate[part.type] = part.value;
-  }
-
-  const formattedDate = `${partsDate.weekday} ${partsDate.day} ${partsDate.month} ${partsDate.year} ساعت ${partsDate.hour}:${partsDate.minute}`;
-
   return (
-    <article
-      itemScope
-      itemType="https://schema.org/Comment"
-      className="flex flex-col gap-y-1.5 rounded-lg shadow-sm bg-primary-bg border border-zinc-200 dark:border-zinc-800 p-2"
-    >
+    <article className="flex flex-col gap-y-1.5 rounded-lg shadow-sm bg-primary-bg border border-zinc-200 dark:border-zinc-800 p-2">
       <header className="flex justify-between items-start mb-2">
-        <div
-          className="flex items-center gap-3"
-          itemProp="author"
-          itemScope
-          itemType="https://schema.org/Person"
-        >
+        <div className="flex items-center gap-3">
           <figure className="flex items-center gap-2">
             <Avatar
               className={
@@ -71,10 +69,7 @@ const CommentCard = (props: CommentCardProps) => {
               </AvatarFallback>
             </Avatar>
             <figcaption className="flex flex-col">
-              <span
-                className="font-iranYWR font-semibold text-base tracking-tight leading-relaxed text-zinc-800 dark:text-zinc-200"
-                itemProp="name"
-              >
+              <span className="font-iranYWR font-semibold text-base tracking-tight leading-relaxed text-zinc-800 dark:text-zinc-200">
                 {full_name}
               </span>
               <span
@@ -87,18 +82,15 @@ const CommentCard = (props: CommentCardProps) => {
           </figure>
         </div>
         <time
-          itemProp="datePublished"
           dateTime={created_at}
           className="text-xs font-iranSans font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed tracking-tight"
+          suppressHydrationWarning
         >
           {formattedDate}
         </time>
       </header>
       <section className="mb-3">
-        <p
-          itemProp="text"
-          className="text-zinc-800 dark:text-zinc-200 font-iranYWL font-medium text-sm tracking-tight leading-relaxed"
-        >
+        <p className="text-zinc-800 dark:text-zinc-200 font-iranYWL font-medium text-sm tracking-tight leading-relaxed">
           {content}
         </p>
       </section>
