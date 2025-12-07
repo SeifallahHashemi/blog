@@ -1,3 +1,4 @@
+import PostCardSkeleton from '@/components/Custom/UI/PostCardSkeleton';
 import PostsList from '@/components/Pages/PostsList';
 import { sanityFetch } from '@/lib/sanity.client';
 import { allPostsQuery } from '@/lib/sanity.query';
@@ -19,7 +20,7 @@ const BlogPage = async () => {
         آخرین اخبار و مقاله های برنامه نویسی
       </h1>
       <ul className="mt-4 flex flex-row gap-4">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<PostCardSkeleton />}>
           <PostsList posts={posts} />
         </Suspense>
       </ul>
