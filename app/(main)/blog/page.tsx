@@ -2,7 +2,7 @@ import PostsList from '@/components/Pages/PostsList';
 import { sanityFetch } from '@/lib/sanity.client';
 import { allPostsQuery } from '@/lib/sanity.query';
 import { PostsType } from '@/types';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const BlogPage = async () => {
   const posts: PostsType[] = await sanityFetch({
@@ -19,7 +19,9 @@ const BlogPage = async () => {
         آخرین اخبار و مقاله های برنامه نویسی
       </h1>
       <ul className="mt-4 flex flex-row gap-4">
-        <PostsList posts={posts} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <PostsList posts={posts} />
+        </Suspense>
       </ul>
     </section>
   );
