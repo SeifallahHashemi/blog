@@ -1,8 +1,12 @@
 'use client';
 
-import CommentCard from '@/components/Comments/CommentCard';
 import useInfiniteComments from '@/hooks/useInfiniteComments';
 import React from 'react';
+import dynamic from 'next/dynamic';
+
+const CommentCard = dynamic(() => import('@/components/Comments/CommentCard'), {
+  ssr: false,
+});
 
 interface Props {
   postId: string;
