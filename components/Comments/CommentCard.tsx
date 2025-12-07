@@ -1,5 +1,6 @@
 'use client';
 
+import Reaction from '@/components/Comments/Reaction';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import React, { useMemo } from 'react';
 
@@ -98,8 +99,7 @@ const CommentCard = ({
         className="flex gap-4 text-sm text-gray-600 font-iranYWR"
         aria-label="Comment actions"
       >
-        <span aria-label="Likes">👍 {like_count}</span>
-        <span aria-label="Dislikes">👎 {dislike_count}</span>
+        <Reaction like_count={like_count} dislike_count={dislike_count} />
       </footer>
     </article>
   );
