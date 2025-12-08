@@ -79,7 +79,7 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
           </>
         )}
       </Field>
-      <TurnstileWidget onVerify={setToken} />
+      {/*<TurnstileWidget onVerify={setToken} />*/}
       <div className={'w-full flex justify-end items-center mt-4'}>
         <Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
