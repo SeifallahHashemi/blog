@@ -15,6 +15,8 @@ interface CommentCardProps {
   content: string;
   like_count: number;
   dislike_count: number;
+  id: string;
+  postId: string;
 }
 
 const CommentCard = ({
@@ -23,6 +25,8 @@ const CommentCard = ({
   dislike_count,
   like_count,
   content,
+  id,
+  postId,
 }: CommentCardProps) => {
   const formattedDate = useMemo(() => {
     if (!created_at) return '';
@@ -99,7 +103,12 @@ const CommentCard = ({
         className="flex gap-4 text-sm text-gray-600 font-iranYWR"
         aria-label="Comment actions"
       >
-        <Reaction like_count={like_count} dislike_count={dislike_count} />
+        <Reaction
+          like_count={like_count}
+          dislike_count={dislike_count}
+          commentId={id}
+          postId={postId}
+        />
       </footer>
     </article>
   );
