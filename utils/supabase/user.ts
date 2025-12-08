@@ -283,10 +283,10 @@ export const addReactionMutationOptions = (
       return (await res.json()) as { action: string | null };
     },
     onMutate: async ({ commentId, reaction }) => {
-      await qc.cancelQueries({ queryKey: ['comments', postId] });
+      await qc.cancelQueries({ queryKey: ['comments', commentId] });
 
       const previousData = qc.getQueriesData({
-        queryKey: ['comments', postId],
+        queryKey: ['comments', commentId],
       });
       console.log(previousData);
 
@@ -297,19 +297,19 @@ export const addReactionMutationOptions = (
         console.log(old);
       };
 
-      qc.setQueryData(['comments', postId], newData); // convert to setQueriesData ********
+      qc.setQueryData(['comments', commentId], newData); // convert to setQueriesData ********
 
       return { previousData };
     },
 
     // onError: (_err, _vars, context) => {
     //   if (context?.previousData) {
-    //     qc.setQueryData(['comments', postId], context.previousData);
+    //     qc.setQueryData(['comments', commentId], context.previousData);
     //   }
     // },
 
     onSettled: async () => {
-      await qc.invalidateQueries({ queryKey: ['comments', postId] });
+      await qc.invalidateQueries({ queryKey: ['comments', commentId] });
     },
   });
 };
