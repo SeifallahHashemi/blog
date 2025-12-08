@@ -99,10 +99,7 @@ const CommentCard = ({
           {content}
         </p>
       </section>
-      <footer
-        className="flex gap-4 text-sm text-gray-600 font-iranYWR"
-        aria-label="Comment actions"
-      >
+      <footer style={{ direction: 'ltr' }} aria-label="Comment actions">
         <Reaction
           like_count={like_count}
           dislike_count={dislike_count}
