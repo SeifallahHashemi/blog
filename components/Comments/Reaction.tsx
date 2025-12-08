@@ -1,16 +1,24 @@
 'use client';
 
 import { Separator } from '@/components/ui/separator';
+import useToggleReaction from '@/hooks/useToggleReaction';
 import React from 'react';
 import { SlDislike, SlLike } from 'react-icons/sl';
 
 const Reaction = ({
   like_count,
   dislike_count,
+  postId,
+  commentId,
 }: {
   like_count: number;
   dislike_count: number;
+  postId: string;
+  commentId: string;
 }) => {
+  console.log('postId in reaction:', postId);
+  console.log('commentId in reaction:', commentId);
+  // const {} = useToggleReaction(postId, commentId);
   return (
     <>
       <span
