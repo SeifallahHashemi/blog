@@ -16,7 +16,7 @@ const CommentsList = ({ postId }: Props) => {
   const { data } = useInfiniteComments(postId);
   const allComments = data?.pages.flatMap((page) => page.data) || [];
   console.log(allComments);
-  // repeat(auto-fit, minmax(100px,500px))
+
   return (
     <ul
       className={
