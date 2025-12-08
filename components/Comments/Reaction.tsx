@@ -17,7 +17,13 @@ const Reaction = ({
   postId: string;
   commentId: string;
 }) => {
-  const { mutate } = useToggleReaction(postId, commentId);
+  const { mutate, data, isPending, isSuccess } = useToggleReaction(
+    postId,
+    commentId
+  );
+  console.log('data', data);
+  console.log('isPending', isPending);
+  console.log('isSuccess', isSuccess);
 
   const reactionHandler = (reaction: 'like' | 'dislike') => {
     mutate({ commentId, reaction });
