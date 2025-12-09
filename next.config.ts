@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  typedRoutes: true,
   /* config options here */
   allowedDevOrigins: [
     'http://172.21.0.1:3000',
