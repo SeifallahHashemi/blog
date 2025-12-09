@@ -1,10 +1,16 @@
 'use client';
 
+import CircleLoadingSpinner from '@/components/Common/CircleLoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import useToggleReaction from '@/hooks/useToggleReaction';
+import { getClientQuery } from '@/lib/get-client-query';
+import { CommentPage } from '@/types';
+import { InfiniteData } from '@tanstack/react-query';
 import React from 'react';
 import { SlDislike, SlLike } from 'react-icons/sl';
+
+type CommentsInfiniteData = InfiniteData<CommentPage>;
 
 const Reaction = ({
   like_count,
@@ -17,10 +23,21 @@ const Reaction = ({
   postId: string;
   commentId: string;
 }) => {
+  const qc = getClientQuery();
+  const query = qc.getQueryData<CommentsInfiniteData>(['comments', postId]);
+  const pages = query?.pages ?? [];
+  const allData = pages.flatMap((page) => page.data);
+  const comment = allData.find((c) => c.id === commentId);
+  const likeCount = comment?.like_count ?? 0;
+  const dislikeCount = comment?.dislike_count ?? 0;
   const { mutate, data, isPending, isSuccess } = useToggleReaction(
     postId,
     commentId
   );
+
+  console.log(data, isPending, isSuccess);
+  console.log(postId, commentId);
+  console.log(likeCount, dislikeCount);
 
   const reactionHandler = (reaction: 'like' | 'dislike') => {
     mutate({ commentId, reaction });
@@ -39,7 +56,7 @@ const Reaction = ({
             'flex flex-row flex-nowrap gap-x-2 justify-center items-center'
           }
         >
-          <SlLike /> {like_count}
+          <SlLike /> {isPending ? likeCount : <CircleLoadingSpinner />}
         </span>
       </Button>
       <Button
@@ -53,7 +70,7 @@ const Reaction = ({
             'flex flex-row-reverse flex-nowrap gap-x-2 justify-center items-center'
           }
         >
-          <SlDislike /> {dislike_count}
+          <SlDislike /> {!isPending ? dislikeCount : <CircleLoadingSpinner />}
         </span>
       </Button>
     </ButtonGroup>
