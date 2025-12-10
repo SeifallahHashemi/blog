@@ -24,12 +24,13 @@ const Reaction = ({
   commentId: string;
 }) => {
   const qc = getClientQuery();
-  const query = qc.getQueryData<CommentsInfiniteData>(['comments', postId]);
+  const query = qc.getQueryData<CommentsInfiniteData>(['comments', commentId]);
   const pages = query?.pages ?? [];
   const allData = pages.flatMap((page) => page.data);
   const comment = allData.find((c) => c.id === commentId);
   const likeCount = comment?.like_count ?? 0;
   const dislikeCount = comment?.dislike_count ?? 0;
+
   const { mutate, data, isPending, isSuccess } = useToggleReaction(
     postId,
     commentId
