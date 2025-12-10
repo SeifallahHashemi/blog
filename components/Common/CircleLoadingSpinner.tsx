@@ -1,11 +1,12 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import React from 'react';
 
-const CircleLoadingSpinner = () => {
+const CircleLoadingSpinner = ({ className }: { className?: string }) => {
   return (
-    <div className={'absolute inset-0 flex justify-center items-center'}>
-      <div className={'sk-circle'}>
+    <div className={cn('', className)}>
+      <div className={'sk-circle size-5'}>
         <div className={'sk-circle1 sk-child'} />
         <div className={'sk-circle2 sk-child'} />
         <div className={'sk-circle3 sk-child'} />
