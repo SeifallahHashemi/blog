@@ -6,6 +6,7 @@ import { getClientQuery } from '@/lib/get-client-query';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { FormDevtoolsPlugin } from '@tanstack/react-form-devtools';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
 import { ThemeProvider } from 'next-themes';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
@@ -21,15 +22,16 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
             <NuqsAdapter>
               <QueryClientProvider client={queryClient}>
                 {children}
+                <ReactQueryDevtools initialIsOpen={false} />
               </QueryClientProvider>
             </NuqsAdapter>
           </MotionLenis>
         </ThemeDataProvider>
       </ThemeProvider>
-      <TanStackDevtools
+      {/*<TanStackDevtools
         config={{ hideUntilHover: true }}
         plugins={[FormDevtoolsPlugin()]}
-      />
+      />*/}
       <Toaster closeButton richColors theme="system" />
     </>
   );
