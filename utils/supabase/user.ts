@@ -282,34 +282,23 @@ export const addReactionMutationOptions = (
 
       return (await res.json()) as { action: string | null };
     },
-    onMutate: async ({ commentId, reaction }) => {
-      await qc.cancelQueries({ queryKey: ['comments', commentId] });
-
-      const previousData = qc.getQueriesData({
-        queryKey: ['comments', commentId],
+    // optimistic update
+    onMutate: async ({ reaction }: { reaction: 'like' | 'dislike' }) => {
+      await qc.cancelQueries({
+        queryKey: ['comments', postId],
       });
-      console.log(previousData);
 
-      if (!previousData) return { previousData: null };
-
-      const newData = (old: unknown) => {
-        if (!old) console.log('No old data found for comments query');
-        console.log(old);
-      };
-
-      qc.setQueryData(['comments', commentId], newData); // convert to setQueriesData ********
-
-      return { previousData };
+      const previousData = qc.getQueryData(['comments', postId]);
     },
 
     // onError: (_err, _vars, context) => {
     //   if (context?.previousData) {
-    //     qc.setQueryData(['comments', commentId], context.previousData);
+    //     qc.setQueryData(['comments', postId], context.previousData);
     //   }
     // },
 
     onSettled: async () => {
-      await qc.invalidateQueries({ queryKey: ['comments', commentId] });
+      await qc.invalidateQueries({ queryKey: ['comments', postId] });
     },
   });
 };
