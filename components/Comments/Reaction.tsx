@@ -56,12 +56,12 @@ const Reaction = ({
             'flex flex-row flex-nowrap gap-x-2 justify-center items-center'
           }
         >
-          <SlLike /> {isPending ? likeCount : <CircleLoadingSpinner />}
+          <SlLike /> {!isPending ? likeCount : <CircleLoadingSpinner />}
         </span>
       </Button>
       <Button
         variant={'outline'}
-        className={'cursor-pointer'}
+        className={'cursor-pointer relative'}
         onClick={() => reactionHandler('dislike')}
       >
         <span
@@ -70,7 +70,14 @@ const Reaction = ({
             'flex flex-row-reverse flex-nowrap gap-x-2 justify-center items-center'
           }
         >
-          <SlDislike /> {!isPending ? dislikeCount : <CircleLoadingSpinner />}
+          <SlDislike />{' '}
+          {!isPending ? (
+            dislikeCount
+          ) : (
+            <CircleLoadingSpinner
+              className={'absolute inset-0 flex justify-center items-center'}
+            />
+          )}
         </span>
       </Button>
     </ButtonGroup>
