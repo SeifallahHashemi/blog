@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(
   request: Request,
-  { params }: { params: { commentId: string } }
+  context: { params: Promise<{ commentId: string }> }
 ) {
   const ip =
     request.headers.get('x-forwarded-for') ??
@@ -17,7 +17,8 @@ export async function POST(
       { error: 'محدودیت درخواست فعال شده.' },
       { status: 429 }
     );
-  const commentId = params.commentId;
+
+  const { commentId } = await context.params;
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
   const user = userData?.user ?? null;
