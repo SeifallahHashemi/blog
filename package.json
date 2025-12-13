@@ -68,6 +68,7 @@
     "tailwindcss-animate": "^1.0.7",
     "timeago-react": "^3.0.7",
     "timeago.js": "^4.0.2",
+    "use-debounce": "^10.0.6",
     "zod": "^4.1.12",
     "zustand": "^5.0.8"
   },
