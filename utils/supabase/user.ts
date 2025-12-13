@@ -284,18 +284,100 @@ export const addReactionMutationOptions = (
     },
     // optimistic update
     onMutate: async ({ reaction }: { reaction: 'like' | 'dislike' }) => {
-      await qc.cancelQueries({
-        queryKey: ['comments', postId],
-      });
+      await qc.cancelQueries({ queryKey: ['comments', postId] });
 
-      const previousData = qc.getQueryData(['comments', postId]);
+      const previousData = qc.getQueryData<InfiniteData<CommentPage>>([
+        'comments',
+        postId,
+      ]);
+
+      qc.setQueryData<InfiniteData<CommentPage>>(
+        ['comments', postId],
+        (old) => {
+          if (!old) return old;
+
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              data: page.data.map((comment) =>
+                comment.id === commentId
+                  ? {
+                      ...comment,
+                      like_count:
+                        reaction === 'like'
+                          ? comment.like_count + 1
+                          : comment.like_count,
+
+                      dislike_count:
+                        reaction === 'dislike'
+                          ? comment.dislike_count + 1
+                          : comment.dislike_count,
+
+                      // like_count: reaction === 'dislike' ? Math.max(0, comment.like_count - 1) : comment.like_count,
+                      // dislike_count: reaction === 'like' ? Math.max(0, comment.dislike_count - 1) : comment.dislike_count,
+                    }
+                  : comment
+              ),
+            })),
+          };
+        }
+      );
+
+      return { previousData };
     },
 
-    // onError: (_err, _vars, context) => {
-    //   if (context?.previousData) {
-    //     qc.setQueryData(['comments', postId], context.previousData);
-    //   }
-    // },
+    onSuccess: (data, { reaction }) => {
+      const action = data.action;
+
+      qc.setQueryData<InfiniteData<CommentPage>>(
+        ['comments', postId],
+        (old) => {
+          if (!old) return old;
+
+          let likeDelta = 0;
+          let dislikeDelta = 0;
+
+          if (reaction === 'like') {
+            if (action === 'added') likeDelta = +1;
+            if (action === 'removed') likeDelta = -1;
+            if (action === 'switched') {
+              likeDelta = +1;
+              dislikeDelta = -1;
+            }
+          } else if (reaction === 'dislike') {
+            if (action === 'added') dislikeDelta = +1;
+            if (action === 'removed') dislikeDelta = -1;
+            if (action === 'switched') {
+              dislikeDelta = +1;
+              likeDelta = -1;
+            }
+          }
+
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              data: page.data.map((comment) =>
+                comment.id === commentId
+                  ? {
+                      ...comment,
+                      like_count: comment.like_count + likeDelta,
+                      dislike_count: comment.dislike_count + dislikeDelta,
+                    }
+                  : comment
+              ),
+            })),
+          };
+        }
+      );
+    },
+
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        qc.setQueryData(['comments', postId], context.previousData);
+      }
+    },
 
     onSettled: async () => {
       await qc.invalidateQueries({ queryKey: ['comments', postId] });
