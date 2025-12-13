@@ -9,6 +9,7 @@ import { CommentPage } from '@/types';
 import { InfiniteData } from '@tanstack/react-query';
 import React from 'react';
 import { SlDislike, SlLike } from 'react-icons/sl';
+import { useDebouncedCallback } from 'use-debounce';
 
 type CommentsInfiniteData = InfiniteData<CommentPage>;
 
@@ -36,9 +37,12 @@ const Reaction = ({
   console.log(postId, commentId);
   console.log(likeCount, dislikeCount);
 
-  const reactionHandler = (reaction: 'like' | 'dislike') => {
-    mutate({ commentId, reaction });
-  };
+  const reactionHandler = useDebouncedCallback(
+    (reaction: 'like' | 'dislike') => {
+      mutate({ commentId, reaction });
+    },
+    300
+  );
 
   return (
     <ButtonGroup className={'font-iranYWL font-medium text-sm'}>
@@ -46,6 +50,7 @@ const Reaction = ({
         variant={'outline'}
         className={'cursor-pointer'}
         onClick={() => reactionHandler('like')}
+        disabled={isPending}
       >
         <span
           aria-label="Likes"
@@ -60,6 +65,7 @@ const Reaction = ({
         variant={'outline'}
         className={'cursor-pointer relative'}
         onClick={() => reactionHandler('dislike')}
+        disabled={isPending}
       >
         <span
           aria-label="Dislikes"
