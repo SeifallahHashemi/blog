@@ -13,18 +13,14 @@ import { SlDislike, SlLike } from 'react-icons/sl';
 type CommentsInfiniteData = InfiniteData<CommentPage>;
 
 const Reaction = ({
-  like_count,
-  dislike_count,
   postId,
   commentId,
 }: {
-  like_count: number;
-  dislike_count: number;
   postId: string;
   commentId: string;
 }) => {
   const qc = getClientQuery();
-  const query = qc.getQueryData<CommentsInfiniteData>(['comments', commentId]);
+  const query = qc.getQueryData<CommentsInfiniteData>(['comments', postId]);
   const pages = query?.pages ?? [];
   const allData = pages.flatMap((page) => page.data);
   const comment = allData.find((c) => c.id === commentId);
