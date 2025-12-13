@@ -327,50 +327,8 @@ export const addReactionMutationOptions = (
       return { previousData };
     },
 
-    onSuccess: (data, { reaction }) => {
-      const action = data.action;
-
-      qc.setQueryData<InfiniteData<CommentPage>>(
-        ['comments', postId],
-        (old) => {
-          if (!old) return old;
-
-          let likeDelta = 0;
-          let dislikeDelta = 0;
-
-          if (reaction === 'like') {
-            if (action === 'added') likeDelta = +1;
-            if (action === 'removed') likeDelta = -1;
-            if (action === 'switched') {
-              likeDelta = +1;
-              dislikeDelta = -1;
-            }
-          } else if (reaction === 'dislike') {
-            if (action === 'added') dislikeDelta = +1;
-            if (action === 'removed') dislikeDelta = -1;
-            if (action === 'switched') {
-              dislikeDelta = +1;
-              likeDelta = -1;
-            }
-          }
-
-          return {
-            ...old,
-            pages: old.pages.map((page) => ({
-              ...page,
-              data: page.data.map((comment) =>
-                comment.id === commentId
-                  ? {
-                      ...comment,
-                      like_count: comment.like_count + likeDelta,
-                      dislike_count: comment.dislike_count + dislikeDelta,
-                    }
-                  : comment
-              ),
-            })),
-          };
-        }
-      );
+    onSuccess: () => {
+      // No Change Needed
     },
 
     onError: (err, variables, context) => {
