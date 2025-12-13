@@ -13,8 +13,6 @@ interface CommentCardProps {
   };
   created_at: string;
   content: string;
-  like_count: number;
-  dislike_count: number;
   id: string;
   postId: string;
 }
@@ -22,8 +20,6 @@ interface CommentCardProps {
 const CommentCard = ({
   author,
   created_at,
-  dislike_count,
-  like_count,
   content,
   id,
   postId,
