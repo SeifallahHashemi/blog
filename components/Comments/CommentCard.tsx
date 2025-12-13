@@ -100,12 +100,7 @@ const CommentCard = ({
         </p>
       </section>
       <footer style={{ direction: 'ltr' }} aria-label="Comment actions">
-        <Reaction
-          like_count={like_count}
-          dislike_count={dislike_count}
-          commentId={id}
-          postId={postId}
-        />
+        <Reaction commentId={id} postId={postId} />
       </footer>
     </article>
   );
