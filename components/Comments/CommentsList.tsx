@@ -1,5 +1,6 @@
 'use client';
 
+import useCommentsRealtime from '@/hooks/useCommentsRealtime';
 import useInfiniteComments from '@/hooks/useInfiniteComments';
 import React from 'react';
 import dynamic from 'next/dynamic';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const CommentsList = ({ postId }: Props) => {
+  useCommentsRealtime(postId);
   const { data } = useInfiniteComments(postId);
   const allComments = data?.pages.flatMap((page) => page.data) || [];
   console.log(allComments);
@@ -29,8 +31,6 @@ const CommentsList = ({ postId }: Props) => {
             author={comment.profiles}
             created_at={comment.created_at}
             content={comment.content}
-            like_count={comment.like_count}
-            dislike_count={comment.dislike_count}
             id={comment.id}
             postId={comment.post_id}
           />
