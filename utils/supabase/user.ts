@@ -1,3 +1,4 @@
+import { UserProfile } from '@/types';
 import {
   getUser,
   getUserProfile,
@@ -58,9 +59,19 @@ interface Comment {
   created_at: string;
   like_count: number;
   dislike_count: number;
-  profiles: { id: string; username: string; user_id: string };
+  profiles: {
+    id: string;
+    username: string;
+    user_id: string;
+    full_name: string;
+  };
   comment_reactions?: { reaction: 'like' | 'dislike'; user_id: string }[];
 }
+
+type TempProfile = Pick<
+  UserProfile,
+  'id' | 'username' | 'user_id' | 'full_name'
+>;
 
 interface CommentPage {
   data: Comment[];
@@ -112,10 +123,12 @@ export const addNewCommentMutationOptions = (
       parentId = null,
       content,
       token,
+      commentAuthor,
     }: {
       parentId?: string | null;
       content: string;
       token: string;
+      commentAuthor: TempProfile;
     }) => {
       const res = await fetch('/api/comments', {
         method: 'POST',
@@ -149,12 +162,17 @@ export const addNewCommentMutationOptions = (
             id: optimisticId,
             post_id: postId,
             parent_id: newComment.parentId ?? null,
-            user_id: 'me-optimistic',
+            user_id: newComment.commentAuthor.user_id,
             content: newComment.content,
             created_at: createdAt,
             like_count: 0,
             dislike_count: 0,
-            profiles: { id: 'me', username: 'You', user_id: '2025' },
+            profiles: {
+              id: newComment.commentAuthor.id,
+              username: newComment.commentAuthor.username,
+              user_id: newComment.commentAuthor.user_id,
+              full_name: newComment.commentAuthor.full_name,
+            },
             comment_reactions: [],
           };
 
