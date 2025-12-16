@@ -81,3 +81,14 @@ export interface CommentsInfiniteData {
   pages: CommentPage[];
   pageParams: (string | null)[];
 }
+
+export interface UserProfile {
+  id: string;
+  username: string;
+  full_name: string;
+  avatar_url: string;
+  created_at: string | Date;
+  is_premium: boolean;
+  user_id: string;
+  mobile: string | null;
+}
