@@ -10,7 +10,7 @@ interface CommentCardProps {
     username: string;
     alt?: string;
     avatar_url: string;
-    id: string;
+    user_id: string;
   };
   created_at: string;
   content: string;
@@ -47,11 +47,15 @@ const CommentCard = ({
 
   if (!author) return null;
 
-  const { full_name, username, avatar_url, alt } = author;
+  const { full_name, username, avatar_url, alt, user_id } = author;
 
   const isDefaultAvatar =
     avatar_url === 'https://example.com/default-avatar.png';
   const avatarUrl = isDefaultAvatar ? undefined : avatar_url;
+
+  const filteredReactions = reactions?.filter(
+    (reaction) => reaction.user_id === user_id
+  );
 
   return (
     <article className="flex flex-col gap-y-1.5 rounded-lg shadow-sm bg-primary-bg border border-zinc-200 dark:border-zinc-800 p-2">
@@ -99,7 +103,11 @@ const CommentCard = ({
         </p>
       </section>
       <footer style={{ direction: 'ltr' }} aria-label="Comment actions">
-        <Reaction commentId={id} postId={postId} reactions={reactions} />
+        <Reaction
+          commentId={id}
+          postId={postId}
+          reactions={filteredReactions}
+        />
       </footer>
     </article>
   );
