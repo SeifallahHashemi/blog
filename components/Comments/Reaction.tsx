@@ -16,11 +16,9 @@ type CommentsInfiniteData = InfiniteData<CommentPage>;
 const Reaction = ({
   postId,
   commentId,
-  reactions,
 }: {
   postId: string;
   commentId: string;
-  reactions?: { reaction: 'like' | 'dislike'; user_id: string }[];
 }) => {
   const qc = getClientQuery();
   const query = qc.getQueryData<CommentsInfiniteData>(['comments', postId]);
