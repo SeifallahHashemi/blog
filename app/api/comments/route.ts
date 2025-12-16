@@ -8,7 +8,7 @@ interface Reaction {
 }
 
 interface Row {
-  reactions?: Reaction[];
+  comment_reactions?: Reaction[];
   created_at: string;
   [key: string]: unknown;
 }
@@ -70,13 +70,13 @@ export async function GET(request: Request) {
   if (error) return NextResponse.json({ error }, { status: 500 });
 
   const rows = (data || []).map((r: Row) => {
-    const like_count = (r.reactions || []).filter(
+    const like_count = (r.comment_reactions || []).filter(
       (x: Reaction) => x.reaction === 'like'
     ).length;
-    const dislike_count = (r.reactions || []).filter(
+    const dislike_count = (r.comment_reactions || []).filter(
       (x: Reaction) => x.reaction === 'dislike'
     ).length;
-    return { ...r, like_count, dislike_count, reactions: undefined };
+    return { ...r, like_count, dislike_count, comment_reactions: undefined };
   });
 
   const nextCursor = rows.length > 0 ? rows[rows.length - 1].created_at : null;
