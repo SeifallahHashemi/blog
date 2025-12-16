@@ -28,6 +28,13 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
   const userStored = useUserStore((state) => state.user);
   console.log(userStored);
 
+  const userInfo = {
+    id: userStored?.id ?? '',
+    full_name: userStored?.fullName ?? '',
+    username: userStored?.name ?? '',
+    user_id: userStored?.id ?? '',
+  };
+
   const { mutate } = useCreateComment(postId);
   const { handleSubmit, Field, Subscribe, reset } = useForm({
     defaultValues,
@@ -40,6 +47,7 @@ const CommentForm = ({ postId, parentId }: PageParams) => {
           content: value.comment,
           parentId: parentId,
           token,
+          commentAuthor: userInfo,
         },
         {
           onSuccess: () => {
