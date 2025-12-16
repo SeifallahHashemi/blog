@@ -50,7 +50,7 @@ export async function GET(request: Request) {
       updated_at,
       like_count,
       dislike_count,
-      profiles:profiles (id, username, avatar_url, full_name),
+      profiles:profiles (id, username, avatar_url, full_name, user_id),
       comment_reactions (reaction, user_id)
       `
     )
