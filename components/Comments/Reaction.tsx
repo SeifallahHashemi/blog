@@ -7,7 +7,7 @@ import useToggleReaction from '@/hooks/useToggleReaction';
 import { getClientQuery } from '@/lib/get-client-query';
 import { CommentPage } from '@/types';
 import { InfiniteData } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import { SlDislike, SlLike } from 'react-icons/sl';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -28,21 +28,35 @@ const Reaction = ({
   const likeCount = comment?.like_count ?? 0;
   const dislikeCount = comment?.dislike_count ?? 0;
 
-  const { mutate, data, isPending, isSuccess } = useToggleReaction(
+  const [pendingReaction, setPendingReaction] = useState<
+    'like' | 'dislike' | null
+  >(null);
+
+  const { mutate, isPending, data, isSuccess } = useToggleReaction(
     postId,
     commentId
   );
 
-  console.log(data, isPending, isSuccess);
-  console.log(postId, commentId);
-  console.log(likeCount, dislikeCount);
-
   const reactionHandler = useDebouncedCallback(
     (reaction: 'like' | 'dislike') => {
-      mutate({ commentId, reaction });
+      setPendingReaction(reaction);
+      mutate(
+        { commentId, reaction },
+        {
+          onSettled: () => {
+            setPendingReaction(null);
+          },
+        }
+      );
     },
     300
   );
+
+  const isLikePending = isPending && pendingReaction === 'like';
+  const isDislikePending = isPending && pendingReaction === 'dislike';
+
+  console.log(data);
+  console.log(isSuccess);
 
   return (
     <ButtonGroup className={'font-iranYWL font-medium text-sm'}>
@@ -58,7 +72,8 @@ const Reaction = ({
             'flex flex-row flex-nowrap gap-x-2 justify-center items-center'
           }
         >
-          <SlLike /> {!isPending ? likeCount : <CircleLoadingSpinner />}
+          <SlLike />
+          {isLikePending ? <CircleLoadingSpinner /> : likeCount}
         </span>
       </Button>
       <Button
@@ -74,13 +89,7 @@ const Reaction = ({
           }
         >
           <SlDislike />{' '}
-          {!isPending ? (
-            dislikeCount
-          ) : (
-            <CircleLoadingSpinner
-              className={'absolute inset-0 flex justify-center items-center'}
-            />
-          )}
+          {isDislikePending ? <CircleLoadingSpinner /> : dislikeCount}
         </span>
       </Button>
     </ButtonGroup>
