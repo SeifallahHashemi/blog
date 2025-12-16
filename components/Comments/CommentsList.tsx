@@ -33,6 +33,7 @@ const CommentsList = ({ postId }: Props) => {
             content={comment.content}
             id={comment.id}
             postId={comment.post_id}
+            reactions={comment.comment_reactions}
           />
         </li>
       ))}
