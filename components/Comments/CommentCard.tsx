@@ -10,11 +10,13 @@ interface CommentCardProps {
     username: string;
     alt?: string;
     avatar_url: string;
+    id: string;
   };
   created_at: string;
   content: string;
   id: string;
   postId: string;
+  reactions?: { reaction: 'like' | 'dislike'; user_id: string }[];
 }
 
 const CommentCard = ({
@@ -23,6 +25,7 @@ const CommentCard = ({
   content,
   id,
   postId,
+  reactions,
 }: CommentCardProps) => {
   const formattedDate = useMemo(() => {
     if (!created_at) return '';
@@ -96,7 +99,7 @@ const CommentCard = ({
         </p>
       </section>
       <footer style={{ direction: 'ltr' }} aria-label="Comment actions">
-        <Reaction commentId={id} postId={postId} />
+        <Reaction commentId={id} postId={postId} reactions={reactions} />
       </footer>
     </article>
   );
