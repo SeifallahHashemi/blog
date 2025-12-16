@@ -39,7 +39,7 @@ export async function POST(
     p_reaction: reaction,
   });
 
-  console.log('Supabase RPC result:', { data, error });
+  // console.log('Supabase RPC result:', { data, error });
   if (error) return NextResponse.json({ error }, { status: 500 });
 
   return NextResponse.json({ action: data?.[0]?.action || null });
