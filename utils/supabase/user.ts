@@ -58,7 +58,8 @@ interface Comment {
   created_at: string;
   like_count: number;
   dislike_count: number;
-  profiles: { id: string; username: string };
+  profiles: { id: string; username: string; user_id: string };
+  comment_reactions?: { reaction: 'like' | 'dislike'; user_id: string }[];
 }
 
 interface CommentPage {
@@ -153,7 +154,8 @@ export const addNewCommentMutationOptions = (
             created_at: createdAt,
             like_count: 0,
             dislike_count: 0,
-            profiles: { id: 'me', username: 'You' },
+            profiles: { id: 'me', username: 'You', user_id: '2025' },
+            comment_reactions: [],
           };
 
           newPages[0] = {
