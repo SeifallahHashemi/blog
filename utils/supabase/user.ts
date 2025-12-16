@@ -253,7 +253,7 @@ interface CommentReaction {
   like_count: number;
   dislike_count: number;
 
-  user_reaction: ReactionType | null;
+  reaction: ReactionType | null;
 
   [key: string]: unknown;
 }
