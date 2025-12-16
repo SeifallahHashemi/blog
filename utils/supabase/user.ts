@@ -245,23 +245,23 @@ interface ToggleReactionVars {
   reaction: ReactionType;
 }
 
-interface CommentReaction {
-  id: string;
-  content: string;
-  created_at: string;
+// interface CommentReaction {
+//   id: string;
+//   content: string;
+//   created_at: string;
+//
+//   like_count: number;
+//   dislike_count: number;
+//
+//   reaction: ReactionType | null;
+//
+//   [key: string]: unknown;
+// }
 
-  like_count: number;
-  dislike_count: number;
-
-  reaction: ReactionType | null;
-
-  [key: string]: unknown;
-}
-
-interface CommentsQueryResponse {
-  data: CommentReaction[];
-  nextCursor: string | null;
-}
+// interface CommentsQueryResponse {
+//   data: CommentReaction[];
+//   nextCursor: string | null;
+// }
 
 export const addReactionMutationOptions = (
   qc: QueryClient,
