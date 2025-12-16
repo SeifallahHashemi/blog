@@ -16,9 +16,11 @@ type CommentsInfiniteData = InfiniteData<CommentPage>;
 const Reaction = ({
   postId,
   commentId,
+  reactions,
 }: {
   postId: string;
   commentId: string;
+  reactions?: { reaction: 'like' | 'dislike'; user_id: string }[];
 }) => {
   const qc = getClientQuery();
   const query = qc.getQueryData<CommentsInfiniteData>(['comments', postId]);
@@ -32,10 +34,7 @@ const Reaction = ({
     'like' | 'dislike' | null
   >(null);
 
-  const { mutate, isPending, data, isSuccess } = useToggleReaction(
-    postId,
-    commentId
-  );
+  const { mutate, isPending } = useToggleReaction(postId, commentId);
 
   const reactionHandler = useDebouncedCallback(
     (reaction: 'like' | 'dislike') => {
@@ -54,9 +53,6 @@ const Reaction = ({
 
   const isLikePending = isPending && pendingReaction === 'like';
   const isDislikePending = isPending && pendingReaction === 'dislike';
-
-  console.log(data);
-  console.log(isSuccess);
 
   return (
     <ButtonGroup className={'font-iranYWL font-medium text-sm'}>
