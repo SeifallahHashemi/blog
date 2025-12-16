@@ -51,7 +51,7 @@ export async function GET(request: Request) {
       like_count,
       dislike_count,
       profiles:profiles (id, username, avatar_url, full_name),
-      reactions:comment_reactions (reaction)
+      comment_reactions (reaction, user_id)
       `
     )
     .eq('post_id', postId);
