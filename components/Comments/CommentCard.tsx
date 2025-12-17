@@ -25,7 +25,6 @@ const CommentCard = ({
   content,
   id,
   postId,
-  reactions,
 }: CommentCardProps) => {
   const formattedDate = useMemo(() => {
     if (!created_at) return '';
@@ -47,7 +46,7 @@ const CommentCard = ({
 
   if (!author) return null;
 
-  const { full_name, username, avatar_url, alt, user_id } = author;
+  const { full_name, username, avatar_url, alt } = author;
 
   const isDefaultAvatar =
     avatar_url === 'https://example.com/default-avatar.png';
