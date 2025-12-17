@@ -11,6 +11,7 @@ import {
   type InfiniteData,
   type QueryClient,
 } from '@tanstack/react-query';
+import { RefObject } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const userOptions = queryOptions({
@@ -65,7 +66,7 @@ interface Comment {
     user_id: string;
     full_name: string;
   };
-  comment_reactions?: { reaction: 'like' | 'dislike'; user_id: string }[];
+  comment_reactions: { reaction: 'like' | 'dislike' | null; user_id: string }[];
 }
 
 type TempProfile = Pick<
@@ -286,7 +287,8 @@ interface ToggleReactionVars {
 export const addReactionMutationOptions = (
   qc: QueryClient,
   commentId: string,
-  postId: string
+  postId: string,
+  reactionLockRef: RefObject<Set<string>>
 ) => {
   return mutationOptions({
     mutationFn: async ({ commentId, reaction }: ToggleReactionVars) => {
@@ -304,6 +306,10 @@ export const addReactionMutationOptions = (
     },
     // optimistic update
     onMutate: async ({ reaction }: { reaction: 'like' | 'dislike' }) => {
+      if (reactionLockRef.current.has(commentId)) return;
+
+      reactionLockRef.current.add(commentId);
+
       await qc.cancelQueries({ queryKey: ['comments', postId] });
 
       const previousData = qc.getQueryData<InfiniteData<CommentPage>>([
@@ -320,25 +326,56 @@ export const addReactionMutationOptions = (
             ...old,
             pages: old.pages.map((page) => ({
               ...page,
-              data: page.data.map((comment) =>
-                comment.id === commentId
-                  ? {
-                      ...comment,
-                      like_count:
-                        reaction === 'like'
-                          ? comment.like_count + 1
-                          : comment.like_count,
+              data: page.data.map((comment) => {
+                if (comment.id !== commentId) return comment;
 
-                      dislike_count:
-                        reaction === 'dislike'
-                          ? comment.dislike_count + 1
-                          : comment.dislike_count,
+                // const filteredReactions = comment.comment_reactions?.filter(
+                //   (r) => r.user_id !== comment.user_id
+                // );
 
-                      // like_count: reaction === 'dislike' ? Math.max(0, comment.like_count - 1) : comment.like_count,
-                      // dislike_count: reaction === 'like' ? Math.max(0, comment.dislike_count - 1) : comment.dislike_count,
+                const prevReaction =
+                  comment.comment_reactions?.find(
+                    (r) => r.user_id === comment.user_id
+                  )?.reaction ?? null;
+
+                let like = comment.like_count;
+                let dislike = comment.dislike_count;
+
+                let nextReaction: ReactionType | null = prevReaction;
+
+                if (prevReaction === reaction) {
+                  if (reaction === 'like') like--;
+                  else dislike--;
+                  nextReaction = null;
+                } else {
+                  if (prevReaction === 'like') like--;
+                  if (prevReaction === 'dislike') dislike--;
+
+                  if (reaction === 'like') like++;
+                  else dislike++;
+
+                  nextReaction = reaction;
+                }
+
+                const newCommentReactions = comment.comment_reactions.map(
+                  (r) => {
+                    if (r.user_id === comment.user_id) {
+                      return {
+                        ...r,
+                        reaction: nextReaction,
+                      };
                     }
-                  : comment
-              ),
+                    return r;
+                  }
+                );
+
+                return {
+                  ...comment,
+                  like_count: Math.max(0, like),
+                  dislike_count: Math.max(0, dislike),
+                  comment_reactions: newCommentReactions,
+                };
+              }),
             })),
           };
         }
@@ -359,6 +396,7 @@ export const addReactionMutationOptions = (
 
     onSettled: async () => {
       await qc.invalidateQueries({ queryKey: ['comments', postId] });
+      reactionLockRef.current.delete(commentId);
     },
   });
 };
