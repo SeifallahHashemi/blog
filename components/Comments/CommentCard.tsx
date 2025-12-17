@@ -53,10 +53,6 @@ const CommentCard = ({
     avatar_url === 'https://example.com/default-avatar.png';
   const avatarUrl = isDefaultAvatar ? undefined : avatar_url;
 
-  const filteredReactions = reactions?.filter(
-    (reaction) => reaction.user_id === user_id
-  );
-
   return (
     <article className="flex flex-col gap-y-1.5 rounded-lg shadow-sm bg-primary-bg border border-zinc-200 dark:border-zinc-800 p-2">
       <header className="flex justify-between items-start mb-2">
@@ -103,11 +99,7 @@ const CommentCard = ({
         </p>
       </section>
       <footer style={{ direction: 'ltr' }} aria-label="Comment actions">
-        <Reaction
-          commentId={id}
-          postId={postId}
-          reactions={filteredReactions}
-        />
+        <Reaction commentId={id} postId={postId} />
       </footer>
     </article>
   );
