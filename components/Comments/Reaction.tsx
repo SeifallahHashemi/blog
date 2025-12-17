@@ -7,7 +7,7 @@ import useToggleReaction from '@/hooks/useToggleReaction';
 import { getClientQuery } from '@/lib/get-client-query';
 import { CommentPage } from '@/types';
 import { InfiniteData } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { SlDislike, SlLike } from 'react-icons/sl';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -28,11 +28,18 @@ const Reaction = ({
   const likeCount = comment?.like_count ?? 0;
   const dislikeCount = comment?.dislike_count ?? 0;
 
+  // React State Management
   const [pendingReaction, setPendingReaction] = useState<
     'like' | 'dislike' | null
   >(null);
 
-  const { mutate, isPending } = useToggleReaction(postId, commentId);
+  const reactionLockRef = useRef<Set<string>>(new Set());
+
+  const { mutate, isPending } = useToggleReaction(
+    postId,
+    commentId,
+    reactionLockRef
+  );
 
   const reactionHandler = useDebouncedCallback(
     (reaction: 'like' | 'dislike') => {
