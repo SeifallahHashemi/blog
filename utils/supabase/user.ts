@@ -134,7 +134,13 @@ export const addNewCommentMutationOptions = (
       const res = await fetch('/api/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId, parentId, content, token }),
+        body: JSON.stringify({
+          postId,
+          parentId,
+          content,
+          token,
+          commentAuthor,
+        }),
       });
       if (!res.ok) throw new Error('خطا در ارسال کامنت');
       return res.json();
@@ -194,8 +200,8 @@ export const addNewCommentMutationOptions = (
       };
     },
     onError: (
-      err,
-      newComment,
+      _err,
+      _newComment,
       context:
         | {
             previousData: InfiniteData<CommentPage> | undefined;
@@ -220,7 +226,7 @@ export const addNewCommentMutationOptions = (
     // مرحله ۳: وقتی درخواست موفق بود، کامنت جعلی رو با کامنت واقعی جایگزین کن
     onSuccess: (
       data,
-      variables,
+      _variables,
       context:
         | {
             previousData: InfiniteData<CommentPage> | undefined;
@@ -388,7 +394,7 @@ export const addReactionMutationOptions = (
       // No Change Needed
     },
 
-    onError: (err, variables, context) => {
+    onError: (_err, _variables, context) => {
       if (context?.previousData) {
         qc.setQueryData(['comments', postId], context.previousData);
       }
