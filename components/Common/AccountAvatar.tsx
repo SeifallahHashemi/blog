@@ -27,6 +27,8 @@ export default function AccountAvatar() {
   const { data: userData } = useSuspenseQuery(userProfileOptions(data.id));
   const router = useRouter();
 
+  type RoutePath = Parameters<typeof router.push>[0];
+
   console.log(data);
   console.log(userData);
 
@@ -34,7 +36,7 @@ export default function AccountAvatar() {
     userData['avatar_url'] === 'https://example.com/default-avatar.png';
   const avatarUrl = isDefaultAvatar ? undefined : userData['avatar_url'];
 
-  const linkHandler = (path: string) => {
+  const linkHandler = (path: RoutePath) => {
     router.push(path);
   };
 
@@ -97,7 +99,7 @@ export default function AccountAvatar() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup dir={'rtl'}>
           <DropdownMenuItem
-            onSelect={() => linkHandler('/profile')}
+            onSelect={() => linkHandler('/profile' as RoutePath)}
             className={'cursor-pointer'}
           >
             <HiOutlineHomeModern
