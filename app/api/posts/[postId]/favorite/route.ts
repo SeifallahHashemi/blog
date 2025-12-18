@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 
 export async function POST(
   request: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) {
-  const postId = params.postId;
+  const postId = (await params).postId;
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
   const user = userData!.user ?? null;
@@ -13,7 +13,7 @@ export async function POST(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   // check existing data
-  const { data: existingData, error: existingError } = await supabase
+  const { data: existingData } = await supabase
     .from('user_favorites')
     .select('*')
     .eq('post_id', postId)
