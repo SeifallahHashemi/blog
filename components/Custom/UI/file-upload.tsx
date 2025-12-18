@@ -7,6 +7,7 @@ import {
   useFileUpload,
 } from '@/hooks/use-file-upload';
 import { AlertCircleIcon, CloudUpload, File, XIcon } from 'lucide-react';
+import Image from 'next/image';
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   const fileType = file.file.type;
@@ -14,10 +15,13 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
     // return preview
     return (
       <div className="aspect-square size-10 overflow-hidden rounded-md">
-        <img
+        <Image
           src={URL.createObjectURL(file.file as Blob)}
           className="object-fill"
           alt={'file preview'}
+          width={200}
+          height={200}
+          unoptimized
         />
       </div>
     );
@@ -35,7 +39,7 @@ export function FileUpload({
   placeholder,
   // description,
   required,
-  setValue,
+  setValueAction,
   accept,
   disabled,
 }: {
@@ -45,7 +49,7 @@ export function FileUpload({
   // description?: string;
   required?: boolean;
   disabled?: boolean;
-  setValue: (value: (File | FileMetadata)[]) => void;
+  setValueAction: (value: (File | FileMetadata)[]) => void;
   accept?: string;
 }) {
   const [
@@ -65,8 +69,8 @@ export function FileUpload({
     maxFiles,
     maxSize,
     accept,
-    onFilesChange: (files) => {
-      setValue(files.map((file) => file.file));
+    onFilesChangeAction: (files) => {
+      setValueAction(files.map((file) => file.file));
     },
   });
 
