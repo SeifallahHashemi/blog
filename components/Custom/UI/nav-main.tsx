@@ -17,6 +17,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { ChevronLeft, type LucideIcon } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 
 export function NavMain({
@@ -65,7 +66,7 @@ export function NavMain({
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild className={'text-xs'}>
-                            <Link href={subItem.url}>
+                            <Link href={subItem.url as Route}>
                               <span>{subItem.title}</span>
                             </Link>
                           </SidebarMenuSubButton>
