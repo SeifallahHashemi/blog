@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils';
+import React, { HTMLAttributeAnchorTarget } from 'react';
+import type { Route } from 'next';
 import { Link } from 'next-view-transitions';
 import { Url } from 'next/dist/shared/lib/router/router';
-import React, { HTMLAttributeAnchorTarget } from 'react';
 
 interface LinkProps {
   href: Url;
@@ -18,7 +19,7 @@ const RefLink = ({
 }: LinkProps) => {
   return (
     <Link
-      href={href}
+      href={href as Route}
       target={target}
       className={cn('', className)}
       rel={'noopener'}
