@@ -103,7 +103,12 @@ export function NavUser() {
                 {user['is_premium'] ? (
                   'کاربر ویژه'
                 ) : (
-                  <Link href={'/account/buy'} className={'flex-1 w-full'}>
+                  <Link
+                    href={{
+                      pathname: '/account/buy',
+                    }}
+                    className={'flex-1 w-full'}
+                  >
                     خرید اشتراک
                   </Link>
                 )}
