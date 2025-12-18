@@ -1,21 +1,23 @@
-"use client";
+'use client';
 
-import { AlertCircleIcon, XIcon, CloudUpload, File } from "lucide-react";
-import {
-  formatBytes,
-  useFileUpload,
-} from "@/hooks/use-file-upload";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { formatBytes, useFileUpload } from '@/hooks/use-file-upload';
+import { AlertCircleIcon, CloudUpload, File, XIcon } from 'lucide-react';
+import Image from 'next/image';
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   const fileType = file.file.type;
-  if (fileType.startsWith("image/")) {
+  if (fileType.startsWith('image/')) {
     // return preview
     return (
       <div className="aspect-square size-10 overflow-hidden rounded-md">
-        <img
+        <Image
           src={URL.createObjectURL(file.file as Blob)}
           className="object-fill"
+          width={200}
+          height={200}
+          unoptimized
+          alt={'file preview'}
         />
       </div>
     );
@@ -33,7 +35,7 @@ export function FileUpload({
   placeholder,
   // description,
   required,
-  setValue,
+  setValueAction,
   accept,
   name,
   disabled,
@@ -44,9 +46,9 @@ export function FileUpload({
   // description?: string;
   required?: boolean;
   disabled?: boolean;
-  setValue: (
+  setValueAction: (
     name: string,
-    value: any,
+    value: unknown,
     options?: {
       shouldValidate?: boolean;
       shouldDirty?: boolean;
@@ -73,8 +75,8 @@ export function FileUpload({
     maxFiles,
     maxSize,
     accept,
-    onFilesChange: (files) => {
-      setValue(
+    onFilesChangeAction: (files) => {
+      setValueAction(
         name,
         files.map((file) => file.file),
         { shouldValidate: true, shouldDirty: true, shouldTouch: true }
@@ -86,7 +88,7 @@ export function FileUpload({
     <div className="flex flex-col gap-2 pb-2">
       {/* Drop area */}
       <div
-        role="button"
+        // role="button"
         onClick={openFileDialog}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
