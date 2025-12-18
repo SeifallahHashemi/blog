@@ -1,6 +1,7 @@
 import { PostType, TagsType } from '@/app/(main)/blog/[...slug]/page';
 import { cn } from '@/lib/utils';
 import { AuthorProfileType } from '@/types';
+import type { Route } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import SharePost from '../Common/SharePost';
@@ -40,7 +41,7 @@ const PostSidebar = ({ className, info, tags, post }: SidebarProps) => {
           <div className="flex flex-col gap-y-1">
             <p className="basic-font-styles">{name}</p>
             <Link
-              href={xUrl}
+              href={xUrl as Route}
               className="font-sans text-sky-500"
               dir="ltr"
               target="_blank"
