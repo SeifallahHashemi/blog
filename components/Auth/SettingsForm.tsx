@@ -167,7 +167,7 @@ const SettingsForm = ({ userId }: { userId: string }) => {
                 <FileUpload
                   maxFiles={1}
                   maxSize={5000000}
-                  setValue={async (value) => {
+                  setValueAction={async (value) => {
                     await new Promise(() => {
                       setTimeout(() => {
                         field.handleChange(value);
