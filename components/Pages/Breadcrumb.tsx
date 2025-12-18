@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const Breadcrumb = () => {
   const pathname = usePathname();
   const segments = pathname.split('/').filter((segment) => segment);
+  type RoutePath = Parameters<typeof Link>[0]['href'];
 
   return (
     <ol
@@ -16,7 +17,7 @@ const Breadcrumb = () => {
         <li className="inline-flex items-center" key={i}>
           <Link
             className="flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
-            href={`/${item.toLowerCase()}`}
+            href={`/${item.toLowerCase()}` as RoutePath}
           >
             {/* Icon */}
             {item}
