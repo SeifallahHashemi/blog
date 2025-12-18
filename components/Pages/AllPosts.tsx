@@ -3,9 +3,9 @@
 import Badge from '@/components/Pages/Badge';
 import { cn } from '@/lib/utils';
 import { OptionalType, PostsType } from '@/types';
+import React from 'react';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
-import React from 'react';
 import { AiOutlineShareAlt } from 'react-icons/ai';
 import { IoHeartSharp } from 'react-icons/io5';
 import TimeAgo from 'timeago-react';
@@ -23,7 +23,10 @@ register('fa', editedPerLang);
 
 type TAllPosts = {
   className?: string;
-} & OptionalType<PostsType, '_id' | '_updatedAt' | 'description' | 'featured' | 'content'>;
+} & OptionalType<
+  PostsType,
+  '_id' | '_updatedAt' | 'description' | 'featured' | 'content'
+>;
 
 const fallbackCoverImage: string =
   'https://res.cloudinary.com/victoreke/image/upload/v1692608339/victoreke/blog.png';
@@ -43,7 +46,7 @@ const AllPosts = ({
   const slugify = title.replace(/\s+/g, '-');
   return (
     <Link
-      href={`/blog/${slug}/${slugify}`}
+      href={{ pathname: '/blog/[slug]/[slugify]', query: { slug, slugify } }}
       className={cn(className, 'group w-full')}
     >
       <article className={'space-y-2'}>
