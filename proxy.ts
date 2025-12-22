@@ -2,10 +2,7 @@ import { composeMiddleware } from '@/lib/middleware-composer';
 import { rateLimitMiddleware } from '@/lib/middleware/rate-limit';
 import { sessionMiddleware } from '@/lib/middleware/session';
 
-export const middleware = composeMiddleware(
-  rateLimitMiddleware,
-  sessionMiddleware
-);
+export const proxy = composeMiddleware(rateLimitMiddleware, sessionMiddleware);
 /*export async function middleware(request: NextRequest) {
   return await updateSession(request);
 }*/
