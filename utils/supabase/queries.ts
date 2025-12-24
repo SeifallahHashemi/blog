@@ -8,7 +8,8 @@ export const getUser = async () => {
   const { data, error: sessionError } = await supabase.auth.getUser();
 
   if (sessionError || !data?.user) {
-    throw new Error('User not found');
+    // throw new Error('User not found');
+    return null;
   }
 
   return data.user;
@@ -17,17 +18,23 @@ export const getUser = async () => {
 export const getUserProfile = async () => {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('user_id', (await getUser()).id)
-    .single();
+  const user = await getUser();
 
-  if (error) {
-    throw error;
+  if (user !== null) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
   }
 
-  return data;
+  return null;
 };
 
 export const updateUserProfile = async ({
