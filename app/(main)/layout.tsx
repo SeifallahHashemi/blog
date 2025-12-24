@@ -17,19 +17,32 @@ const DashboardLayout = async ({
 
   const user = await getUser();
 
-  await queryClient.prefetchQuery(userProfileOptions(user.id));
+  let profile = null;
 
-  const profile = await getUserProfile();
+  if (user !== null) {
+    await queryClient.prefetchQuery(userProfileOptions(user.id));
+
+    profile = await getUserProfile();
+
+    return (
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <UserProvider
+          user={{
+            name: profile.username,
+            id: profile.user_id,
+            fullName: profile.full_name,
+          }}
+        />
+        <Header />
+        <DockAnimation />
+        {children}
+        <Footer />
+      </HydrationBoundary>
+    );
+  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <UserProvider
-        user={{
-          name: profile.username,
-          id: profile.user_id,
-          fullName: profile.full_name,
-        }}
-      />
       <Header />
       <DockAnimation />
       {children}
